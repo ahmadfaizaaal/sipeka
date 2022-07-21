@@ -82,7 +82,8 @@
                 <div class="carousel-inner" role="listbox">
 
                     <div class="carousel-item active">
-                        <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/1.png" alt=""></div>
+                        <!-- <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/1.png" alt=""></div> -->
+                        <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/bg1.jpg" alt=""></div>
                         <div class="carousel-container">
                             <div class="carousel-content">
                                 <?= $this->session->flashdata('message'); ?>
@@ -95,7 +96,8 @@
                     </div>
 
                     <div class="carousel-item">
-                        <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/2.png" alt=""></div>
+                        <!-- <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/2.png" alt=""></div> -->
+                        <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/bg1.jpg" alt=""></div>
                         <div class="carousel-container">
                             <div class="carousel-content">
                                 <h2>Kantor Urusan Agama</h2>

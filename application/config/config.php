@@ -1,6 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-
+date_default_timezone_set('Asia/Jakarta');
+setlocale(LC_ALL, 'IND');
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -23,7 +24,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/simlakah/';
+$config['base_url'] = "http://" . $_SERVER['HTTP_HOST'];
+$config['base_url'] .= preg_replace('@/+$@', '', dirname($_SERVER['SCRIPT_NAME'])) . '/';
+// $config['base_url'] = 'http://localhost/simlakah/';
 
 /*
 |--------------------------------------------------------------------------
