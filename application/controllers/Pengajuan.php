@@ -101,8 +101,8 @@ class Pengajuan extends CI_Controller
     {
 
         $param = $this->initializeParam();
-        echo json_encode($param);
-        die;
+        // echo json_encode($param);
+        // die;
 
         $pengajuan = $param['pengajuan'];
         $pengajuan['id_poktan'] = $this->pengajuan->insertData('poktan', $param['poktan']);
