@@ -9,6 +9,17 @@ class M_Auth extends CI_Model
         date_default_timezone_set('Asia/Bangkok');
     }
 
+    public function getDataUser($email)
+    {
+        $this->db->select('user.*, akses.tipe_akses, akses.kode_akses');
+        $this->db->from('user');
+        $this->db->join('akses', 'user.id_akses = akses.id_akses');
+        $this->db->where('user.email', $email);
+        $sql = $this->db->get();
+        $result = $sql->row();
+        return $result;
+    }
+
     public function listMenu($roleId)
     {
         $this->db->select('*');
@@ -30,11 +41,6 @@ class M_Auth extends CI_Model
         return $result->row();
     }
 
-    public function getDataParticipant($nik)
-    {
-        $result = $this->db->get_where('participant', ['nik' => $nik]);
-        return $result->row();
-    }
 
     public function getDataOfficer($username)
     {

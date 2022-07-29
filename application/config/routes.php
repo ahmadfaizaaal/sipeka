@@ -50,5 +50,15 @@ defined('BASEPATH') or exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'home';
-$route['404_override'] = '';
-$route['translate_uri_dashes'] = FALSE;
+$route['404_override'] = 'auth/error404';
+$route['translate_uri_dashes'] = TRUE;
+
+$userDefinedControllers        = ['auth', 'user', 'home'];
+
+foreach ($userDefinedControllers as $item) {
+    $route[$item]                                = $item;
+    $route[$item . '/(:any)']                      = $item . '/$1';
+    $route[$item . '/(:any)/(:any)']               = $item . '/$1/$2';
+    $route[$item . '/(:any)/(:any)/(:any)']        = $item . '/$1/$2/$3';
+    $route[$item . '/(:any)/(:any)/(:any)/(:any)'] = $item . '/$1/$2/$3/$4';
+}

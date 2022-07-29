@@ -22,15 +22,15 @@ class Home extends CI_Controller
                 redirect('penghulu');
             }
         }
-        $data['title'] = "Sistem Manajemen Layanan Pernikahan";
+        $data['title'] = "Sistem Informasi Pengajuan Alokasi Kegiatan";
         $this->load->view('home/index', $data);
     }
 
     public function registration($type)
     {
-        if (!$this->session->userdata('nik')) {
-            redirect('auth/login/' . $type);
-        }
+        // if (!$this->session->userdata('nik')) {
+        //     redirect('auth/login/' . $type);
+        // }
 
         $data['title'] = "Sistem Manajemen Layanan Pernikahan";
         $data['type'] = $type;

@@ -30,7 +30,7 @@
     <!-- BEGIN Custom CSS-->
     <link rel="stylesheet" type="text/css" href="<?= BASE_THEME ?>adm/assets/css/style.css">
     <!-- END Custom CSS-->
-    <link rel="icon" href="<?= BASE_THEME ?>img/icon_simlakah.png" type="image/ico" />
+    <link rel="icon" href="<?= BASE_THEME ?>img/sipeka-icon-v2.png" type="image/ico" />
     <!-- BEGIN JQuery -->
     <script src="<?= BASE_THEME; ?>v4/vendor/jquery/jquery.min.js"></script>
 
@@ -75,8 +75,8 @@
             <ul class="nav navbar-nav flex-row">
                 <li class="nav-item mr-auto">
                     <a class="navbar-brand" href="<?= BASE_URL ?>">
-                        <img class="brand-logo" alt="Simlakah admin logo" src="<?= BASE_THEME ?>adm/app-assets/images/logo/logosimlakahsm.png" />
-                        <img class="brand-logo-custom" alt="Simlakah admin logo" src="<?= BASE_THEME ?>adm/app-assets/images/logo/simlakahlabel.png" />
+                        <img class="brand-logo" alt="Simlakah admin logo" src="<?= BASE_THEME ?>adm/app-assets/images/logo/sipeka-icon-v2.png" />
+                        <img class="brand-logo-custom" alt="Simlakah admin logo" src="<?= BASE_THEME ?>adm/app-assets/images/logo/sipeka-label.png" />
                     </a>
                 </li>
                 <li class="nav-item d-md-none"><a class="nav-link close-navbar"><i class="ft-x"></i></a></li>
@@ -85,13 +85,21 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                 <li class=" nav-item">
-                    <a href="index.html"><i class="ft-home"></i><span class="menu-title" data-i18n="">Beranda</span></a>
-                </li>
-                <li class=" nav-item">
                     <a href="#"><i class="ft-user"></i><span class="menu-title" data-i18n="">Profil</span></a>
                 </li>
+                <!-- <li class=" nav-item">
+                    <a href="index.html"><i class="ft-file-text"></i><span class="menu-title" data-i18n="">Daftar Pengajuan</span></a>
+                </li> -->
+                <li class=" nav-item"><a href="#"><i class="ft-server"></i><span class="menu-title" data-i18n="">Daftar Pengajuan</span></a>
+                    <ul class="menu-content">
+                        <li><a class="menu-item" href="<?= BASE_URL ?>home/test">Perpipaan</a></li>
+                        <li><a class="menu-item" href="#">Perpompaan</a></li>
+                        <li><a class="menu-item" href="#">Embung</a></li>
+                        <li><a class="menu-item" href="#">Air Tanah</a></li>
+                    </ul>
+                </li>
                 <li class=" nav-item">
-                    <a href="https://themeselection.com/demo/chameleon-admin-template/documentation"><i class="ft-phone"></i><span class="menu-title" data-i18n="">Kontak</span></a>
+                    <a href="https://themeselection.com/demo/chameleon-admin-template/documentation"><i class="ft-folder"></i><span class="menu-title" data-i18n="">Dokumen</span></a>
                 </li>
             </ul>
         </div>
@@ -103,7 +111,7 @@
             <div class="content-wrapper-before"></div>
             <div class="content-header row">
                 <div class="content-header-left col-md-4 col-12 mb-2">
-                    <h2 class="content-header-title">REGISTRASI NIKAH</h>
+                    <h2 class="content-header-title">KEGIATAN PERPIPAAN</h>
                 </div>
                 <!-- <div class="content-header-right col-md-8 col-12">
                     <div class="breadcrumbs-top float-md-right">
@@ -120,472 +128,466 @@
                     </div>
                 </div> -->
             </div>
-            <div class="content-body">
-                <section id="drag-area">
-                    <?= $this->session->flashdata('message'); ?>
-                    <!-- HEADER SIDE OF REGISTRASI NIKAH -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Form Pendaftaran Nikah - Header</h4>
-                                    <div class="heading-elements">
-                                        <ul class="list-inline mb-0">
-                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        </ul>
+
+            <!-- END OF HEADER SIDE -->
+
+            <!-- MAIN SIDE OF REGISTRASI NIKAH -->
+            <div class="row" id="detailSection">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">FORM TELAAH VERIFIKASI</h4>
+                            <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <?= form_open_multipart('registration/submitDetail', 'class="steps-validation" id="form"'); ?>
+                                <!-- <form action="<?= BASE_URL . 'registration/submitDetail' ?>" method="post" class="steps-validation" id="form"> -->
+                                <input type="hidden" id="regID" name="regID">
+                                <input type="hidden" id="type" name="type" value="nikah">
+
+
+                                <!-- Step 1 -->
+                                <h6><i class="step-icon ft-map-pin"></i> Lokasi Kegiatan</h6>
+                                <fieldset class="mt-2">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="kabupaten">Kabupaten <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" style="width: 100%" id="kabupaten" class="select2 job form-control " placeholder="PILIH KABUPATEN" name="kabupaten">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="nkh_tempat"><?= $question[0]->QUESTION_LABEL ?></label>
-                                            <div class="col-md-9">
-                                                <select id="nkh_tempat" name="nkh_tempat" class="form-control">
-                                                    <option value="none" selected="" disabled="">Pilih salah satu</option>
-                                                    <option value="KUA">Di KUA</option>
-                                                    <option value="Di Luar KUA">Di Luar KUA</option>
-                                                </select>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="kecamatan">Kecamatan <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" style="width: 100%" id="kecamatan" class="select2 job form-control " placeholder="PILIH KECAMATAN" name="kecamatan">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="desa">Desa <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" style="width: 100%" id="desa" class="select2 job form-control " placeholder="PILIH DESA" name="desa">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nohp_s">Koordinat <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_nohp_s" class="form-control " placeholder="" name="nkh_nohp_s">
+                                        </div>
+                                    </div>
+                                    <!-- <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_foto_s"><?= $question[13]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_foto_s" id="nkh_foto_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_foto_s', 'foto_s')">
+                                                <label for="nkh_foto_s" class="custom-file-label required" id="foto_s"></label>
+                                                <p class="text-left"><small class="text-muted">NB : Silahkan unggah pas foto ukuran 2x3 dengan latar belakang berwarna biru.</small></p>
                                             </div>
                                         </div>
+                                    </div> -->
+                                </fieldset>
 
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="nkh_tanggal_akad"><?= $question[1]->QUESTION_LABEL ?></label>
-                                            <div class="col-md-5">
-                                                <div class="position-relative has-icon-left datepicker">
-                                                    <input type="text" id="nkh_tanggal_akad" class="form-control" name="nkh_tanggal_akad">
-                                                    <div class="form-control-position">
-                                                        <i class="ft-calendar"></i>
+                                <!-- Step 2 -->
+                                <h6><i class="step-icon ft-users"></i>Gapoktan / Poktan</h6>
+                                <fieldset class="mt-2">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_kewarganegaraan_i"><?= $question[14]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="hidden" name="nkh_kewarganegaraan_i" id="hidden_kwn_i">
+                                            <select id="nkh_kewarganegaraan_i" name="nkh_kewarganegaraan_i" class="form-control required">
+                                                <option value="none" selected="" disabled="">Pilih salah satu</option>
+                                                <option value="wni">WNI</option>
+                                                <option value="wna">WNA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nik_i"><?= $question[15]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-7">
+                                            <input type="text" id="nkh_nik_i" class="form-control required" placeholder="" name="nkh_nik_i">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="button" class="btn btn-info btn-min-width" value="Cek NIK" id="nkh_btnceknik_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nama_i"><?= $question[16]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_nama_i" class="form-control required" placeholder="" name="nkh_nama_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_ttl_i"><?= $question[17]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-5">
+                                            <input type="text" id="nkh_ttl_i" class="form-control required" placeholder="" name="nkh_ttl_i">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="position-relative has-icon-left">
+                                                <input type="text" id="nkh_ttl2_i" class="form-control required" name="nkh_ttl2_i">
+                                                <div class="form-control-position">
+                                                    <i class="ft-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_umur_i"><?= $question[18]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_umur_i" class="form-control required" placeholder="" name="nkh_umur_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_status_i"><?= $question[19]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="hidden" name="nkh_status_i" id="hidden_status_i">
+                                            <select id="nkh_status_i" name="nkh_status_i" class="form-control required">
+                                                <option value="none" selected="" disabled="">Pilih salah satu</option>
+                                                <option value="Perawan">Perawan</option>
+                                                <option value="Bersuami">Bersuami</option>
+                                                <option value="Cerai Mati">Cerai Mati</option>
+                                                <option value="Cerai Hidup">Cerai Hidup</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_agama_i"><?= $question[20]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_agama_i" class="form-control required" placeholder="" name="nkh_agama_i" value="Islam" <?= $question[20]->IS_READONLY; ?>>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_alamat_i"><?= $question[21]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_alamat_i" class="form-control required" placeholder="" name="nkh_alamat_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_pekerjaan_i"><?= $question[22]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" style="width: 100%" id="nkh_pekerjaan_i" class="select2 job form-control required" placeholder="" name="nkh_pekerjaan_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nohp_i"><?= $question[23]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_nohp_i" class="form-control required" placeholder="" name="nkh_nohp_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_oldfoto_i"><?= $question[24]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_foto_i" id="nkh_foto_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_foto_i', 'foto_i')">
+                                                <label for="nkh_foto_i" class="custom-file-label required" id="foto_i"></label>
+                                                <p class="text-left"><small class="text-muted">NB : Silahkan unggah pas foto ukuran 2x3 dengan latar belakang berwarna biru.</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Step 3 -->
+                                <h6><i class="step-icon ft-edit"></i>Detail Kegiatan</h6>
+                                <fieldset class="mt-2">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_kewarganegaraan_i"><?= $question[14]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="hidden" name="nkh_kewarganegaraan_i" id="hidden_kwn_i">
+                                            <select id="nkh_kewarganegaraan_i" name="nkh_kewarganegaraan_i" class="form-control required">
+                                                <option value="none" selected="" disabled="">Pilih salah satu</option>
+                                                <option value="wni">WNI</option>
+                                                <option value="wna">WNA</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nik_i"><?= $question[15]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-7">
+                                            <input type="text" id="nkh_nik_i" class="form-control required" placeholder="" name="nkh_nik_i">
+                                        </div>
+                                        <div class="col-md-2">
+                                            <input type="button" class="btn btn-info btn-min-width" value="Cek NIK" id="nkh_btnceknik_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nama_i"><?= $question[16]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_nama_i" class="form-control required" placeholder="" name="nkh_nama_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_ttl_i"><?= $question[17]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-5">
+                                            <input type="text" id="nkh_ttl_i" class="form-control required" placeholder="" name="nkh_ttl_i">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="position-relative has-icon-left">
+                                                <input type="text" id="nkh_ttl2_i" class="form-control required" name="nkh_ttl2_i">
+                                                <div class="form-control-position">
+                                                    <i class="ft-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_umur_i"><?= $question[18]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_umur_i" class="form-control required" placeholder="" name="nkh_umur_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_status_i"><?= $question[19]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="hidden" name="nkh_status_i" id="hidden_status_i">
+                                            <select id="nkh_status_i" name="nkh_status_i" class="form-control required">
+                                                <option value="none" selected="" disabled="">Pilih salah satu</option>
+                                                <option value="Perawan">Perawan</option>
+                                                <option value="Bersuami">Bersuami</option>
+                                                <option value="Cerai Mati">Cerai Mati</option>
+                                                <option value="Cerai Hidup">Cerai Hidup</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_agama_i"><?= $question[20]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_agama_i" class="form-control required" placeholder="" name="nkh_agama_i" value="Islam" <?= $question[20]->IS_READONLY; ?>>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_alamat_i"><?= $question[21]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_alamat_i" class="form-control required" placeholder="" name="nkh_alamat_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_pekerjaan_i"><?= $question[22]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" style="width: 100%" id="nkh_pekerjaan_i" class="select2 job form-control required" placeholder="" name="nkh_pekerjaan_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_nohp_i"><?= $question[23]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="text" id="nkh_nohp_i" class="form-control required" placeholder="" name="nkh_nohp_i">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="nkh_oldfoto_i"><?= $question[24]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_foto_i" id="nkh_foto_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_foto_i', 'foto_i')">
+                                                <label for="nkh_foto_i" class="custom-file-label required" id="foto_i"></label>
+                                                <p class="text-left"><small class="text-muted">NB : Silahkan unggah pas foto ukuran 2x3 dengan latar belakang berwarna biru.</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+                                <!-- Step 4 -->
+                                <h6><i class="step-icon ft-list"></i>Keterangan</h6>
+                                <fieldset class="mt-2">
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <div class="card text-white box-shadow-0 bg-gradient-x-warning">
+                                                <div class="card-content collapse show">
+                                                    <div class="card-body">
+                                                        <p class="card-text"><i class="ft-alert-triangle"></i>&nbsp; Jenis dokumen berupa file foto yang bertipe <strong>.JPG / .PNG / .JPEG</strong></p>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <div class="position-relative has-icon-left">
-                                                    <input type="text" id="nkh_jam_akad" class="form-control" name="nkh_jam_akad">
-                                                    <div class="form-control-position">
-                                                        <i class="ft-clock"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="nkh_alamat_akad"><?= $question[2]->QUESTION_LABEL ?></label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="nkh_alamat_akad" class="form-control" placeholder="" name="nkh_alamat_akad">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row float-md-right">
-                                            <div class="col-md-12">
-                                                <input type="button" id="nextToDetail" class="btn btn-info btn-min-width mb-1" placeholder="" name="nextToDetail" value="Selanjutnya">
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="nkh_docn1"><?= $question[25]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-8">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docn1" id="nkh_docn1" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docn1', 'docn1')">
+                                                <label for="nkh_docn1" class="custom-file-label" id="docn1"></label>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="nkh_docn3"><?= $question[26]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-8">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docn3" id="nkh_docn3" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docn3', 'docn3')">
+                                                <label for="nkh_docn3" class="custom-file-label" id="docn3"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="nkh_docktp"><?= $question[27]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docktp_s" id="nkh_docktp_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docktp_s', 'ktps')">
+                                                <label for="nkh_docktp_s" class="custom-file-label" id="ktps"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docktp_i" id="nkh_docktp_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docktp_i', 'ktpi')">
+                                                <label for="nkh_docktp_i" class="custom-file-label" id="ktpi"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="nkh_dockk"><?= $question[29]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_dockk_s" id="nkh_dockk_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_dockk_s', 'kks')">
+                                                <label for="nkh_dockk_s" class="custom-file-label" id="kks"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_dockk_i" id="nkh_dockk_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_dockk_i', 'kki')">
+                                                <label for="nkh_dockk_i" class="custom-file-label" id="kki"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="nkh_docakta"><?= $question[31]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docakta_s" id="nkh_docakta_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docakta_s', 'aktas')">
+                                                <label for="nkh_docakta_s" class="custom-file-label" id="aktas"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docakta_i" id="nkh_docakta_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docakta_i', 'aktai')">
+                                                <label for="nkh_docakta_i" class="custom-file-label" id="aktai"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="jobAuth">
+                                        <label class="col-md-4 label-control"><?= $question[33]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docpendukung_s" id="nkh_docpendukung_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpendukung_s', 'adds')">
+                                                <label for="nkh_docpendukung_s" class="custom-file-label" id="adds"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docpendukung_i" id="nkh_docpendukung_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpendukung_i', 'addi')">
+                                                <label for="nkh_docpendukung_i" class="custom-file-label" id="addi"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="kedutaan">
+                                        <label class="col-md-4 label-control"><?= $question[35]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_dockedutaan_s" id="nkh_dockedutaan_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_dockedutaan_s', 'kedutaans')">
+                                                <label for="nkh_dockedutaan_s" class="custom-file-label" id="kedutaans"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_dockedutaan_i" id="nkh_dockedutaan_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_dockedutaan_i', 'kedutaani')">
+                                                <label for="nkh_dockedutaan_i" class="custom-file-label" id="kedutaani"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="passport">
+                                        <label class="col-md-4 label-control"><?= $question[37]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docpassport_s" id="nkh_docpassport_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpassport_s', 'passports')">
+                                                <label for="nkh_docpassport_s" class="custom-file-label" id="passports"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docpassport_i" id="nkh_docpassport_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpassport_i', 'passporti')">
+                                                <label for="nkh_docpassport_i" class="custom-file-label" id="passporti"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row" id="imigrasi">
+                                        <label class="col-md-4 label-control"><?= $question[39]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docimigrasi_s" id="nkh_docimigrasi_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docimigrasi_s', 'imigrasis')">
+                                                <label for="nkh_docimigrasi_s" class="custom-file-label" id="imigrasis"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                        <div class="">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docimigrasi_i" id="nkh_docimigrasi_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docimigrasi_i', 'imigrasii')">
+                                                <label for="nkh_docimigrasi_i" class="custom-file-label" id="imigrasii"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-md-4 label-control" for="nkh_docnumpang_nikah"><?= $question[41]->QUESTION_LABEL ?> <span class="danger">*</span></label>
+                                        <div class="col-md-8">
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="nkh_docnumpang_nikah" id="nkh_docnumpang_nikah" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docnumpang_nikah', 'numpang_nikah')">
+                                                <label for="nkh_docnumpang_nikah" class="custom-file-label" id="numpang_nikah"></label>
+                                                <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+
+
+                                <!-- Step 5 -->
+                                <h6><i class="step-icon ft-check-circle"></i> Hasil Telaah</h6>
+                                <fieldset class="mt-2">
+                                    <div class="form-group row">
+                                        <label class="col-md-3 label-control" for="status_kelayakan">Status Kelayakan <span class="danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <input type="hidden" name="status_kelayakan" id="hidden_kwn_i">
+                                            <select id="nkh_kewarganegaraan_i" name="nkh_kewarganegaraan_i" class="form-control required">
+                                                <option value="none" selected="" disabled="">Pilih salah satu</option>
+                                                <option value="wni">LAYAK</option>
+                                                <option value="wna">TIDAK LAYAK</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                </form>
                             </div>
                         </div>
                     </div>
-                    <!-- END OF HEADER SIDE -->
-
-                    <!-- MAIN SIDE OF REGISTRASI NIKAH -->
-                    <div class="row" id="detailSection">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title">Form Pendaftaran Nikah - Detail</h4>
-                                    <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
-                                    <div class="heading-elements">
-                                        <ul class="list-inline mb-0">
-                                            <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-content collapse show">
-                                    <div class="card-body">
-                                        <?= form_open_multipart('registration/submitDetail', 'class="steps-validation" id="form"'); ?>
-                                        <!-- <form action="<?= BASE_URL . 'registration/submitDetail' ?>" method="post" class="steps-validation" id="form"> -->
-                                        <input type="hidden" id="regID" name="regID">
-                                        <input type="hidden" id="type" name="type" value="nikah">
-                                        <!-- Step 1 -->
-                                        <h6><i class="step-icon ft-user"></i> Data Calon Suami</h6>
-                                        <fieldset class="mt-2">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_kewarganegaraan_s"><?= $question[3]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="hidden" name="nkh_kewarganegaraan_s" id="hidden_kwn_s">
-                                                    <select id="nkh_kewarganegaraan_s" name="nkh_kewarganegaraan_s" class="form-control required">
-                                                        <option value="none" selected="" disabled="">Pilih salah satu</option>
-                                                        <option value="wni">WNI</option>
-                                                        <option value="wna">WNA</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_nik_s"><?= $question[4]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-7">
-                                                    <input type="text" id="nkh_nik_s" class="form-control required" placeholder="" name="nkh_nik_s">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input type="button" class="btn btn-info btn-min-width" value="Cek NIK" id="nkh_btnceknik_s">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_nama_s"><?= $question[5]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_nama_s" class="form-control required" placeholder="" name="nkh_nama_s">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_ttl_s"><?= $question[6]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-5">
-                                                    <input type="text" id="nkh_ttl_s" class="form-control required" placeholder="" name="nkh_ttl_s">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="position-relative has-icon-left">
-                                                        <input type="text" id="nkh_ttl2_s" class="form-control required" name="nkh_ttl2_s">
-                                                        <div class="form-control-position">
-                                                            <i class="ft-calendar"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_umur_s"><?= $question[7]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_umur_s" class="form-control required" placeholder="" name="nkh_umur_s">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_status_s"><?= $question[8]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="hidden" name="nkh_status_s" id="hidden_status_s">
-                                                    <select id="nkh_status_s" name="nkh_status_s" class="form-control required">
-                                                        <option value="none" selected="" disabled="">Pilih salah satu</option>
-                                                        <option value="Jejaka">Jejaka</option>
-                                                        <option value="Beristri">Beristri</option>
-                                                        <option value="Cerai Mati">Cerai Mati</option>
-                                                        <option value="Cerai Hidup">Cerai Hidup</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_agama_s"><?= $question[9]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_agama_s" class="form-control required" placeholder="" name="nkh_agama_s" value="Islam" <?= $question[9]->IS_READONLY; ?>>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_alamat_s"><?= $question[10]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_alamat_s" class="form-control required" placeholder="" name="nkh_alamat_s">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_pekerjaan_s"><?= $question[11]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" style="width: 100%" id="nkh_pekerjaan_s" class="select2 job form-control required" placeholder="" name="nkh_pekerjaan_s">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_nohp_s"><?= $question[12]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_nohp_s" class="form-control required" placeholder="" name="nkh_nohp_s">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_foto_s"><?= $question[13]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_foto_s" id="nkh_foto_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_foto_s', 'foto_s')">
-                                                        <label for="nkh_foto_s" class="custom-file-label required" id="foto_s"></label>
-                                                        <p class="text-left"><small class="text-muted">NB : Silahkan unggah pas foto ukuran 2x3 dengan latar belakang berwarna biru.</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-
-                                        <!-- Step 2 -->
-                                        <h6><i class="step-icon ft-user"></i>Data Calon Istri</h6>
-                                        <fieldset class="mt-2">
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_kewarganegaraan_i"><?= $question[14]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="hidden" name="nkh_kewarganegaraan_i" id="hidden_kwn_i">
-                                                    <select id="nkh_kewarganegaraan_i" name="nkh_kewarganegaraan_i" class="form-control required">
-                                                        <option value="none" selected="" disabled="">Pilih salah satu</option>
-                                                        <option value="wni">WNI</option>
-                                                        <option value="wna">WNA</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_nik_i"><?= $question[15]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-7">
-                                                    <input type="text" id="nkh_nik_i" class="form-control required" placeholder="" name="nkh_nik_i">
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <input type="button" class="btn btn-info btn-min-width" value="Cek NIK" id="nkh_btnceknik_i">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_nama_i"><?= $question[16]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_nama_i" class="form-control required" placeholder="" name="nkh_nama_i">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_ttl_i"><?= $question[17]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-5">
-                                                    <input type="text" id="nkh_ttl_i" class="form-control required" placeholder="" name="nkh_ttl_i">
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="position-relative has-icon-left">
-                                                        <input type="text" id="nkh_ttl2_i" class="form-control required" name="nkh_ttl2_i">
-                                                        <div class="form-control-position">
-                                                            <i class="ft-calendar"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_umur_i"><?= $question[18]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_umur_i" class="form-control required" placeholder="" name="nkh_umur_i">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_status_i"><?= $question[19]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="hidden" name="nkh_status_i" id="hidden_status_i">
-                                                    <select id="nkh_status_i" name="nkh_status_i" class="form-control required">
-                                                        <option value="none" selected="" disabled="">Pilih salah satu</option>
-                                                        <option value="Perawan">Perawan</option>
-                                                        <option value="Bersuami">Bersuami</option>
-                                                        <option value="Cerai Mati">Cerai Mati</option>
-                                                        <option value="Cerai Hidup">Cerai Hidup</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_agama_i"><?= $question[20]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_agama_i" class="form-control required" placeholder="" name="nkh_agama_i" value="Islam" <?= $question[20]->IS_READONLY; ?>>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_alamat_i"><?= $question[21]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_alamat_i" class="form-control required" placeholder="" name="nkh_alamat_i">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_pekerjaan_i"><?= $question[22]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" style="width: 100%" id="nkh_pekerjaan_i" class="select2 job form-control required" placeholder="" name="nkh_pekerjaan_i">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_nohp_i"><?= $question[23]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <input type="text" id="nkh_nohp_i" class="form-control required" placeholder="" name="nkh_nohp_i">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-3 label-control" for="nkh_oldfoto_i"><?= $question[24]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-9">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_foto_i" id="nkh_foto_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_foto_i', 'foto_i')">
-                                                        <label for="nkh_foto_i" class="custom-file-label required" id="foto_i"></label>
-                                                        <p class="text-left"><small class="text-muted">NB : Silahkan unggah pas foto ukuran 2x3 dengan latar belakang berwarna biru.</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-
-                                        <!-- Step 3 -->
-                                        <h6><i class="step-icon ft-file-text"></i>Data Dokumen Nikah</h6>
-                                        <fieldset class="mt-2">
-                                            <div class="form-group row">
-                                                <div class="col-md-12">
-                                                    <div class="card text-white box-shadow-0 bg-gradient-x-warning">
-                                                        <div class="card-content collapse show">
-                                                            <div class="card-body">
-                                                                <p class="card-text"><i class="ft-alert-triangle"></i>&nbsp; Jenis dokumen berupa file foto yang bertipe <strong>.JPG / .PNG / .JPEG</strong></p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 label-control" for="nkh_docn1"><?= $question[25]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-8">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docn1" id="nkh_docn1" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docn1', 'docn1')">
-                                                        <label for="nkh_docn1" class="custom-file-label" id="docn1"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 label-control" for="nkh_docn3"><?= $question[26]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-8">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docn3" id="nkh_docn3" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docn3', 'docn3')">
-                                                        <label for="nkh_docn3" class="custom-file-label" id="docn3"></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 label-control" for="nkh_docktp"><?= $question[27]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docktp_s" id="nkh_docktp_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docktp_s', 'ktps')">
-                                                        <label for="nkh_docktp_s" class="custom-file-label" id="ktps"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docktp_i" id="nkh_docktp_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docktp_i', 'ktpi')">
-                                                        <label for="nkh_docktp_i" class="custom-file-label" id="ktpi"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 label-control" for="nkh_dockk"><?= $question[29]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_dockk_s" id="nkh_dockk_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_dockk_s', 'kks')">
-                                                        <label for="nkh_dockk_s" class="custom-file-label" id="kks"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_dockk_i" id="nkh_dockk_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_dockk_i', 'kki')">
-                                                        <label for="nkh_dockk_i" class="custom-file-label" id="kki"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 label-control" for="nkh_docakta"><?= $question[31]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docakta_s" id="nkh_docakta_s" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docakta_s', 'aktas')">
-                                                        <label for="nkh_docakta_s" class="custom-file-label" id="aktas"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docakta_i" id="nkh_docakta_i" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docakta_i', 'aktai')">
-                                                        <label for="nkh_docakta_i" class="custom-file-label" id="aktai"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="jobAuth">
-                                                <label class="col-md-4 label-control"><?= $question[33]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docpendukung_s" id="nkh_docpendukung_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpendukung_s', 'adds')">
-                                                        <label for="nkh_docpendukung_s" class="custom-file-label" id="adds"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docpendukung_i" id="nkh_docpendukung_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpendukung_i', 'addi')">
-                                                        <label for="nkh_docpendukung_i" class="custom-file-label" id="addi"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="kedutaan">
-                                                <label class="col-md-4 label-control"><?= $question[35]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_dockedutaan_s" id="nkh_dockedutaan_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_dockedutaan_s', 'kedutaans')">
-                                                        <label for="nkh_dockedutaan_s" class="custom-file-label" id="kedutaans"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_dockedutaan_i" id="nkh_dockedutaan_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_dockedutaan_i', 'kedutaani')">
-                                                        <label for="nkh_dockedutaan_i" class="custom-file-label" id="kedutaani"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="passport">
-                                                <label class="col-md-4 label-control"><?= $question[37]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docpassport_s" id="nkh_docpassport_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpassport_s', 'passports')">
-                                                        <label for="nkh_docpassport_s" class="custom-file-label" id="passports"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docpassport_i" id="nkh_docpassport_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docpassport_i', 'passporti')">
-                                                        <label for="nkh_docpassport_i" class="custom-file-label" id="passporti"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" id="imigrasi">
-                                                <label class="col-md-4 label-control"><?= $question[39]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docimigrasi_s" id="nkh_docimigrasi_s" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docimigrasi_s', 'imigrasis')">
-                                                        <label for="nkh_docimigrasi_s" class="custom-file-label" id="imigrasis"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                                <div class="">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docimigrasi_i" id="nkh_docimigrasi_i" accept="image/jpg, image/jpeg, image/png" onchange="getFileNameOfImage('nkh_docimigrasi_i', 'imigrasii')">
-                                                        <label for="nkh_docimigrasi_i" class="custom-file-label" id="imigrasii"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk istri</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 label-control" for="nkh_docnumpang_nikah"><?= $question[41]->QUESTION_LABEL ?> <span class="danger">*</span></label>
-                                                <div class="col-md-8">
-                                                    <div class="custom-file">
-                                                        <input type="file" class="custom-file-input" name="nkh_docnumpang_nikah" id="nkh_docnumpang_nikah" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('nkh_docnumpang_nikah', 'numpang_nikah')">
-                                                        <label for="nkh_docnumpang_nikah" class="custom-file-label" id="numpang_nikah"></label>
-                                                        <p class="text-left"><small class="text-muted">Dokumen untuk suami</small></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </fieldset>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- END OF MAIN SIDE -->
-                    <div class="row float-md-right">
-                        <div class="col-md-12">
-                            <input type="button" id="cancelRegistration" class="btn btn-danger btn-min-width mb-2" placeholder="" name="cancelRegistration" value="Batalkan Pendaftaran">
-                        </div>
-                    </div>
-                </section>
+                </div>
             </div>
+            <!-- END OF MAIN SIDE -->
+            <div class="row float-md-right">
+                <div class="col-md-12">
+                    <input type="button" id="cancelRegistration" class="btn btn-danger btn-min-width mb-2" placeholder="" name="cancelRegistration" value="Batalkan Pendaftaran">
+                </div>
+            </div>
+            </section>
         </div>
+    </div>
     </div>
     <!-- ////////////////////////////////////////////////////////////////////////////-->
 
 
     <footer class="footer footer-static footer-light navbar-border navbar-shadow">
         <div class="clearfix blue-grey lighten-2 text-sm-center mb-0 px-2">
-            <span class="float-md-left d-block d-md-inline-block">Copyright &copy; <strong>SIMLAKAH </strong> 2020 | Designed by <a href="#">Nadya Dwi Sukmawati</a></span>
+            <span class="float-md-left d-block d-md-inline-block">Copyright &copy; <strong>SIPEKA </strong> <?= date('Y') ?> | Designed by <strong><a href="#" style="color: #13a456;">Yasinta Surya Maharani</a></strong></span>
             <ul class="list-inline float-md-right d-block d-md-inline-blockd-none d-lg-block mb-0">
             </ul>
         </div>
@@ -632,7 +634,22 @@
         };
 
         $(function() {
-            $('#detailSection').hide();
+
+            $("#kabupaten").select2({
+                data: [],
+                placeholder: "PILIH KABUPATEN",
+            });
+
+            $("#kecamatan").select2({
+                data: [],
+                placeholder: "PILIH KECAMATAN",
+            });
+
+            $("#desa").select2({
+                data: [],
+                placeholder: "PILIH DESA",
+            });
+            // $('#detailSection').hide();
             $('#cancelRegistration').hide();
             $('#jobAuth').hide();
 

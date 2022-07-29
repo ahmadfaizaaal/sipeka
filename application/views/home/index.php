@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
-    <link rel="icon" href="<?= BASE_THEME ?>img/icon_simlakah.png" type="image/ico" />
+    <link rel="icon" href="<?= BASE_THEME ?>img/sipeka-icon-v2.png" type="image/ico" />
 
     <!-- Favicons -->
     <!-- <link href="<?= BASE_THEME; ?>img/favicon.png" rel="icon"> -->
@@ -41,7 +41,7 @@
             <div class="col-md-4">
                 <div id="logo" class="pull-left">
                     <a href="<?= BASE_URL ?>">
-                        <img src="<?= BASE_THEME; ?>img/logo_simlakah.png" alt="" title="" width="60%" style="margin-top: -12px;" />
+                        <img src="<?= BASE_THEME; ?>img/sipeka-logo-v2.png" alt="" title="" width="35%" style="margin-top: -12px;" />
                     </a>
                 </div>
             </div>
@@ -49,10 +49,10 @@
                 <nav id="nav-menu-container">
                     <ul class="nav-menu">
                         <li class="menu-active"><a href="#intro">Beranda</a></li>
-                        <li><a href="#about">Profil</a></li>
-                        <li><a href="#contact">Kontak</a></li>
+                        <!-- <li><a href="#about">Profil</a></li> -->
+                        <li><a href="#contact">Hubungi Kami</a></li>
                         <?php
-                        if ($this->session->userdata('nik') != '') {
+                        if ($this->session->userdata('email') != '') {
                         ?>
                             <li>
                                 <a href="<?= BASE_URL . 'auth/logout' ?>">
@@ -87,9 +87,10 @@
                         <div class="carousel-container">
                             <div class="carousel-content">
                                 <?= $this->session->flashdata('message'); ?>
-                                <h2>Direktorat Jenderal</h2>
-                                <h2 style="margin-top: -25px">Bimbingan Masyarakat Islam</h2>
-                                <p>Kementerian Agama Republik Indonesia</p>
+                                <h2>Sistem Informasi</h2>
+                                <h2 style="margin-top: -25px">Pengajuan Alokasi Kegiatan (SIPEKA)</h2>
+                                <!-- <h2 style="margin-top: -25px">(SIPEKA)</h2> -->
+                                <p style="width: 100%;">Direktorat Irigasi Pertanian, Direktorat Jenderal Prasarana dan Sarana Pertanian, <br /> Kementerian Pertanian</p>
                                 <a href="<?= BASE_URL . 'auth/login/general' ?>" class="btn-get-started scrollto mt-5">Klik untuk Login!</a>
                             </div>
                         </div>
@@ -97,12 +98,13 @@
 
                     <div class="carousel-item">
                         <!-- <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/2.png" alt=""></div> -->
-                        <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/bg1.jpg" alt=""></div>
+                        <div class="carousel-background"><img src="<?= BASE_THEME; ?>img/intro-carousel/bg2.jpg" alt=""></div>
                         <div class="carousel-container">
                             <div class="carousel-content">
-                                <h2>Kantor Urusan Agama</h2>
-                                <h2 style="margin-top: -25px">Dawarblandong</h2>
-                                <p>Pastikan Nikah Anda Tercatat di KUA!</p>
+                                <h2>Sistem Informasi</h2>
+                                <h2 style="margin-top: -25px">Pengajuan Alokasi Kegiatan (SIPEKA)</h2>
+                                <!-- <h2 style="margin-top: -25px">(SIPEKA)</h2> -->
+                                <p style="width: 100%;">Direktorat Irigasi Pertanian, Direktorat Jenderal Prasarana dan Sarana Pertanian, <br /> Kementerian Pertanian</p>
                                 <a href="<?= BASE_URL . 'auth/login/general' ?>" class="btn-get-started scrollto mt-5">Klik untuk Login!</a>
                             </div>
                         </div>
@@ -132,20 +134,24 @@
         <section id="featured-services">
             <div class="container">
                 <div class="row">
-
-                    <div class="col-lg-4 box text-center">
-                        <img src="<?= BASE_THEME; ?>img/couple_wh.png" style="width: 20%">
-                        <h4 class="title"><a href="<?= BASE_URL . 'home/registration/nikah' ?>"><strong>Daftar Nikah</strong></a></h4>
+                    <div class="col-lg-3 box text-center">
+                        <img src="<?= BASE_THEME; ?>img/perpipaan.png" style="width: 20%">
+                        <h4 class="title"><a href="<?= BASE_URL . 'pengajuan/list/perpipaan' ?>"><strong>Kegiatan Perpipaan</strong></a></h4>
                     </div>
 
-                    <div class="col-lg-4 box box-bg text-center">
-                        <img src="<?= BASE_THEME; ?>img/couple_wh.png" style="width: 20%">
-                        <h4 class="title"><a href="<?= BASE_URL . 'home/registration/rujuk' ?>"><strong>Daftar Rujuk</strong></a></h4>
+                    <div class="col-lg-3 box box-bg text-center">
+                        <img src="<?= BASE_THEME; ?>img/perpompaan.png" style="width: 20%">
+                        <h4 class="title"><a href="<?= BASE_URL . 'pengajuan/list/perpompaan' ?>"><strong>Kegiatan Perpompaan</strong></a></h4>
                     </div>
 
-                    <div class="col-lg-4 box text-center">
-                        <img src="<?= BASE_THEME; ?>img/couple_wh.png" style="width: 20%">
-                        <h4 class="title"><a href="<?= BASE_URL . 'home/registration/isbat' ?>"><strong>Daftar Isbat</strong></a></h4>
+                    <div class="col-lg-3 box text-center">
+                        <img src="<?= BASE_THEME; ?>img/embung.png" style="width: 20%">
+                        <h4 class="title"><a href="<?= BASE_URL . 'pengajuan/list/embung' ?>"><strong>Kegiatan Embung</strong></a></h4>
+                    </div>
+
+                    <div class="col-lg-3 box box-bg text-center">
+                        <img src="<?= BASE_THEME; ?>img/air tanah.png" style="width: 20%">
+                        <h4 class="title"><a href="<?= BASE_URL . 'pengajuan/list/air-tanah' ?>"><strong>Kegiatan Air Tanah</strong></a></h4>
                     </div>
 
                 </div>
@@ -160,10 +166,10 @@
     <footer id="footer">
         <div class="container">
             <div class="copyright">
-                Copyright &copy; <strong>SIMLAKAH | </strong>Sistem Manajemen Layanan Pernikahan 2020
+                Copyright &copy; <strong>SIPEKA <?= date('Y') ?> | </strong>Sistem Informasi Pengajuan Alokasi Kegiatan
             </div>
             <div class="credits">
-                Designed by <a href="#">Nadya Dwi Sukmawati</a>
+                Designed by <a href="#">Yasinta Surya Maharani</a>
             </div>
         </div>
     </footer>

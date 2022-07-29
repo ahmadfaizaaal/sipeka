@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="<?= BASE_THEME ?>img/icon_simlakah.png" type="image/ico" />
+    <link rel="icon" href="<?= BASE_THEME ?>img/sipeka-icon-v2.png" type="image/ico" />
 
     <title>
         <?= $title; ?>
@@ -23,7 +23,7 @@
 
 </head>
 
-<body background="<?= BASE_THEME ?>img/background_opacity.png" style="background-size: cover">
+<body background="<?= BASE_THEME ?>img/bg_opacity.png" style="background-size: cover">
     <div class="container">
 
         <!-- Outer Row -->
@@ -37,9 +37,9 @@
                         <div class="row" style="z-index: 1">
                             <div class="col-lg">
                                 <div class="p-5">
-                                    <div class="text-center mb-3">
+                                    <div class="text-center mb-5">
                                         <a href="<?= BASE_URL ?>">
-                                            <img class="background-position: center; background-size: cover;" src="<?= BASE_THEME; ?>img/logo_simlakah.png" style="width:75%; height:75%;" alt="Simlakah Image">
+                                            <img class="background-position: center; background-size: cover;" src="<?= BASE_THEME; ?>img/sipeka-logo-v2.png" style="width:70%; height:75%;" alt="SIPEKA Image">
                                         </a>
                                         <!-- <h1 class="h5 text-gray-900 mb-4"><b>Login Page</b></h1> -->
                                     </div>
@@ -48,28 +48,28 @@
 
                                     <form class="user" method="post" action="<?= BASE_URL . 'auth/login/' . $param; ?>">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user" id="nik" name="nik" placeholder="Username / No. KTP" value="<?= set_value('nik'); ?>">
-                                            <?= form_error('nik', '<small class="text-danger pl-3">', '</small>'); ?>
+                                            <input type="text" class="form-control form-control-user" id="email" name="email" placeholder="Email" value="<?= set_value('email'); ?>">
+                                            <?= form_error('email', '<small class="text-danger pl-3">', '</small>'); ?>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Kata Sandi">
+                                            <input type="password" class="form-control form-control-user" id="password" name="password" placeholder="Password">
                                             <?= form_error('password', '<small class="text-danger pl-3">', '</small>'); ?>
                                         </div>
-                                        <button type="submit" class="btn btn-success btn-user btn-block">
-                                            Login
+                                        <button type="submit" class="btn btn-success btn-user btn-block" style="font-size: 18px;">
+                                            <strong>Login</strong>
                                         </button>
                                     </form>
                                     <hr>
                                     <!-- <div class="text-center">
                                 <a class="small" href="forgot-password.html">Forgot Password?</a>
                             </div> -->
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <p class="small">Belum pernah mendaftar?
                                             <strong>
                                                 <a href="<?= BASE_URL . 'auth/register/' . $param ?>" class="main-text">Buat Akun!</a>
                                             </strong>
                                         </p>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

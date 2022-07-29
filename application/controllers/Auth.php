@@ -8,35 +8,35 @@ class Auth extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        date_default_timezone_set('Asia/Bangkok');
+        // date_default_timezone_set('Asia/Bangkok');
         $this->load->library('form_validation');
-        $this->load->model('M_Auth', 'mAuth');
+        $this->load->model('M_Auth', 'auth');
         date_default_timezone_set('Asia/Bangkok');
     }
 
     public function login($param)
     {
-        if ($this->session->userdata('nik')) {
+        if ($this->session->userdata('email')) {
             redirect('home');
         }
 
-        if ($this->session->userdata('username')) {
-            if ('1' == $this->session->userdata('role_id')) {
-                redirect('staff');
-            } else if ('2' == $this->session->userdata('role_id')) {
-                redirect('penghulu');
-            }
-        }
+        // if ($this->session->userdata('username')) {
+        //     if ('1' == $this->session->userdata('role_id')) {
+        //         redirect('staff');
+        //     } else if ('2' == $this->session->userdata('role_id')) {
+        //         redirect('penghulu');
+        //     }
+        // }
 
-        $this->form_validation->set_rules('nik', 'No. KTP', 'required|trim', [
-            'required' => "No. KTP harus diisi!"
+        $this->form_validation->set_rules('email', 'Email', 'required|trim', [
+            'required' => "Email harus diisi!"
         ]);
         $this->form_validation->set_rules('password', 'Kata Sandi', 'required|trim', [
             'required' => "Kata sandi harus diisi!"
         ]);
 
         if ($this->form_validation->run() == false) {
-            $data['title'] = 'Sistem Manajemen Layanan Pernikahan';
+            $data['title'] = 'Sistem Informasi Pengajuan Alokasi Kegiatan';
             $data['param'] = $param;
             $this->load->view('auth/login', $data);
         } else {
@@ -48,50 +48,53 @@ class Auth extends CI_Controller
     {
         $role = '';
         $data = [];
-        $username = $this->input->post('nik');
+        $email = $this->input->post('email');
         $password = $this->input->post('password');
-        $userLogin = $this->mAuth->getDataParticipant($username);
+        $userLogin = $this->auth->getDataUser($email);
 
+        // if ($userLogin) {
+        //     $role = 'user';
+        // } else {
+        // $userLogin = $this->auth->getDataOfficer($email);
         if ($userLogin) {
-            $role = 'user';
+            $role = $userLogin->kode_akses;
         } else {
-            $userLogin = $this->mAuth->getDataOfficer($username);
-            if ($userLogin) {
-                $role = 'officer';
-            } else {
-                $this->session->set_flashdata(
-                    'message',
-                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                         Username / No. KTP tidak terdaftar!
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>'
-                );
-                redirect('auth/login/' . $param);
-            }
+            );
+            redirect('auth/login/' . $param);
         }
+        // }
 
         //CHECK IF PASSWORD IS MATCH
-        if (password_verify($password, $userLogin->PASSWORD)) {
-            if ('user' == $role) {
+        if (password_verify($password, $userLogin->password)) {
+            if ('Daerah' == $role) {
                 $data = [
-                    'participant_id' => $userLogin->PARTICIPANT_ID,
-                    'name' => $userLogin->NAME,
-                    'nik' => $userLogin->NIK,
+                    'id_user' => $userLogin->id_user,
+                    'nama' => $userLogin->nama,
+                    'email' => $userLogin->email,
+                    'role' => $role,
+                    'kabupatenkota' => $userLogin->id_kabupatenkota,
                     'last_time_login' => time()
                 ];
                 $this->session->set_userdata($data);
                 if ('general' == $param) {
                     redirect('home');
                 } else {
-                    redirect('home/registration/' . $param);
+                    redirect('pengajuan/list/' . $param);
                 }
-            } else if ('officer' == $role) {
+            } else if ('Pusat' == $role) {
                 $data = [
-                    'officer_id' => $userLogin->OFFICER_ID,
-                    'username' => $userLogin->USERNAME,
-                    'role_id' => $userLogin->ROLE_ID,
+                    'id_user' => $userLogin->id_user,
+                    'nama' => $userLogin->nama,
+                    'role_id' => $userLogin->tipe_akses,
+                    'role' => $role,
                     'last_time_login' => time()
                 ];
                 $this->session->set_userdata($data);
@@ -132,7 +135,7 @@ class Auth extends CI_Controller
         }
 
         $nik = htmlspecialchars($this->input->post('nik', true));
-        $isUser = $this->mAuth->getDataParticipant($nik);
+        $isUser = $this->auth->getDataParticipant($nik);
 
         if ($isUser) {
             $this->session->set_flashdata(
@@ -189,7 +192,7 @@ class Auth extends CI_Controller
                 $data['param'] = $param;
                 $this->load->view('auth/register', $data);
             } else {
-                $penduduk = $this->mAuth->getDataByNIK($nik);
+                $penduduk = $this->auth->getDataByNIK($nik);
 
                 $data = [
                     'NIK' => $nik,
@@ -205,7 +208,7 @@ class Auth extends CI_Controller
                     'DTM_CRT' => date('Y-m-d H:i:s')
                 ];
 
-                $this->mAuth->registerAccount($data);
+                $this->auth->registerAccount($data);
                 $this->session->set_flashdata(
                     'message',
                     '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -231,17 +234,17 @@ class Auth extends CI_Controller
     public function cekNIK()
     {
         $nik = $this->input->post('nik');
-        $penduduk = $this->mAuth->getDataByNIK($nik);
+        $penduduk = $this->auth->getDataByNIK($nik);
         echo json_encode($penduduk);
     }
 
     public function logout()
     {
-        $this->session->unset_userdata('participant_id');
-        $this->session->unset_userdata('officer_id');
-        $this->session->unset_userdata('nik');
-        $this->session->unset_userdata('username');
-        $this->session->unset_userdata('role_id');
+        $this->session->unset_userdata('id_user');
+        $this->session->unset_userdata('nama');
+        $this->session->unset_userdata('email');
+        $this->session->unset_userdata('role');
+        $this->session->unset_userdata('kabupatenkota');
         $this->session->set_flashdata(
             'message',
             '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -253,6 +256,11 @@ class Auth extends CI_Controller
         );
         redirect('home');
         $this->session->sess_destroy();
+    }
+
+    public function error404()
+    {
+        $this->load->view("errors/error-404");
     }
 
     // public function sendMessage()
