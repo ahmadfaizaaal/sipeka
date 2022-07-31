@@ -17,10 +17,14 @@
             </li>
             <li class=" nav-item"><a href="#"><i class="ft-server"></i><span class="menu-title" data-i18n="">Daftar Pengajuan</span></a>
                 <ul class="menu-content" style="font-family: Calibri !important; font-size: 1.1rem;">
-                    <li class="<?= $menu['perpipaan'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/perpipaan">Perpipaan</a></li>
-                    <li class="<?= $menu['perpompaan'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/perpompaan">Perpompaan</a></li>
-                    <li class="<?= $menu['embung'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/embung">Embung</a></li>
-                    <li class="<?= $menu['air-tanah'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/air-tanah">Air Tanah</a></li>
+                    <?php if (strtolower($userLogin) == 'pusat') { ?>
+                        <li class="active"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/<?= strtolower($bagian) ?>"><?= $bagian ?></a></li>
+                    <?php } else { ?>
+                        <li class="<?= $menu['perpipaan'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/perpipaan">Perpipaan</a></li>
+                        <li class="<?= $menu['perpompaan'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/perpompaan">Perpompaan</a></li>
+                        <li class="<?= $menu['embung'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/embung">Embung</a></li>
+                        <li class="<?= $menu['air-tanah'] ?>"><a class="menu-item" href="<?= BASE_URL ?>pengajuan/list/air-tanah">Air Tanah</a></li>
+                    <?php } ?>
                 </ul>
             </li>
             <li class=" nav-item">

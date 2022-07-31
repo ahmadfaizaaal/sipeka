@@ -71,7 +71,7 @@
                             </div>
                             <div class="card-content collapse show" style="font-family: Calibri !important; font-size: 1.3em;">
                                 <div class="card-body">
-                                    <?= form_open_multipart('pengajuan/submitForm', 'class="steps-validation" id="form"'); ?>
+                                    <?= form_open_multipart('pengajuan/submitForm/' . $data['pengajuan']['id_pengajuan'], 'class="steps-validation" id="form"'); ?>
                                     <!-- <input type="hidden" id="regID" name="regID"> -->
                                     <input type="hidden" id="id-jenis" name="id-jenis" value="<?= $id_jenis; ?>">
                                     <input type="hidden" id="url" name="url" value="<?= $kegiatan; ?>">
@@ -85,6 +85,7 @@
                                     <h6><i class="step-icon ft-map-pin"></i> Lokasi Kegiatan</h6>
                                     <fieldset class="mt-2">
                                         <div class="form-group row">
+                                            <input type="hidden" name="id-lokasi" id="id-lokasi" value="<?= $data['lokasi']['id_lokasi'] ?>">
                                             <label class="col-md-3 label-control" for="kabupaten">Kabupaten <span class="danger">*</span></label>
                                             <div class="col-md-9">
                                                 <input type="hidden" name="id-kabupaten" id="id-kabupaten">
@@ -109,10 +110,10 @@
                                             <input type="hidden" name="koordinat" id="koordinat">
                                             <label class="col-md-3 label-control" for="a-koordinat">Koordinat <span class="danger">*</span></label>
                                             <div class="col-md-5">
-                                                <input type="text" id="a-koordinat" class="form-control required" placeholder="" name="a-koordinat">
+                                                <input type="text" id="a-koordinat" class="form-control required" placeholder="" name="a-koordinat" value="<?= $data['lokasi']['koordinat_a'] ?>">
                                             </div>
                                             <div class="col-md-4">
-                                                <input type="text" id="b-koordinat" class="form-control required" placeholder="" name="b-koordinat">
+                                                <input type="text" id="b-koordinat" class="form-control required" placeholder="" name="b-koordinat" value="<?= $data['lokasi']['koordinat_b'] ?>">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -121,15 +122,16 @@
                                     <h6><i class="step-icon ft-users"></i>Gapoktan / Poktan</h6>
                                     <fieldset class="mt-2">
                                         <div class="form-group row">
+                                            <input type="hidden" name="id-poktan" id="id-poktan" value="<?= $data['poktan']['id_poktan'] ?>">
                                             <label class="col-md-3 label-control" for="nama-poktan">Nama Kelompok Tani <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="nama-poktan" class="form-control required" placeholder="" name="nama-poktan">
+                                                <input type="text" id="nama-poktan" class="form-control required" placeholder="" name="nama-poktan" value="<?= $data['poktan']['nama_poktan'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="nama-ketua">Nama Ketua <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="nama-ketua" class="form-control required" placeholder="" name="nama-ketua">
+                                                <input type="text" id="nama-ketua" class="form-control required" placeholder="" name="nama-ketua" value="<?= $data['poktan']['nama_ketua'] ?>">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -146,25 +148,25 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="unit">Unit <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="unit" class="form-control required number " placeholder="" name="unit">
+                                                <input type="text" id="unit" class="form-control required number " placeholder="" name="unit" value="<?= $data['pengajuan']['unit'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="perkiraan-biaya">Perkiraan Biaya (Rp) <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="perkiraan-biaya" class="form-control required price " placeholder="" name="perkiraan-biaya">
+                                                <input type="text" id="perkiraan-biaya" class="form-control required price " placeholder="" name="perkiraan-biaya" value="<?= $data['pengajuan']['perkiraan_biaya'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="panjang-jarak">Panjang/Jarak dari Sumber (m) <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="number" id="panjang-jarak" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="panjang-jarak">
+                                                <input type="number" id="panjang-jarak" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="panjang-jarak" value="<?= $data['pengajuan']['jarak'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="ukuran-pompa">Ukuran Pompa (inch) / Pipa (m) <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="number" id="ukuran-pompa" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="ukuran-pompa">
+                                                <input type="number" id="ukuran-pompa" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="ukuran-pompa" value="<?= $data['pengajuan']['ukuran_pompa'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
@@ -202,13 +204,13 @@
                                         <div class="form-group row" style="margin-top: -20px;">
                                             <label class="col-md-3 label-control" for="provitas">Provitas <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="number" name="provitas" class="form-control required" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" placeholder="" name="provitas">
+                                                <input type="number" id="provitas" class="form-control required" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" placeholder="" name="provitas" value="<?= $data['pengajuan']['provitas'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="ip">IP <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="ip" class="form-control required number " placeholder="" name="ip">
+                                                <input type="text" id="ip" class="form-control required number " placeholder="" name="ip" value="<?= $data['pengajuan']['ip'] ?>">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -220,37 +222,41 @@
                                             <label class="col-md-3 label-control" for="lahan-sawah">Lahan sawah merupakan</label>
                                             <div class="col-md-9">
                                                 <!-- <input type="hidden" name="lahan" id="lahan"> -->
-                                                <select id="lahan-sawah" name="lahan-sawah" class="form-control"></select>
+                                                <select id="lahan-sawah" name="lahan-sawah" class="form-control select2">
+                                                    <option value="Sawah tadah hujan">Sawah tadah hujan</option>
+                                                    <option value="Irigasi Teknis">Irigasi Teknis</option>
+                                                    <option value="Lahan Kering">Lahan Kering</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="sumber-air">Sumber air yang digunakan berasal dari</label>
                                             <div class="col-md-9">
-                                                <input type="text" id="sumber-air" class="form-control " placeholder="" name="sumber-air">
+                                                <input type="text" id="sumber-air" class="form-control " placeholder="" name="sumber-air" value="<?= $data['pengajuan']['sumber_air'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="komoditas">Komoditas yang ditanam </label>
                                             <div class="col-md-9">
-                                                <input type="text" id="komoditas" class="form-control " placeholder="" name="komoditas">
+                                                <input type="text" id="komoditas" class="form-control " placeholder="" name="komoditas" value="<?= $data['pengajuan']['komoditas'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="permasalahan">Permasalahan yang dialami </label>
                                             <div class="col-md-9">
-                                                <input type="text" id="permasalahan" class="form-control " placeholder="" name="permasalahan">
+                                                <input type="text" id="permasalahan" class="form-control " placeholder="" name="permasalahan" value="<?= $data['pengajuan']['permasalahan'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="rencana-solusi">Rencana solusi </label>
                                             <div class="col-md-9">
-                                                <input type="text" id="rencana-solusi" class="form-control " placeholder="" name="rencana-solusi">
+                                                <input type="text" id="rencana-solusi" class="form-control " placeholder="" name="rencana-solusi" value="<?= $data['pengajuan']['rencana_solusi'] ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row" id="elevasi">
                                             <label class="col-md-3 label-control" for="beda-elevasi">Beda elevasi </label>
                                             <div class="col-md-9">
-                                                <input type="text" id="beda-elevasi" class="form-control " placeholder="" name="beda-elevasi">
+                                                <input type="text" id="beda-elevasi" class="form-control " placeholder="" name="beda-elevasi" value="<?= $data['pengajuan']['beda_elevasi'] ?>">
                                             </div>
                                         </div>
 
@@ -311,7 +317,7 @@
                                                 <select id="status-kelayakan" name="status-kelayakan" class="form-control required">
                                                     <!-- <option value="none" selected="" disabled="">Pilih salah satu</option> -->
                                                     <option value="LAYAK" selected="">LAYAK</option>
-                                                    <option value=" TIDAK LAYAK">TIDAK LAYAK</option>
+                                                    <option value="TIDAK LAYAK">TIDAK LAYAK</option>
                                                 </select>
                                                 <p class="text-left text-danger" style="margin-top: 5px;" id="error-status-kelayakan">This field is required!</p>
                                             </div>
@@ -366,6 +372,25 @@
             let numberLength = 0;
             let newAdded = false;
 
+            let value_luas_layanan = '<?= $data['pengajuan']['luas_layanan'] ?>';
+            $('#luas-layanan').val(parseFloat(value_luas_layanan.split(' ')[0].replace(',', '.')).toFixed(2));
+            let value_panjang_jarak = '<?= $data['pengajuan']['jarak'] ?>';
+            $('#panjang-jarak').val(parseFloat(value_panjang_jarak.split(' ')[0].replace(',', '.')).toFixed(2));
+            let value_ukuran_pompa = '<?= $data['pengajuan']['ukuran_pompa'] ?>';
+            $('#ukuran-pompa').val(parseFloat(value_ukuran_pompa.split(' ')[0].replace(',', '.')).toFixed(2));
+            let value_provitas = '<?= $data['pengajuan']['provitas'] ?>';
+            $('#provitas').val(parseFloat(value_provitas.split(' ')[0].replace(',', '.')).toFixed(2));
+
+            let value_bak_penampung = '<?= $data['pengajuan']['bak_penampung'] ?>';
+            $('#p-bak-penampung').val(parseFloat(value_bak_penampung.substring(0, 3).replace(',', '.')).toFixed(1));
+            $('#l-bak-penampung').val(parseFloat(value_bak_penampung.substring(8, 11).replace(',', '.')).toFixed(1));
+            $('#t-bak-penampung').val(parseFloat(value_bak_penampung.substring(16, 19).replace(',', '.')).toFixed(1));
+
+            let value_rumah_pompa = '<?= $data['pengajuan']['rumah_pompa'] ?>';
+            $('#p-rumah-pompa').val(parseFloat(value_rumah_pompa.substring(0, 3).replace(',', '.')).toFixed(1));
+            $('#l-rumah-pompa').val(parseFloat(value_rumah_pompa.substring(8, 11).replace(',', '.')).toFixed(1));
+            $('#t-rumah-pompa').val(parseFloat(value_rumah_pompa.substring(16, 19).replace(',', '.')).toFixed(1));
+
             validateNumber('price');
             validateNumber('number');
             validateNumber('nik');
@@ -377,8 +402,6 @@
             $('#elevasi').hide();
 
             const kegiatan = '<?= $kegiatan ?>';
-            const id_kota = '<?= $this->session->userdata('kabupatenkota'); ?>';
-            const base_url = '<?= BASE_URL ?>';
 
             if (kegiatan == 'perpipaan') {
                 $('#elevasi').show();
@@ -386,14 +409,22 @@
                 $('#elevasi').hide();
             }
 
+            const kelayakan = '<?= $data['pengajuan']['kelayakan'] ?>';
+            $("#status-kelayakan").val(kelayakan).trigger('change');
             $('#status-kelayakan').select2({
                 width: '100%',
                 placeholder: 'PILIH STATUS KELAYAKAN'
             });
 
+            let selected_id = '<?= $data['id_proposal'] ?>';
+            let selected_text = '<?= $data['nomor_surat'] ?>';
             $('#nomor-surat').select2({
                 allowClear: true,
                 width: '100%',
+                data: [{
+                    id: selected_id,
+                    text: selected_text
+                }],
                 placeholder: 'PILIH NOMOR SURAT',
                 language: {
                     noResults: function(params) {
@@ -414,7 +445,7 @@
                     delay: 750,
                     data: function(params) {
                         return {
-                            q: params.term, // search term
+                            q: params.term, // search term                            
                         };
                     },
                     processResults: function(data) {
@@ -452,7 +483,23 @@
 
                     return $result;
                 }
-            });
+            }).on("select2:select", function(e) {
+                // var selected = e.params.data;
+                // if (typeof selected !== "undefined") {
+                //     $("[name='creditor_id']").val(selected.creditor_id);
+                //     $("#allocationsDiv").hide();
+                //     $("[name='amount_cash']").val("");
+                //     $("[name='amount_cheque']").val("");
+                //     $("[name='amount_direct']").val("");
+                //     $("[name='amount_creditcard']").val("");
+                // }
+            }).on("select2:unselecting", function(e) {
+                // $("form").each(function() {
+                //     this.reset()
+                // });
+                // ("#allocationsDiv").hide();
+                // $("[name='creditor_id']").val("");
+            }).val(selected_id).trigger('change');
 
             $('#nomor-surat').on('change', function() {
                 $('#error-nomor-surat').hide();
@@ -467,8 +514,7 @@
                             method: 'post',
                             url: '<?= BASE_URL . 'pengajuan/insert-nomor-surat'; ?>',
                             data: {
-                                nomorSurat: surat[0].text,
-                                idKota: id_kota
+                                nomorSurat: surat[0].text
                             },
                             async: false,
                             dataType: 'json',
@@ -495,6 +541,27 @@
                         $('#nextToDetail').attr('disabled', true);
                         $('#nomor-surat').attr('disabled', true);
                     }
+
+                    const p_bak_penampung = $('#p-bak-penampung').val();
+                    const l_bak_penampung = $('#l-bak-penampung').val();
+                    const t_bak_penampung = $('#t-bak-penampung').val();
+
+                    const p_rumah_pompa = $('#p-rumah-pompa').val();
+                    const l_rumah_pompa = $('#l-rumah-pompa').val();
+                    const t_rumah_pompa = $('#t-rumah-pompa').val();
+
+                    if (p_bak_penampung != '' && l_bak_penampung != '' && t_bak_penampung != '') {
+                        const bak_penampung = `${parseFloat(p_bak_penampung).toFixed(1).replace('.', ',')} m x ${parseFloat(l_bak_penampung).toFixed(1).replace('.', ',')} m x ${parseFloat(t_bak_penampung).toFixed(1).replace('.', ',')} m`;
+                        $('#bak-penampung').val(bak_penampung);
+                    }
+
+                    if (p_rumah_pompa != '' && l_rumah_pompa != '' && t_rumah_pompa != '') {
+                        const rumah_pompa = `${parseFloat(p_rumah_pompa).toFixed(1).replace('.', ',')} m x ${parseFloat(l_rumah_pompa).toFixed(1).replace('.', ',')} m x ${parseFloat(t_rumah_pompa).toFixed(1).replace('.', ',')} m`;
+                        $('#rumah-pompa').val(rumah_pompa);
+                    }
+
+                    let kelurahan = $('#desa').select2('data');
+                    $('#nama-kelurahan').val(kelurahan[0].text);
                 } else {
                     $('#error-nomor-surat').show();
                 }
@@ -537,20 +604,26 @@
             });
 
             $('#kabupaten').prop('disabled', true);
-            $('#desa').attr('disabled', true);
+            // $('#desa').attr('disabled', true);
 
             $("#kecamatan").select2({
                 placeholder: "PILIH KECAMATAN",
             });
 
+            let selected_kelurahan_id = '<?= $data['id_kelurahan'] ?>';
+            let selected_kelurahan_text = '<?= $data['nama_kelurahan'] ?>';
             $("#desa").select2({
                 placeholder: "PILIH DESA",
+                data: [{
+                    id: selected_kelurahan_id,
+                    text: selected_kelurahan_text
+                }],
             });
 
+            const lahan_sawah = '<?= $data['pengajuan']['lahan_sawah'] ?>';
+            $("#lahan-sawah").val(lahan_sawah).trigger('change');
             $("#lahan-sawah").select2({
                 width: '100%',
-                data: ['Sawah tadah hujan', 'Irigasi Teknis', 'Lahan Kering'],
-                placeholder: "PILIH SALAH SATU",
             });
 
             // INISIALISASI RUMAH POMPA DAN BAK PENAMPUNG
@@ -578,7 +651,7 @@
 
             })
 
-
+            id_kota = '<?= $this->session->userdata('kabupatenkota'); ?>';
             let dataKota = []
             $('#id-kabupaten').val(id_kota);
             $.ajax({
@@ -606,9 +679,16 @@
                 data: dataKota,
             });
 
+            let selected_kecamatan_id = '<?= $data['id_kecamatan'] ?>';
+            let selected_kecamatan_text = '<?= $data['nama_kecamatan'] ?>';
+            $('#nama-kecamatan').val(selected_kecamatan_text);
             $('#kecamatan').select2({
                 width: '100%',
                 placeholder: 'PILIH KECAMATAN',
+                data: [{
+                    id: selected_kecamatan_id,
+                    text: selected_kecamatan_text
+                }],
                 language: {
                     noResults: function(params) {
                         return "Tidak ada Data yang cocok dengan Keyword.";

@@ -72,21 +72,16 @@
     <h5 class="text-center" style="margin-top: -10px;">HASIL VERIFIKASI USULAN BANTUAN PEMERINTAH</h5>
     <h5 class="text-center">PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN <?= $data['nama_kabupaten'] ?></h5>
     <h5 class="text-center">KEGIATAN IRIGASI <?= strtoupper($data['url']) ?></h5>
-    <!-- <div style="display: flex; justify-content: space-between; margin: 20px 50px -20px 50px;"> -->
     <table style="border: none; margin: 20px 20px 0px 20px; width: 100%; padding-bottom: -10px;">
         <tr>
             <td>
-                <p>Verifikator Lapang : <?= $data['nama_user'] ?></p>
+                <p>Verifikator Lapang : <?= $data['nama_verifikator'] ?></p>
             </td>
             <td id="float-right">
-                <p style="text-align: right;">Waktu Survei : <?= strtoupper($data['tgl_buat']) ?></p>
+                <p style="text-align: right;">Waktu Survei : <?= $data['tgl_buat'] ?></p>
             </td>
         </tr>
     </table>
-    <!-- <div style="margin-top: 20px;">
-        <p>Verifikator Lapang : <?= $data['nama_user'] ?></p>
-        <p>Waktu Survei : <?= strtoupper($data['tgl_buat']) ?></p>
-    </div> -->
 
     <table class="table table-bordered" style="font-size: 10px !important; width: 100%; page-break-inside: avoid;">
         <thead>
@@ -113,11 +108,21 @@
                 <th>IP</th>
             </tr>
             <tr style="background-color: white !important; font-style: italic !important; font-size: 0.8em; height: 5px;">
-                <?php
-                for ($i = 1; $i < 16; $i++) {
-                    echo '<td style="padding: 3px 0px">' . $i . '</td>';
-                }
-                ?>
+                <td style="padding: 3px 0px">1</td>
+                <td style="padding: 3px 0px">2</td>
+                <td style="padding: 3px 0px">3</td>
+                <td style="padding: 3px 0px">4</td>
+                <td style="padding: 3px 0px">5</td>
+                <td style="padding: 3px 0px">6</td>
+                <td style="padding: 3px 0px">7</td>
+                <td style="padding: 3px 0px">8</td>
+                <td style="padding: 3px 0px">9</td>
+                <td style="padding: 3px 0px">10</td>
+                <td style="padding: 3px 0px">11</td>
+                <td style="padding: 3px 0px">12</td>
+                <td style="padding: 3px 0px">13</td>
+                <td style="padding: 3px 0px">14</td>
+                <td style="padding: 3px 0px">15</td>
             </tr>
         </thead>
         <tbody>
@@ -126,7 +131,11 @@
                 <td colspan="15" style="background-color: yellow; font-weight: bold;"><?= $data['nama_kabupaten'] ?></td>
             </tr>
             <tr>
-                <td rowspan="9" class="text-center custom-padding" style="vertical-align: top;">1</td>
+                <?php if ($data['url'] == 'perpipaan') { ?>
+                    <td rowspan="9" class="text-center custom-padding" style="vertical-align: top;">1</td>
+                <?php } else { ?>
+                    <td rowspan="8" class="text-center custom-padding" style="vertical-align: top;">1</td>
+                <?php } ?>
                 <td class="custom-padding"><?= 'DESA ' . $data['nama_kelurahan'] ?></td>
                 <td class="custom-padding" rowspan="6"><?= $data['poktan']['nama_poktan'] ?></td>
                 <td class="custom-padding" rowspan="6"><?= $data['poktan']['nama_ketua'] ?></td>
@@ -140,7 +149,11 @@
                 <td rowspan="6" class="text-center"><?= $data['pengajuan']['provitas'] ?></td>
                 <td rowspan="6" class="text-center"><?= $data['pengajuan']['ip'] ?></td>
                 <td class="custom-padding"><?= 'Lahan sawah merupakan ' . $data['pengajuan']['lahan_sawah'] ?></td>
-                <td rowspan="9" class="text-center" style="vertical-align: middle;"><?= $data['pengajuan']['kelayakan'] ?></td>
+                <?php if ($data['url'] == 'perpipaan') { ?>
+                    <td rowspan="9" class="text-center" style="vertical-align: middle;"><?= $data['pengajuan']['kelayakan'] ?></td>
+                <?php } else { ?>
+                    <td rowspan="8" class="text-center" style="vertical-align: middle;"><?= $data['pengajuan']['kelayakan'] ?></td>
+                <?php } ?>
             </tr>
             <tr>
                 <td class="custom-padding"><?= 'KECAMATAN ' . $data['nama_kecamatan'] ?></td>
@@ -174,13 +187,13 @@
             </tr>
             <tr class="text-center" style="font-weight: bold;">
                 <td colspan="5" style="padding: 10px 10px;">
-                    <div style="text-align: center;"><img src="assets/pengajuan/LAHAN SAWAH/28072022/5_LAHAN_SAWAH_28072022.png" alt="" width="150px" height="auto"></div>
+                    <div style="text-align: center;"><img src="assets/pengajuan/PLOTTING AREA/<?= $data['dokumen']['plotting_area'] ?>" alt="" width="170px" height="130px"></div>
                 </td>
                 <td colspan="5" style="padding: 10px 10px;">
-                    <div style="text-align: center;"><img src="assets/pengajuan/LAHAN SAWAH/28072022/5_LAHAN_SAWAH_28072022.png" alt="" width="150px" height="auto"></div>
+                    <div style="text-align: center;"><img src="assets/pengajuan/SUMBER AIR/<?= $data['dokumen']['sumber_air'] ?>" alt="" width="170px" height="130px"></div>
                 </td>
                 <td colspan="3" style="padding: 10px 10px;">
-                    <div style="text-align: center;"><img src="assets/pengajuan/LAHAN SAWAH/28072022/5_LAHAN_SAWAH_28072022.png" alt="" width="150px" height="auto"></div>
+                    <div style="text-align: center;"><img src="assets/pengajuan/LAHAN SAWAH/<?= $data['dokumen']['lahan_sawah'] ?>" alt="" width="170px" height="130px"></div>
                 </td>
             </tr>
 

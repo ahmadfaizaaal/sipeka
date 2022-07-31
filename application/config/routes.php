@@ -53,7 +53,7 @@ $route['default_controller'] = 'home';
 $route['404_override'] = 'auth/error404';
 $route['translate_uri_dashes'] = TRUE;
 
-$userDefinedControllers        = ['auth', 'user', 'home'];
+$userDefinedControllers        = ['auth', 'home', 'pengajuan', 'profil'];
 
 foreach ($userDefinedControllers as $item) {
     $route[$item]                                = $item;

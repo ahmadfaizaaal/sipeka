@@ -115,8 +115,39 @@ if (!function_exists('export_pdf')) {
 }
 
 if (!function_exists('tgl_indo')) {
-	function tgl_indo($tanggal)
+	function tgl_indo($tanggal, $cetak_hari = false)
 	{
+		// $bulan = array(
+		// 	1 =>   'Januari',
+		// 	'Februari',
+		// 	'Maret',
+		// 	'April',
+		// 	'Mei',
+		// 	'Juni',
+		// 	'Juli',
+		// 	'Agustus',
+		// 	'September',
+		// 	'Oktober',
+		// 	'November',
+		// 	'Desember'
+		// );
+		// $pecahkan = explode('-', $tanggal);
+
+		// // variabel pecahkan 0 = tanggal
+		// // variabel pecahkan 1 = bulan
+		// // variabel pecahkan 2 = tahun
+
+		// return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+		$hari = array(
+			1 =>    'Senin',
+			'Selasa',
+			'Rabu',
+			'Kamis',
+			'Jumat',
+			'Sabtu',
+			'Minggu'
+		);
+
 		$bulan = array(
 			1 =>   'Januari',
 			'Februari',
@@ -131,13 +162,14 @@ if (!function_exists('tgl_indo')) {
 			'November',
 			'Desember'
 		);
-		$pecahkan = explode('-', $tanggal);
+		$split 	  = explode('-', $tanggal);
+		$tgl_indo = $split[0] . ' ' . $bulan[(int)$split[1]] . ' ' . $split[2];
 
-		// variabel pecahkan 0 = tanggal
-		// variabel pecahkan 1 = bulan
-		// variabel pecahkan 2 = tahun
-
-		return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
+		if ($cetak_hari) {
+			$num = date('N', strtotime($tanggal));
+			return $hari[$num] . ', ' . $tgl_indo;
+		}
+		return $tgl_indo;
 	}
 }
 

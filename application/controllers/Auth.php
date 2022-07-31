@@ -14,7 +14,7 @@ class Auth extends CI_Controller
         date_default_timezone_set('Asia/Bangkok');
     }
 
-    public function login($param)
+    public function login($param = null)
     {
         if ($this->session->userdata('email')) {
             redirect('home');
@@ -62,7 +62,7 @@ class Auth extends CI_Controller
             $this->session->set_flashdata(
                 'message',
                 '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Username / No. KTP tidak terdaftar!
+                        Email tidak terdaftar!
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -93,16 +93,18 @@ class Auth extends CI_Controller
                 $data = [
                     'id_user' => $userLogin->id_user,
                     'nama' => $userLogin->nama,
-                    'role_id' => $userLogin->tipe_akses,
+                    'tipe_akses' => $userLogin->tipe_akses,
                     'role' => $role,
+                    'bagian' => $userLogin->bagian,
                     'last_time_login' => time()
                 ];
                 $this->session->set_userdata($data);
-                if ('1' == $userLogin->ROLE_ID) {
-                    redirect('staff');
-                } else if ('2' == $userLogin->ROLE_ID) {
-                    redirect('penghulu');
-                }
+                redirect('pengajuan/list/' . strtolower($userLogin->bagian));
+                // if ('1' == $userLogin->ROLE_ID) {
+                //     redirect('staff');
+                // } else if ('2' == $userLogin->ROLE_ID) {
+                //     redirect('penghulu');
+                // }
             }
             // $this->session->set_userdata($data);
             // if ('user' == $role) {
@@ -245,6 +247,8 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('role');
         $this->session->unset_userdata('kabupatenkota');
+        $this->session->unset_userdata('tipe_akses');
+        $this->session->unset_userdata('bagian');
         $this->session->set_flashdata(
             'message',
             '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -262,35 +266,4 @@ class Auth extends CI_Controller
     {
         $this->load->view("errors/error-404");
     }
-
-    // public function sendMessage()
-    // {
-    //     if (!isset($this->input->post('text')) or !isset($this->input->post('phone'))) {
-    //         die('Not enough data');
-    //     }
-
-    //     $apiURL = 'https://eu82.chat-api.com/instance145465/';
-    //     $token = 'eiz2pcqsncdgtlnz';
-
-    //     $message = $this->input->post('text');
-    //     $phone =  $this->input->post('phone');
-
-    //     $data = json_encode(
-    //         array(
-    //             'phone' => $phone,
-    //             'body' => $message
-    //         )
-    //     );
-    //     $url = $apiURL . 'message?token=' . $token;
-    //     $options = stream_context_create(
-    //         array('http' =>
-    //         array(
-    //             'method'  => 'POST',
-    //             'header'  => 'Content-type: application/json',
-    //             'content' => $data
-    //         ))
-    //     );
-    //     $response = file_get_contents($url, false, $options);
-    //     echo json_encode($response);
-    // }
 }

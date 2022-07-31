@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pengajuan extends CI_Controller
+class Profil extends CI_Controller
 {
     public function __construct()
     {
@@ -331,9 +331,6 @@ class Pengajuan extends CI_Controller
         $result = $this->pengajuan->getDetailPengajuan($param);
         $docs = $this->pengajuan->getDokumen($param);
 
-        $tgl_buat = $result->tanggal_buat;
-        $tanggal = tgl_indo($tgl_buat, true);
-
         $data['data'] = array(
             "url" => $param['url'],
             "id_proposal" => $result->id_proposal,
@@ -376,13 +373,7 @@ class Pengajuan extends CI_Controller
             ),
             "user_input" => $result->user_input,
             'nama_user' => $this->session->userdata('nama'),
-            "tgl_buat" => $tanggal,
-            "nama_verifikator" => $result->nama_verifikator,
-            "alamat_dinas" => $result->alamat_dinas,
-            "nama_kadin" => $result->nama_kadin,
-            "jabatan" => $result->jabatan,
-            "nip" => $result->nip,
-            "tanda_tangan" => $result->tanda_tangan
+            "tgl_buat" => $result->tgl_buat
         );
 
         $data['title'] = 'Kegiatan';
@@ -402,16 +393,12 @@ class Pengajuan extends CI_Controller
         );
         $result = $this->pengajuan->getProposal($param);
 
-
         $data['data'] = array();
 
         foreach ($result as $items) {
             $param['id_pengajuan'] = $items->id_pengajuan;
 
             $docs = $this->pengajuan->getDokumen($param);
-
-            $tgl_buat = $items->tgl_mapping;
-            $tanggal = tgl_indo($tgl_buat, false);
 
             $temp = array(
                 "url" => $items->url,
@@ -455,13 +442,7 @@ class Pengajuan extends CI_Controller
                 ),
                 "user_input" => $items->user_input,
                 'nama_user' => $this->session->userdata('nama'),
-                "tgl_buat" => $tanggal,
-                "nama_verifikator" => $items->nama_verifikator,
-                "alamat_dinas" => $items->alamat_dinas,
-                "nama_kadin" => $items->nama_kadin,
-                "jabatan" => $items->jabatan,
-                "nip" => $items->nip,
-                "tanda_tangan" => $items->tanda_tangan
+                "tgl_buat" => $items->tgl_buat
             );
             array_push($data['data'], $temp);
         }

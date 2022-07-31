@@ -1030,7 +1030,8 @@ select.form-control {
 }
 
 .btn-primary~.dropdown-menu .dropdown-item.active {
-	background-color: #6967ce;
+	/* background-color: #6967ce; */
+	background-color: #18D26E;
 }
 
 .btn-success~.dropdown-menu .dropdown-item.active {
@@ -3391,7 +3392,8 @@ ul.list-inline.list-inline-pipe>li+li:before {
 
 .list-group .list-group-item-action:active {
 	color: #fff;
-	background-color: #6967ce;
+	/* background-color: #6967ce; */
+	background-color: #18D26E;
 }
 
 .list-group .list-group-item-action:active a {

@@ -21,16 +21,16 @@
                 </div> -->
         </div>
         <div class="content-body">
-            <input type="hidden" id="id-jenis" name="id-jenis" value="<?= $id_jenis; ?>">
+
             <section id="drag-area">
                 <?= $this->session->flashdata('message'); ?>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="text-left" style="font-family: Calibri !important; font-size: 1.2rem;">
-                                    <a href="<?= BASE_URL ?>pengajuan/add/<?= $kegiatan ?>" id="btnAdd" class="btn btn-icon btn-success mb-0"><i class="ft-file-plus"></i> &nbsp;Buat Pengajuan Baru</a>
-                                </div>
+                                <!-- <div class="text-left" style="font-family: Calibri !important; font-size: 1.2rem;">
+                                    <a href="" id="btnAdd" class="btn btn-icon btn-success mb-0"><i class="ft-user-plus"></i> &nbsp;Buat Pengajuan Baru</a>
+                                </div> -->
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
                                         <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -41,19 +41,18 @@
                                 <div class="card-body">
                                     <!-- <div class="alert alert-success" style="display: none;" role="alert"></div> -->
 
-                                    <table class="table table-striped table-responsive" id="dataTablePengajuan" style="font-family: Arial !important;">
+                                    <table class="table table-striped table-responsive" id="dataTableDokumen" style="font-family: Arial !important;">
                                         <thead>
                                             <tr>
                                                 <th scope="col" style="width: 2%;">No.</th>
                                                 <th scope="col" style="width: 20%"></th>
-                                                <th scope="col" style="width: 30%;">Lokasi Kegiatan</th>
-                                                <th scope="col" style="width: 6%;">Nomor Surat</th>
-                                                <th scope="col" style="width: 19%;">Nama Gapoktan / Poktan</th>
-                                                <th scope="col" style="width: 18%;">Nama Ketua</th>
-                                                <th scope="col" style="width: 5%;">Status Pengajuan</th>
+                                                <th scope="col" style="width: 20%;">Nomor Surat</th>
+                                                <th scope="col" style="width: 20%;">Lokasi Kegiatan</th>
+                                                <th scope="col" style="width: 20%;">Tanggal Pengajuan</th>
+                                                <th scope="col" style="width: 18%;">Status Pengajuan</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="showDataPengajuan">
+                                        <tbody id="showDataProposal">
 
                                         </tbody>
                                     </table>
@@ -71,13 +70,13 @@
 </div>
 <!-- ////////////////////////////////////////////////////////////////////////////-->
 
-<!-- MODAL PENGHULU -->
+<!-- MODAL PREVIEW -->
 <div class="modal fade" id="modal-preview-document" tabindex="-1" role="dialog" aria-labelledby="modal-preview-document-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="z-index: 9999999;">
             <div class="modal-header bg-success">
-                <h5 class="modal-title text-black font-weight-bold" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
-                <button type="button" class="close mr-0" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title text-black font-weight-bold" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><strong>&times;</strong></span>
                 </button>
             </div>
@@ -95,11 +94,10 @@
 <script>
     $(function() {
         const base_theme = '<?= BASE_THEME; ?>';
-        const base_url = '<?= BASE_URL; ?>';
-        showDataPengajuan();
+        showDataProposal();
 
         $(document).ready(function() {
-            $('#dataTablePengajuan').DataTable({
+            $('#dataTableDokumen').DataTable({
                 "lengthMenu": [
                     [5, 10, 25, 50, -1],
                     [5, 10, 25, 50, "All"]
@@ -108,126 +106,124 @@
             });
         });
 
-        // $('#btnDownload').click(function() {
-        //     var url = $('#formAddEditPenghulu').attr('action');
-        //     var data = $('#formAddEditPenghulu').serialize();
-        //     //validate form
-        //     var nip = $('input[name=nip]');
-        //     var nama = $('input[name=nama]');
-        //     var alamat = $('input[name=alamat]');
-        //     var noTelp = $('input[name=noTelp]');
-        //     var email = $('input[name=email]');
-        //     var username = $('input[name=username]');
-        //     var password = $('input[name=password]');
+        $('#btnDownload').click(function() {
+            var url = $('#formAddEditPenghulu').attr('action');
+            var data = $('#formAddEditPenghulu').serialize();
+            //validate form
+            var nip = $('input[name=nip]');
+            var nama = $('input[name=nama]');
+            var alamat = $('input[name=alamat]');
+            var noTelp = $('input[name=noTelp]');
+            var email = $('input[name=email]');
+            var username = $('input[name=username]');
+            var password = $('input[name=password]');
 
-        //     if (nip.val() != '' && nama.val() != '' && alamat.val() != '' &&
-        //         noTelp.val() != '' && email.val() != '' && username.val() != '' && password.val() != '') {
-        //         $.ajax({
-        //             type: 'ajax',
-        //             method: 'post',
-        //             url: url,
-        //             data: data,
-        //             async: false,
-        //             dataType: 'json',
-        //             success: function(response) {
-        //                 if (response.success) {
-        //                     $('#modal-preview-document').modal('hide');
-        //                     $('#formAddEditPenghulu')[0].reset();
-        //                     if (response.type == 'add') {
-        //                         type = 'ditambahkan'
-        //                     } else if (response.type == 'update') {
-        //                         type = 'diubah'
-        //                     }
-        //                     swal("Selamat!", "Data pengulu berhasil " + type + "!", "success");
-        //                     showDataPengajuan();
-        //                 } else {
-        //                     swal("Internal Server error 500!", "Error!", "error");
-        //                 }
-        //             },
-        //             error: function() {
-        //                 swal("Gagal menambahkan data penghulu!", "Error!", "error");
-        //             }
-        //         });
-        //     } else {
-        //         swal("Field tidak boleh kosong!", "Error!", "error");
-        //     }
-        // });
+            if (nip.val() != '' && nama.val() != '' && alamat.val() != '' &&
+                noTelp.val() != '' && email.val() != '' && username.val() != '' && password.val() != '') {
+                $.ajax({
+                    type: 'ajax',
+                    method: 'post',
+                    url: url,
+                    data: data,
+                    async: false,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            $('#modal-preview-document').modal('hide');
+                            $('#formAddEditPenghulu')[0].reset();
+                            if (response.type == 'add') {
+                                type = 'ditambahkan'
+                            } else if (response.type == 'update') {
+                                type = 'diubah'
+                            }
+                            swal("Selamat!", "Data pengulu berhasil " + type + "!", "success");
+                            showDataProposal();
+                        } else {
+                            swal("Internal Server error 500!", "Error!", "error");
+                        }
+                    },
+                    error: function() {
+                        swal("Gagal menambahkan data penghulu!", "Error!", "error");
+                    }
+                });
+            } else {
+                swal("Field tidak boleh kosong!", "Error!", "error");
+            }
+        });
 
         //ADD PENGHULU
-        // $('#btnAdd').click(function() {
-        //     validateMobilePhone();
-        //     validateNIP();
-        //     $('input[name=nip]').removeAttr('readonly');
-        //     $('input[name=nama]').removeAttr('readonly');
-        //     $('input[name=alamat]').removeAttr('readonly');
-        //     $('input[name=noTelp]').removeAttr('readonly');
-        //     $('input[name=email]').removeAttr('readonly');
-        //     $('input[name=username]').removeAttr('readonly');
-        //     $('input[name=password]').removeAttr('readonly');
-        //     $('#btnDownload').show();
-        //     $('#modal-preview-document').find('.modal-title').text('TAMBAH DATA PENGHULU');
-        //     $('#formAddEditPenghulu').attr('action', '');
-        //     $('#formAddEditPenghulu')[0].reset();
-        // });
+        $('#btnAdd').click(function() {
+            validateMobilePhone();
+            validateNIP();
+            $('input[name=nip]').removeAttr('readonly');
+            $('input[name=nama]').removeAttr('readonly');
+            $('input[name=alamat]').removeAttr('readonly');
+            $('input[name=noTelp]').removeAttr('readonly');
+            $('input[name=email]').removeAttr('readonly');
+            $('input[name=username]').removeAttr('readonly');
+            $('input[name=password]').removeAttr('readonly');
+            $('#btnDownload').show();
+            $('#modal-preview-document').find('.modal-title').text('TAMBAH DATA PENGHULU');
+            $('#formAddEditPenghulu').attr('action', '<?= BASE_URL . 'staff/addPenghulu'; ?>');
+            $('#formAddEditPenghulu')[0].reset();
+        });
 
         //EDIT PENGHULU
-        // $('#showDataPengajuan').on('click', '.editPenghulu', function() {
-        //     var offId = $(this).attr('data');
-        //     $('#btnDownload').show();
-        //     $('#modal-preview-document').modal('show');
-        //     $('#modal-preview-document').find('.modal-title').text('UBAH DATA PENGHULU');
-
-        //     $.ajax({
-        //         type: 'ajax',
-        //         method: 'post',
-        //         
-        //         data: {
-        //             offId: offId
-        //         },
-        //         async: false,
-        //         dataType: 'json',
-        //         success: function(data) {
-        //             $('input[name=nip]').removeAttr('readonly');
-        //             $('input[name=nama]').removeAttr('readonly');
-        //             $('input[name=alamat]').removeAttr('readonly');
-        //             $('input[name=noTelp]').removeAttr('readonly');
-        //             $('input[name=email]').removeAttr('readonly');
-        //             $('input[name=offId]').val(offId);
-        //             $('input[name=nip]').val(data.NIP);
-        //             $('input[name=nama]').val(data.NAME);
-        //             $('input[name=alamat]').val(data.ADDRESS);
-        //             $('input[name=noTelp]').val(data.PHONE);
-        //             $('input[name=email]').val(data.EMAIL);
-        //             $('input[name=username]').attr('readonly', true);
-        //             $('input[name=username]').val(data.USERNAME);
-        //             $('input[name=password]').attr('readonly', true);
-        //             $('input[name=password]').val(data.PASSWORD_LABEL);
-        //         },
-        //         error: function() {
-        //             swal("Internal Server error 500!", "Error!", "error");
-        //         }
-        //     });
-        // });
+        $('#showDataProposal').on('click', '.editPenghulu', function() {
+            var offId = $(this).attr('data');
+            $('#btnDownload').show();
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('UBAH DATA PENGHULU');
+            $('#formAddEditPenghulu').attr('action', '<?= BASE_URL . 'staff/updatePenghulu' ?>');
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'staff/getDetailPenghulu'; ?>',
+                data: {
+                    offId: offId
+                },
+                async: false,
+                dataType: 'json',
+                success: function(data) {
+                    $('input[name=nip]').removeAttr('readonly');
+                    $('input[name=nama]').removeAttr('readonly');
+                    $('input[name=alamat]').removeAttr('readonly');
+                    $('input[name=noTelp]').removeAttr('readonly');
+                    $('input[name=email]').removeAttr('readonly');
+                    $('input[name=offId]').val(offId);
+                    $('input[name=nip]').val(data.NIP);
+                    $('input[name=nama]').val(data.NAME);
+                    $('input[name=alamat]').val(data.ADDRESS);
+                    $('input[name=noTelp]').val(data.PHONE);
+                    $('input[name=email]').val(data.EMAIL);
+                    $('input[name=username]').attr('readonly', true);
+                    $('input[name=username]').val(data.USERNAME);
+                    $('input[name=password]').attr('readonly', true);
+                    $('input[name=password]').val(data.PASSWORD_LABEL);
+                },
+                error: function() {
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
 
         //PREVIEW PENGAJUAN
-        $('#showDataPengajuan').on('click', '.viewPengajuan', function() {
-            let id_pengajuan = $(this).attr('data');
-            let kegiatan = '<?= $kegiatan; ?>';
+        $('#showDataProposal').on('click', '.viewProposal', function() {
+            let id_proposal = $(this).attr('data');
             $('#modal-preview-document').modal('show');
             $('#modal-preview-document').find('.modal-title').text('PRATINJAU DOKUMEN');
             $('#btnDownload').hide();
             $.ajax({
                 type: 'ajax',
                 method: 'post',
-                url: '<?= BASE_URL . 'pengajuan/lihat-dokumen'; ?>',
+                url: '<?= BASE_URL . 'pengajuan/lihat-proposal'; ?>',
                 data: {
-                    id_pengajuan: id_pengajuan,
-                    url: kegiatan
+                    id_proposal: id_proposal
                 },
                 async: false,
                 dataType: 'json',
                 success: function(response) {
-                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%&toolbar=0');
+                    $('#doc-frame').attr('src', base_theme + response);
                 },
                 error: function() {
                     swal("Internal Server error 500!", "Error!", "error");
@@ -251,9 +247,9 @@
             });
         });
 
-        //DELETE PENGAJUAN
-        $('#showDataPengajuan').on('click', '.deletePengajuan', function() {
-            var id_pengajuan = $(this).attr('data');
+        //DELETE PENGHULU
+        $('#showDataProposal').on('click', '.deletePenghulu', function() {
+            var offId = $(this).attr('data');
             swal({
                 title: 'Apakah anda yakin ingin menghapus data ini?',
                 type: 'warning',
@@ -268,16 +264,16 @@
                     $.ajax({
                         type: 'ajax',
                         method: 'post',
-                        url: '<?= BASE_URL . 'pengajuan/delete/'; ?>',
+                        url: '<?= BASE_URL . 'staff/deletePenghulu/'; ?>',
                         data: {
-                            id_pengajuan: id_pengajuan
+                            offId: offId
                         },
                         async: false,
                         dataType: 'json',
                         success: function(response) {
                             if (response.success) {
-                                swal("Selamat!", "Data Pengajuan berhasil dihapus!", "success");
-                                showDataPengajuan();
+                                swal("Selamat!", "Data Penghulu berhasil dihapus!", "success");
+                                showDataProposal();
                             } else {
                                 swal("Error!", "Gagal Hapus data!", "error");
                             }
@@ -291,40 +287,34 @@
         });
 
         //SHOW DATA PENGHULU
-        function showDataPengajuan() {
-            let id_jenis = $('#id-jenis').val();
+        function showDataProposal() {
             let base_url = '<?= BASE_URL ?>';
             $.ajax({
                 type: 'ajax',
                 method: 'post',
-                url: '<?= BASE_URL . 'pengajuan/list-pengajuan'; ?>',
-                data: {
-                    id_jenis: id_jenis
-                },
+                url: '<?= BASE_URL . 'pengajuan/list-proposal'; ?>',
                 async: false,
                 dataType: 'json',
-                success: function(data) {
+                success: function(response) {
                     var html = '';
                     var i;
-                    for (i = 0; i < data.length; i++) {
-                        let lokasi = `${data[i].kabupaten}, KECAMATAN ${data[i].kecamatan}, DESA ${data[i].kelurahan}`;
+                    for (i = 0; i < response.length; i++) {
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
                                     <td scope="col" style="width: 20%">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewPengajuan" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${data[i].id_pengajuan}"><i class="ft-search"></i></a>
-                                        <a href="${ base_url }pengajuan/edit/${ data[i].url }/${data[i].id_pengajuan}" class="btn btn-sm btn-icon btn-warning editPengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Edit" data="${data[i].id_pengajuan}"><i class="ft-edit-2"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-danger deletePengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${data[i].id_pengajuan}"><i class="ft-trash-2"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${response[i].id_proposal}"><i class="ft-search"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-warning editPengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Edit" data="${response[i].id_proposal}"><i class="ft-edit-2"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-danger deletePengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${response[i].id_proposal}"><i class="ft-trash-2"></i></a>
                                     </td>
-                                    <td scope="col" style="width: 30%;">${ lokasi }</td>
-                                    <td scope="col" style="width: 6%;">${ data[i].nomor_surat }</td>
-                                    <td scope="col" style="width: 19%;">${ data[i].nama_poktan }</td>
-                                    <td scope="col" style="width: 18%;">${ data[i].nama_ketua }</td>
-                                    <td scope="col" style="width: 5%;" class="text-center">
-                                        <div class="badge badge-${ data[i].warna }">${ data[i].nama_status }</div>
+                                    <td scope="col" style="width: 20%;">${ response[i].nomor_surat }</td>
+                                    <td scope="col" style="width: 20%;">${ response[i].nama_kabupaten }</td>
+                                    <td scope="col" style="width: 20%;">${ response[i].tgl_buat }</td>
+                                    <td scope="col" style="width: 18%;">
+                                        <div class="badge badge-warning">${ response[i].nama_status }</div>
                                     </td>
                                 </tr>`;
                     }
-                    $('#showDataPengajuan').html(html);
+                    $('#showDataProposal').html(html);
                     $('[data-toggle="tooltip"]').tooltip();
                 },
                 error: function() {

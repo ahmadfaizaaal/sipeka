@@ -4462,7 +4462,8 @@ input[type='button'].btn-block {
 	text-decoration: none;
 
 	color: #fff;
-	background-color: #6967ce;
+	/* background-color: #6967ce; */
+	background-color: #18D26E;
 }
 
 .dropdown-item.disabled,
@@ -7452,7 +7453,8 @@ button.close {
 
 @media (min-width: 992px) {
 	.modal-lg {
-		max-width: 800px;
+		/* max-width: 800px; */
+		max-width: 1280px;
 	}
 }
 

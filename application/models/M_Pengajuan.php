@@ -24,6 +24,29 @@ class M_Pengajuan extends CI_Model
         return $sql->result();
     }
 
+    public function getListNomorSuratByIdKabupaten($idKabupatenKota, $key)
+    {
+        $this->db->where('id_kabupatenkota', $idKabupatenKota);
+        $this->db->like('nomor_surat', $key);
+        $sql = $this->db->get('proposal');
+        return $sql->result();
+    }
+
+    public function getListProvinsi($key)
+    {
+        $this->db->like('nama', $key);
+        $sql = $this->db->get('provinsi');
+        return $sql->result();
+    }
+
+    public function getListKabupatenKota($idProvinsi, $key)
+    {
+        $this->db->where('id_provinsi', $idProvinsi);
+        $this->db->like('nama', $key);
+        $sql = $this->db->get('kabupatenkota');
+        return $sql->result();
+    }
+
     public function getListKota($key)
     {
         $this->db->like('nama', $key);
@@ -47,9 +70,52 @@ class M_Pengajuan extends CI_Model
         return $sql->result();
     }
 
+    public function getListProposal($user)
+    {
+        $query = "select pr.id_proposal, kb.nama as kabupaten, pr.nomor_surat, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tgl_buat, st.*
+                from mapping mp
+                join proposal pr on mp.id_proposal = pr.id_proposal
+                join pengajuan pj on mp.id_pengajuan = pj.id_pengajuan
+                join status st on pj.status_pengajuan = st.id_status
+                join lokasi l on pj.id_lokasi = l.id_lokasi
+                join kelurahan kl on l.id_kelurahan = kl.id_kelurahan
+                join kecamatan kc on kl.id_kecamatan = kc.id_kecamatan
+                join kabupatenkota kb on kc.id_kabupatenkota = kb.id_kabupatenkota
+                where mp.tgl_buat = (select max(mp2.tgl_buat) from mapping mp2 where mp2.id_proposal = mp.id_proposal)
+                and pj.user_input = '$user'";
+        $sql = $this->db->query($query);
+        return $sql->result();
+    }
+
+    public function getProposal($param)
+    {
+        $query = "select pj.*, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.nama_poktan, 
+                pk.nama_ketua, l.koordinat_a, l.koordinat_b, st.nama_status, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tgl_mapping, j.url, p.*
+                from mapping mp
+                join proposal pr on mp.id_proposal = pr.id_proposal
+                join pengajuan pj on mp.id_pengajuan = pj.id_pengajuan
+                join jenis j on pj.id_jenis = j.id_jenis
+                join poktan pk on pj.id_poktan = pk.id_poktan
+                join status st on pj.status_pengajuan = st.id_status
+                join lokasi l on pj.id_lokasi = l.id_lokasi
+                join kelurahan kl on l.id_kelurahan = kl.id_kelurahan
+                join kecamatan kc on kl.id_kecamatan = kc.id_kecamatan
+                join kabupatenkota kb on kc.id_kabupatenkota = kb.id_kabupatenkota
+                join user u on pj.user_input = u.id_user
+				join profil p on u.id_user = p.id_user";
+        if ($param['id_proposal'] != null) {
+            $query .= " where pr.id_proposal = " . $param['id_proposal'];
+        } else {
+            $query .= " where mp.tgl_buat = (select max(mp2.tgl_buat) from mapping mp2 where mp2.id_proposal = mp.id_proposal)";
+        }
+        $query .= " and pj.user_input = '" . $param['id_user'] . "'";
+        $sql = $this->db->query($query);
+        return $sql->result();
+    }
+
     public function getListPengajuan($user, $jenis)
     {
-        $this->db->select('pj.*, kb.nama as kabupaten, kc.nama as kecamatan, kl.nama as kelurahan, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, st.nama_status');
+        $this->db->select('pj.*, kb.nama as kabupaten, kc.nama as kecamatan, kl.nama as kelurahan, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, st.*, j.url');
         $this->db->from('mapping mp');
         $this->db->join('pengajuan pj', 'mp.id_pengajuan = pj.id_pengajuan');
         $this->db->join('proposal pr', 'mp.id_proposal = pr.id_proposal');
@@ -59,6 +125,7 @@ class M_Pengajuan extends CI_Model
         $this->db->join('kabupatenkota kb', 'kc.id_kabupatenkota = kb.id_kabupatenkota');
         $this->db->join('poktan pk', 'pj.id_poktan = pk.id_poktan');
         $this->db->join('status st', 'pj.status_pengajuan = st.id_status');
+        $this->db->join('jenis j', 'pj.id_jenis = j.id_jenis');
         $this->db->where('pj.user_input', $user);
         $this->db->where('pj.id_jenis', $jenis);
         $result = $this->db->get();
@@ -69,6 +136,72 @@ class M_Pengajuan extends CI_Model
         }
     }
 
+    public function getListPengajuan_admin($param)
+    {
+        $this->db->select('pj.*, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.nama_poktan, 
+        pk.nama_ketua, l.koordinat_a, l.koordinat_b, st.*');
+        $this->db->from('mapping mp');
+        $this->db->join('pengajuan pj', 'mp.id_pengajuan = pj.id_pengajuan');
+        $this->db->join('proposal pr', 'mp.id_proposal = pr.id_proposal');
+        $this->db->join('lokasi l', 'pj.id_lokasi = l.id_lokasi');
+        $this->db->join('kelurahan kl', 'l.id_kelurahan = kl.id_kelurahan');
+        $this->db->join('kecamatan kc', 'kl.id_kecamatan = kc.id_kecamatan');
+        $this->db->join('kabupatenkota kb', 'kc.id_kabupatenkota = kb.id_kabupatenkota');
+        $this->db->join('poktan pk', 'pj.id_poktan = pk.id_poktan');
+        $this->db->join('status st', 'pj.status_pengajuan = st.id_status');
+        $this->db->where('pr.id_kabupatenkota', $param['id_kabupatenkota']);
+        $this->db->where('pr.id_proposal', $param['id_proposal']);
+        $this->db->where('pj.status_pengajuan', $param['id_status']);
+        $result = $this->db->get();
+        if ($result->num_rows() > 0) {
+            return $result->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getDetailPengajuan($param)
+    {
+        $this->db->select("pj.*, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tanggal_buat, kb.id_kabupatenkota, kb.nama as nama_kabupaten, kc.id_kecamatan, kc.nama as nama_kecamatan, kl.id_kelurahan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.id_poktan, pk.nama_poktan, pk.nama_ketua, l.id_lokasi, l.koordinat_a, l.koordinat_b, st.*, p.*");
+        $this->db->from('mapping mp');
+        $this->db->join('pengajuan pj', 'mp.id_pengajuan = pj.id_pengajuan');
+        $this->db->join('proposal pr', 'mp.id_proposal = pr.id_proposal');
+        $this->db->join('lokasi l', 'pj.id_lokasi = l.id_lokasi');
+        $this->db->join('kelurahan kl', 'l.id_kelurahan = kl.id_kelurahan');
+        $this->db->join('kecamatan kc', 'kl.id_kecamatan = kc.id_kecamatan');
+        $this->db->join('kabupatenkota kb', 'kc.id_kabupatenkota = kb.id_kabupatenkota');
+        $this->db->join('poktan pk', 'pj.id_poktan = pk.id_poktan');
+        $this->db->join('status st', 'pj.status_pengajuan = st.id_status');
+        $this->db->join('jenis j', 'pj.id_jenis = j.id_jenis');
+        // $this->db->join('user u', 'pj.user_input = u.id_user');
+        $this->db->join('profil p', 'pj.user_input = p.id_user');
+        if ($param['id_pengajuan'] != null) {
+            $this->db->where('pj.id_pengajuan', $param['id_pengajuan']);
+        }
+        if ($param['id_proposal'] != null) {
+            $this->db->where('pr.id_proposal', $param['id_proposal']);
+        }
+        $this->db->where('pj.user_input', $param['id_user']);
+        $sql = $this->db->get();
+        if ($sql->num_rows() > 0) {
+            return $sql->result()[0];
+        } else {
+            return false;
+        }
+    }
+
+    public function getDokumen($param)
+    {
+        $sql = $this->db->get_where('dokumen', ['id_pengajuan' => $param['id_pengajuan']]);
+        return $sql->result();
+    }
+
+    public function getPengajuanById($param)
+    {
+        $sql = $this->db->get_where('pengajuan', ['id_pengajuan' => $param]);
+        return $sql->result()[0];
+    }
+
     //INSERT PROCESS
     public function insertData($table, $data)
     {
@@ -76,6 +209,20 @@ class M_Pengajuan extends CI_Model
         $insert_id = $this->db->insert_id();
 
         return $insert_id;
+    }
+
+    //UPDATE PROCESS
+    public function updateData($table, $primaryKey, $data)
+    {
+        // $this->db->set('DTM_UPD', date('Y-m-d H:i:s'));
+        // $this->db->set('user_update', $this->session->userdata('officer_column'));
+        $this->db->where($primaryKey['column'], $primaryKey['value']);
+        $this->db->update($table, $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     //DELETE PROCESS
