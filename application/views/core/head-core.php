@@ -68,6 +68,12 @@
             outline: 0 none;
         }
 
+        textarea:focus {
+            border-color: rgba(24, 210, 110, 0.8);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(24, 210, 110, 0.6);
+            outline: 0 none;
+        }
+
         /* html * {
             font-family: Arial !important;
         } */

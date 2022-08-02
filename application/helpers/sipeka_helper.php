@@ -2,6 +2,18 @@
 
 $GLOBALS['CI'] = &get_instance();
 
+if (!function_exists('setResponse')) {
+	function setResponse($result, $type)
+	{
+		$msg['type'] = $type;
+		$msg['success'] = false;
+		if ($result) {
+			$msg['success'] = true;
+		}
+		echo json_encode($msg);
+	}
+}
+
 if (!function_exists('is_login')) {
 	function is_login($type = null)
 	{
@@ -117,27 +129,6 @@ if (!function_exists('export_pdf')) {
 if (!function_exists('tgl_indo')) {
 	function tgl_indo($tanggal, $cetak_hari = false)
 	{
-		// $bulan = array(
-		// 	1 =>   'Januari',
-		// 	'Februari',
-		// 	'Maret',
-		// 	'April',
-		// 	'Mei',
-		// 	'Juni',
-		// 	'Juli',
-		// 	'Agustus',
-		// 	'September',
-		// 	'Oktober',
-		// 	'November',
-		// 	'Desember'
-		// );
-		// $pecahkan = explode('-', $tanggal);
-
-		// // variabel pecahkan 0 = tanggal
-		// // variabel pecahkan 1 = bulan
-		// // variabel pecahkan 2 = tahun
-
-		// return $pecahkan[2] . ' ' . $bulan[(int)$pecahkan[1]] . ' ' . $pecahkan[0];
 		$hari = array(
 			1 =>    'Senin',
 			'Selasa',

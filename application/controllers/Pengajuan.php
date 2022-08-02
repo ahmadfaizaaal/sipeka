@@ -60,7 +60,7 @@ class Pengajuan extends CI_Controller
             'docs' => $docs
         ));
 
-        load_page('pengajuan/edit-data', 'KEGIATAN ' . strtoupper(str_replace('-', ' ', $url)), $data);
+        load_page('pengajuan/edit-data', 'EDIT KEGIATAN ' . strtoupper(str_replace('-', ' ', $url)), $data);
     }
 
     public function delete()
@@ -293,8 +293,22 @@ class Pengajuan extends CI_Controller
         }
 
         //INSERT MAPPING PROCESS
+        $proposal = $this->pengajuan->getProposalByNomorSurat($param['nomor_surat']);
+
+        if (!$proposal) {
+            $param_proposal = array(
+                'nomor_surat' => $param['nomor_surat'],
+                'user_input' => $this->session->userdata('id_user'),
+                'id_kabupatenkota' => $param['id_kabupatenkota'],
+                'tgl_buat' => date('Y-m-d H:i:s')
+            );
+            $idProposal = $this->pengajuan->insertData('proposal', $param_proposal);
+        } else {
+            $idProposal = $proposal->id_proposal;
+        }
+
         $mapping = array(
-            'id_proposal' => $param['id_proposal'],
+            'id_proposal' => $idProposal,
             'id_pengajuan' => $idPengajuan == null ? $id_pengajuan : $idPengajuan
         );
 
@@ -549,10 +563,12 @@ class Pengajuan extends CI_Controller
         $url = $this->input->post('url');
         $user_input = $this->session->userdata('id_user');
         $tgl_buat = date('Y-m-d H:i:s');
+        $id_kabupatenkota = $this->session->userdata('kabupatenkota');
         $nama_kabupaten = $this->input->post('nama-kabupaten');
         $data = array(
             'url' => $url,
-            'id_proposal' => $this->input->post('id-proposal'),
+            'nomor_surat' => $this->input->post('id-proposal'),
+            'id_kabupatenkota' => $id_kabupatenkota,
             'nama_kabupaten' => $nama_kabupaten,
             'nama_kecamatan' => $this->input->post('nama-kecamatan'),
             'nama_kelurahan' => $this->input->post('nama-kelurahan'),
@@ -649,11 +665,31 @@ class Pengajuan extends CI_Controller
         $param = array(
             'id_kabupatenkota' => $this->input->post('id_kabupatenkota'),
             'id_proposal' => $this->input->post('id_proposal'),
-            'id_status' => 1
+            'id_status' => 1,
         );
-        // $user = $this->session->userdata('id_user');
-        // $jenis = $this->input->post('id_jenis');
         $result = $this->pengajuan->getListPengajuan_admin($param);
         echo json_encode($result);
+    }
+
+    public function simpan_telaah()
+    {
+        $idPengajuan = $this->input->post('id_pengajuan');
+
+        $param = array(
+            'pengajuan' => array(
+                'status_pengajuan' => $this->pengajuan->getIdStatusByCode('DVR'), //Sudah diverifikasi
+                'user_update' => $this->session->userdata('id_user')
+            ),
+            'mapping' => array(
+                'catatan' => $this->input->post('catatan')
+            )
+        );
+
+        $updated = $this->pengajuan->updateData('pengajuan', array('column' => 'id_pengajuan', 'value' => $idPengajuan), $param['pengajuan']);
+
+        if ($updated) {
+            $mapping = $this->pengajuan->updateData('mapping', array('column' => 'id_pengajuan', 'value' => $idPengajuan), $param['mapping']);
+            setResponse($mapping, 'update');
+        }
     }
 }

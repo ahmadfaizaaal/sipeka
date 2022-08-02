@@ -407,6 +407,9 @@
                         return "Masukkan " + x + " karakter lagi";
                     }
                 },
+                escapeMarkup: function(markup) {
+                    return markup;
+                },
                 minimumInputLength: 1,
                 ajax: {
                     url: '<?= BASE_URL ?>pengajuan/cari-nomor-surat',
@@ -434,25 +437,26 @@
                     cache: true
                 },
                 tags: true,
-                createTag: function(params) {
-                    return {
-                        id: 0,
-                        text: params.term,
-                        newOption: true
-                    }
-                },
-                templateResult: function(data) {
-                    var $result = $("<span></span>");
+                // createTag: function(params) {
+                //     return {
+                //         id: 0,
+                //         text: params.term,
+                //         newTag: true
+                //     }
+                // },
+                // templateResult: function(data) {
+                //     var $result = $("<span></span>");
 
-                    $result.text(data.text);
+                //     $result.text(data.text);
 
-                    if (data.newOption) {
-                        $result.append(" <em>(BARU)</em>");
-                    }
+                //     if (data.newTag) {
+                //         $result.append(" <em>(BARU)</em>");
+                //     }
 
-                    return $result;
-                }
+                //     return $result;
+                // }
             });
+
 
             $('#nomor-surat').on('change', function() {
                 $('#error-nomor-surat').hide();
@@ -460,41 +464,42 @@
 
             $('#nextToDetail').on('click', function() {
                 let surat = $('#nomor-surat').select2('data');
+                // console.log(surat[0].id)
                 if (surat != '') {
-                    if (surat[0].id == 0) {
-                        $.ajax({
-                            type: 'ajax',
-                            method: 'post',
-                            url: '<?= BASE_URL . 'pengajuan/insert-nomor-surat'; ?>',
-                            data: {
-                                nomorSurat: surat[0].text,
-                                idKota: id_kota
-                            },
-                            async: false,
-                            dataType: 'json',
-                            success: function(data) {
-                                if (data != '') {
-                                    newAdded = true;
-                                    $('#id-proposal').val(data);
-                                    $('#detailSection').show();
-                                    $('#cancelSubmission').show();
-                                    $('#nextToDetail').attr('disabled', true);
-                                } else {
-                                    swal("Error!", "Gagal simpan nomor surat!", "error");
-                                }
-                            },
-                            error: function() {
-                                swal("Error!", "Internal Server error 500!", "error");
-                            }
-                        });
-                    } else {
-                        newAdded = false;
-                        $('#id-proposal').val(surat[0].id);
-                        $('#detailSection').show();
-                        $('#cancelSubmission').show();
-                        $('#nextToDetail').attr('disabled', true);
-                        $('#nomor-surat').attr('disabled', true);
-                    }
+                    // if (surat[0].id == 0) {
+                    //     $.ajax({
+                    //         type: 'ajax',
+                    //         method: 'post',
+                    //         url: '<?= BASE_URL ?>pengajuan/insert-nomor-surat',
+                    //         data: {
+                    //             nomorSurat: surat[0].text,
+                    //             idKota: id_kota
+                    //         },
+                    //         async: false,
+                    //         dataType: 'json',
+                    //         success: function(data) {
+                    //             if (data != '') {
+                    //                 newAdded = true;
+                    //                 $('#id-proposal').val(data);
+                    //                 $('#detailSection').show();
+                    //                 $('#cancelSubmission').show();
+                    //                 $('#nextToDetail').attr('disabled', true);
+                    //             } else {
+                    //                 swal("Error!", "Gagal simpan nomor surat!", "error");
+                    //             }
+                    //         },
+                    //         error: function() {
+                    //             swal("Error!", "Internal Server error 500!", "error");
+                    //         }
+                    //     });
+                    // } else {
+                    //     newAdded = false;
+                    $('#id-proposal').val(surat[0].text);
+                    $('#detailSection').show();
+                    $('#cancelSubmission').show();
+                    $('#nextToDetail').attr('disabled', true);
+                    $('#nomor-surat').attr('disabled', true);
+                    // }
                 } else {
                     $('#error-nomor-surat').show();
                 }

@@ -93,49 +93,19 @@
 
                                     <table class="table table-striped table-responsive" id="dataTablePengajuan" style="font-family: Arial !important;" width="100%">
                                         <thead>
-                                            <tr>
+                                            <tr class="text-center">
                                                 <th scope="col" style="width: 2%;">No.</th>
-                                                <th scope="col" style="width: 15%"></th>
-                                                <th scope="col" style="width: 23%;">Lokasi Kegiatan</th>
+                                                <th scope="col" style="width: 5%"></th>
+                                                <th scope="col" style="width: 24%;">Lokasi Kegiatan</th>
                                                 <th scope="col" style="width: 5%;">Luas Layanan (Ha)</th>
                                                 <th scope="col" style="width: 10%;">Perkiraan Biaya (Rp)</th>
-                                                <th scope="col" style="width: 20%;">Bentuk Konstruksi</th>
-                                                <th scope="col" style="width: 20%;">Hasil Telaah</th>
-                                                <th scope="col" style="width: 5%;">Kelayakan</th>
+                                                <th scope="col" style="width: 27%;">Bentuk Konstruksi</th>
+                                                <th scope="col" style="width: 22%;">Hasil Telaah</th>
+                                                <th scope="col" style="width: 5%;">Kelayakan / Status</th>
                                             </tr>
                                         </thead>
                                         <tbody id="showDataPengajuan">
-                                            <!-- <tr>
-                                                <td scope="col" style="width: 2%;">1</td>
-                                                <td scope="col" style="width: 10%"></td>
-                                                <td scope="col" style="width: 23%;">
-                                                    <ul style="list-style-type: none;">
-                                                        <li><strong>KT Wonorejo</strong></li>
-                                                        <li>Desa Mojokambang</li>
-                                                        <li>Kecamatan Kedungmulyo</li>
-                                                    </ul>
-                                                </td>
-                                                <td scope="col" style="width: 5%;" class="text-center">38,22 Ha</td>
-                                                <td scope="col" style="width: 15%;" class="text-center">Rp. 110.000.000</td>
-                                                <td scope="col" style="width: 20%;">
-                                                    <ul>
-                                                        <li>Rumah pompa</li>
-                                                        <li>Pompa 3 inchi</li>
-                                                        <li>Pipa distribusi</li>
-                                                    </ul>
-                                                </td>
-                                                <td scope="col" style="width: 20%;">
-                                                    <ul>
-                                                        <li>Sumber air tanah</li>
-                                                        <li>Luas layanan > 20 Ha</li>
-                                                        <li>Dampak Peningkatan</li>
-                                                        <li>Belum ada plotting area</li>
-                                                    </ul>
-                                                </td>
-                                                <td scope="col" style="width: 5%;" class="text-center">
-                                                    <div class="badge badge-warning">BELUM DINILAI</div>
-                                                </td>
-                                            </tr> -->
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -152,22 +122,32 @@
 </div>
 <!-- ////////////////////////////////////////////////////////////////////////////-->
 
-<!-- MODAL PENGHULU -->
-<div class="modal fade" id="modal-preview-document" tabindex="-1" role="dialog" aria-labelledby="modal-preview-document-label" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<!-- MODAL APPROVAL -->
+<div class="modal fade" id="modal-approval" tabindex="-1" role="dialog" aria-labelledby="modal-approval-label" aria-hidden="true" style="font-family: Calibri !important; font-size: 1.3em;">
+    <div class="modal-dialog modal-md" role="document">
         <div class="modal-content" style="z-index: 9999999;">
-            <div class="modal-header bg-success">
-                <h5 class="modal-title text-black font-weight-bold" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
-                <button type="button" class="close mr-0" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header bg-teal bg-lighten-2">
+                <h5 class="modal-title text-white font-weight-bold" id="modal-approval-label" style="font-family: Calibri !important;"><strong>Preview Document</strong></h5>
+                <button type="button" class="close mr-0" data-dismiss="modal" aria-label="Close" style="color: #ffffff;">
                     <span aria-hidden="true"><strong>&times;</strong></span>
                 </button>
             </div>
             <div class="modal-body">
-                <iframe src="" style="width:100%; height:700px;" frameborder="0" id="doc-frame"></iframe>
+                <form action="<?= BASE_URL . 'pengajuan/simpan-telaah' ?>" method="post" id="formTelaahPengajuan">
+                    <label>Catatan : </label>
+                    <div class="form-group position-relative has-icon-left">
+                        <input type="hidden" id="id-pengajuan" name="id-pengajuan">
+                        <textarea class="form-control" id="catatan" rows="7"></textarea>
+                        <p class="text-left"><small class="text-muted">Kosongkan apabila tidak ada catatan.</small></p>
+                        <div class="form-control-position">
+                            <i class="la la-pencil-square font-medium-5 line-height-1 text-muted icon-align"></i>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Tutup</button>
-                <button type="submit" id="btnDownload" class="btn btn-success">Download</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                <button type="submit" id="btnSimpan" class="btn btn-success" style="background-color: #18D26E; color: #fff;">Simpan Data</button>
             </div>
         </div>
     </div>
@@ -177,25 +157,11 @@
     $(function() {
         const base_theme = '<?= BASE_THEME; ?>';
 
-        // let myTable = $('#dataTablePengajuan').DataTable({
-        //     "lengthMenu": [
-        //         [5, 10, 25, 50, -1],
-        //         [5, 10, 25, 50, "All"]
-        //     ],
-        //     // autoWidth: false,
-        //     scrollX: true,
-        //     scrollY: "410px",
-        //     paginate: true,
-        //     destroy: true,
-        //     retrieve: true
-        // });
-
         $('#kabupaten').prop('disabled', true);
         $('#nomor-surat').prop('disabled', true);
         $('#error-provinsi').hide();
         $('#error-kabupaten').hide();
         $('#error-nomor-surat').hide();
-        // $('#detailSection').hide();
 
         $("#kabupaten").select2({
             placeholder: "PILIH KABUPATEN / KOTA",
@@ -392,11 +358,6 @@
                 $('#detailSection').show(function() {
                     myTable.columns.adjust();
                 });
-
-                // $('#nextToDetail').attr('disabled', true);
-                // $('#provinsi').attr('disabled', true);
-                // $('#kabupaten').attr('disabled', true);
-                // $('#nomor-surat').attr('disabled', true);
             } else {
                 if (provinsi == '') $('#error-provinsi').show();
                 if (kabupaten == '') $('#error-kabupaten').show();
@@ -404,44 +365,35 @@
             }
         });
 
-        $('#btnDownload').click(function() {
-            var url = $('#formAddEditPenghulu').attr('action');
-            var data = $('#formAddEditPenghulu').serialize();
-            //validate form
-            var nip = $('input[name=nip]');
-            var nama = $('input[name=nama]');
-            var alamat = $('input[name=alamat]');
-            var noTelp = $('input[name=noTelp]');
-            var email = $('input[name=email]');
-            var username = $('input[name=username]');
-            var password = $('input[name=password]');
+        $('#btnSimpan').click(function() {
+            let url = $('#formTelaahPengajuan').attr('action');
+            let id_pengajuan = $('#id-pengajuan');
+            let catatan = $('#catatan');
 
-            if (nip.val() != '' && nama.val() != '' && alamat.val() != '' &&
-                noTelp.val() != '' && email.val() != '' && username.val() != '' && password.val() != '') {
+            if (id_pengajuan.val() != '') {
                 $.ajax({
                     type: 'ajax',
                     method: 'post',
                     url: url,
-                    data: data,
+                    data: {
+                        id_pengajuan: id_pengajuan.val(),
+                        catatan: catatan.val()
+                    },
                     async: false,
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
-                            $('#modal-preview-document').modal('hide');
-                            $('#formAddEditPenghulu')[0].reset();
-                            if (response.type == 'add') {
-                                type = 'ditambahkan'
-                            } else if (response.type == 'update') {
-                                type = 'diubah'
-                            }
-                            swal("Selamat!", "Data pengulu berhasil " + type + "!", "success");
+                            $('#modal-approval').modal('hide');
+                            $('#formTelaahPengajuan')[0].reset();
+
+                            swal("Selamat!", "Status pengajuan berhasil diperbarui!", "success");
                             showDataPengajuan();
                         } else {
                             swal("Internal Server error 500!", "Error!", "error");
                         }
                     },
                     error: function() {
-                        swal("Gagal menambahkan data penghulu!", "Error!", "error");
+                        swal("Gagal memperbarui status data pengajuan!", "Error!", "error");
                     }
                 });
             } else {
@@ -449,141 +401,13 @@
             }
         });
 
-        //ADD PENGHULU
-        $('#btnAdd').click(function() {
-            validateMobilePhone();
-            validateNIP();
-            $('input[name=nip]').removeAttr('readonly');
-            $('input[name=nama]').removeAttr('readonly');
-            $('input[name=alamat]').removeAttr('readonly');
-            $('input[name=noTelp]').removeAttr('readonly');
-            $('input[name=email]').removeAttr('readonly');
-            $('input[name=username]').removeAttr('readonly');
-            $('input[name=password]').removeAttr('readonly');
-            $('#btnDownload').show();
-            $('#modal-preview-document').find('.modal-title').text('TAMBAH DATA PENGHULU');
-            $('#formAddEditPenghulu').attr('action', '<?= BASE_URL . 'staff/addPenghulu'; ?>');
-            $('#formAddEditPenghulu')[0].reset();
-        });
-
-        //EDIT PENGHULU
-        $('#showDataPengajuan').on('click', '.editPenghulu', function() {
-            var offId = $(this).attr('data');
-            $('#btnDownload').show();
-            $('#modal-preview-document').modal('show');
-            $('#modal-preview-document').find('.modal-title').text('UBAH DATA PENGHULU');
-            $('#formAddEditPenghulu').attr('action', '<?= BASE_URL . 'staff/updatePenghulu' ?>');
-            $.ajax({
-                type: 'ajax',
-                method: 'post',
-                url: '<?= BASE_URL . 'staff/getDetailPenghulu'; ?>',
-                data: {
-                    offId: offId
-                },
-                async: false,
-                dataType: 'json',
-                success: function(data) {
-                    $('input[name=nip]').removeAttr('readonly');
-                    $('input[name=nama]').removeAttr('readonly');
-                    $('input[name=alamat]').removeAttr('readonly');
-                    $('input[name=noTelp]').removeAttr('readonly');
-                    $('input[name=email]').removeAttr('readonly');
-                    $('input[name=offId]').val(offId);
-                    $('input[name=nip]').val(data.NIP);
-                    $('input[name=nama]').val(data.NAME);
-                    $('input[name=alamat]').val(data.ADDRESS);
-                    $('input[name=noTelp]').val(data.PHONE);
-                    $('input[name=email]').val(data.EMAIL);
-                    $('input[name=username]').attr('readonly', true);
-                    $('input[name=username]').val(data.USERNAME);
-                    $('input[name=password]').attr('readonly', true);
-                    $('input[name=password]').val(data.PASSWORD_LABEL);
-                },
-                error: function() {
-                    swal("Internal Server error 500!", "Error!", "error");
-                }
-            });
-        });
-
-        //PREVIEW PENGAJUAN
-        $('#showDataPengajuan').on('click', '.viewPengajuan', function() {
-            let id_pengajuan = $(this).attr('data');
-            let kegiatan = '<?= $kegiatan; ?>';
-            $('#modal-preview-document').modal('show');
-            $('#modal-preview-document').find('.modal-title').text('PRATINJAU DOKUMEN');
-            $('#btnDownload').hide();
-            $.ajax({
-                type: 'ajax',
-                method: 'post',
-                url: '<?= BASE_URL . 'pengajuan/lihat-dokumen'; ?>',
-                data: {
-                    id_pengajuan: id_pengajuan,
-                    url: kegiatan
-                },
-                async: false,
-                dataType: 'json',
-                success: function(response) {
-                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%&toolbar=0');
-                },
-                error: function() {
-                    swal("Internal Server error 500!", "Error!", "error");
-                }
-            });
-        });
-
-        $("#modal-preview-document").on('hide.bs.modal', function() {
-            $.ajax({
-                type: 'ajax',
-                method: 'post',
-                url: '<?= BASE_URL . 'pengajuan/clear-temp-files'; ?>',
-                async: false,
-                dataType: 'json',
-                success: function(response) {
-                    // console.log('200 OK');
-                },
-                error: function() {
-                    swal("Internal Server error 500!", "Error!", "error");
-                }
-            });
-        });
-
-        //DELETE PENGHULU
-        $('#showDataPengajuan').on('click', '.deletePenghulu', function() {
-            var offId = $(this).attr('data');
-            swal({
-                title: 'Apakah anda yakin ingin menghapus data ini?',
-                type: 'warning',
-                showCancelButton: true,
-                focusConfirm: false,
-                confirmButtonColor: '#18d26e',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya',
-                cancelButtonText: 'Tidak'
-            }).then(result => {
-                if (result.value) {
-                    $.ajax({
-                        type: 'ajax',
-                        method: 'post',
-                        url: '<?= BASE_URL . 'staff/deletePenghulu/'; ?>',
-                        data: {
-                            offId: offId
-                        },
-                        async: false,
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.success) {
-                                swal("Selamat!", "Data Penghulu berhasil dihapus!", "success");
-                                showDataPengajuan();
-                            } else {
-                                swal("Error!", "Gagal Hapus data!", "error");
-                            }
-                        },
-                        error: function() {
-                            swal("Internal Server error 500!", "Error!", "error");
-                        }
-                    });
-                }
-            });
+        //APPROVE PENGAJUAN
+        $('#showDataPengajuan').on('click', '.layak', function() {
+            var id_pengajuan = $(this).attr('data');
+            $('#modal-approval').modal('show');
+            $('#modal-approval').find('.modal-title').text('TELAAH PENGAJUAN');
+            $('#catatan').val('');
+            $('#id-pengajuan').val(id_pengajuan);
         });
 
         //SHOW DATA PENGAJUAN
@@ -606,13 +430,22 @@
                     var html = '';
                     var i;
                     for (i = 0; i < data.length; i++) {
+                        let disabled = '';
+                        let btnColor = 'success';
+                        let style = 'background-color: #18D26E; color: #fff;';
+
+                        if ((data[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
+                            disabled = 'disabled';
+                            btnColor = 'light';
+                            style = 'color: #fff;';
+                        }
+
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
-                                    <td scope="col" style="width: 15%">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-success layak" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Layak" data="${data[i].id_pengajuan}"><i class="ft-check"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-danger tidak-layak" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Tidak Layak" data="${data[i].id_pengajuan}"><i class="ft-x"></i></a>
+                                    <td scope="col" style="width: 5%">
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor } layak ${ disabled }" style="margin-left:0px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Tandai Sudah Ditelaah" data="${data[i].id_pengajuan}"><i class="ft-check"></i></a>                                        
                                     </td>
-                                    <td scope="col" style="width: 23%;">
+                                    <td scope="col" style="width: 24%;">
                                         <ul style="list-style-type: none;">
                                             <li><strong>${ data[i].nama_poktan }</strong></li>
                                             <li>Desa ${ capitalize((data[i].nama_kelurahan).toLowerCase()) }</li>
@@ -621,24 +454,24 @@
                                     </td>
                                     <td scope="col" style="width: 5%;" class="text-center">${ data[i].luas_layanan }</td>
                                     <td scope="col" style="width: 10%;" class="text-center">Rp. ${ Number(data[i].perkiraan_biaya).toLocaleString('id') }</td>
-                                    <td scope="col" style="width: 20%;">
+                                    <td scope="col" style="width: 27%;">
                                         <ul>
                                             <li>Rumah pompa ${ data[i].rumah_pompa }</li>
                                             <li>Pompa ${ data[i].ukuran_pompa }</li>
                                             <li>Bak penampung ${ data[i].bak_penampung }</li>
                                         </ul>
                                     </td>
-                                    <td scope="col" style="width: 20%;">
+                                    <td scope="col" style="width: 22%;">
                                         <ul>
-                                            <li>Sumber air tanah</li>
-                                            <li>Luas layanan > 20 Ha</li>
-                                            <li>Jarak dari sumber</li>
-                                            <li>Dampak Peningkatan</li>
-                                            <li>Belum ada plotting area</li>
+                                            <li>Sumber ${ data[i].rumah_pompa }</li>
+                                            <li>Luas layanan ${ data[i].luas_layanan }</li>
+                                            <li>Jarak dari sumber ${ data[i].jarak }</li>
+                                            <li>Dampak : Peningkatan IP dari ${ data[i].ip }</li>
                                         </ul>
                                     </td>
                                     <td scope="col" style="width: 5%;" class="text-center">
-                                        <div class="badge badge-warning">BELUM DINILAI</div>
+                                        <p style="margin-bottom: 20px;">${ data[i].kelayakan }</p>
+                                        <div class="badge badge-${ data[i].warna }">${ data[i].nama_status }</div>
                                     </td>
                                 </tr>`;
                     }

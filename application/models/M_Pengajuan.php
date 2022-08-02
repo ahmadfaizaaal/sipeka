@@ -16,6 +16,13 @@ class M_Pengajuan extends CI_Model
         return $result->id_jenis;
     }
 
+    public function getIdStatusByCode($kode)
+    {
+        $sql = $this->db->get_where('status', ['kode' => $kode]);
+        $result = $sql->row();
+        return $result->id_status;
+    }
+
     public function getListNomorSurat($key)
     {
         $this->db->where('user_input', $this->session->userdata('id_user'));
@@ -30,6 +37,16 @@ class M_Pengajuan extends CI_Model
         $this->db->like('nomor_surat', $key);
         $sql = $this->db->get('proposal');
         return $sql->result();
+    }
+
+    public function getProposalByNomorSurat($nomorSurat)
+    {
+        $sql = $this->db->get_where('proposal', ['nomor_surat' => $nomorSurat]);
+        if ($sql->num_rows() > 0) {
+            return $sql->row();
+        } else {
+            return false;
+        }
     }
 
     public function getListProvinsi($key)
@@ -151,7 +168,7 @@ class M_Pengajuan extends CI_Model
         $this->db->join('status st', 'pj.status_pengajuan = st.id_status');
         $this->db->where('pr.id_kabupatenkota', $param['id_kabupatenkota']);
         $this->db->where('pr.id_proposal', $param['id_proposal']);
-        $this->db->where('pj.status_pengajuan', $param['id_status']);
+        // $this->db->where('pj.status_pengajuan', $param['id_status']);
         $result = $this->db->get();
         if ($result->num_rows() > 0) {
             return $result->result();

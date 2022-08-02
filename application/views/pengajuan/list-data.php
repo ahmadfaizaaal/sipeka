@@ -29,7 +29,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <div class="text-left" style="font-family: Calibri !important; font-size: 1.2rem;">
-                                    <a href="<?= BASE_URL ?>pengajuan/add/<?= $kegiatan ?>" id="btnAdd" class="btn btn-icon btn-success mb-0"><i class="ft-file-plus"></i> &nbsp;Buat Pengajuan Baru</a>
+                                    <a href="<?= BASE_URL ?>pengajuan/add/<?= $kegiatan ?>" id="btnAdd" class="btn btn-icon btn-success mb-0" style="background-color: #18D26E; color: #fff;"><i class="ft-file-plus"></i> &nbsp;Buat Pengajuan Baru</a>
                                 </div>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -75,9 +75,9 @@
 <div class="modal fade" id="modal-preview-document" tabindex="-1" role="dialog" aria-labelledby="modal-preview-document-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="z-index: 9999999;">
-            <div class="modal-header bg-success">
-                <h5 class="modal-title text-black font-weight-bold" style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
-                <button type="button" class="close mr-0" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header bg-teal bg-lighten-2">
+                <h5 class="modal-title text-white font-weight-bold" style="font-family: Calibri;" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
+                <button type="button" class="close mr-0" data-dismiss="modal" aria-label="Close" style="color: #ffffff;">
                     <span aria-hidden="true"><strong>&times;</strong></span>
                 </button>
             </div>
@@ -85,8 +85,8 @@
                 <iframe src="" style="width:100%; height:700px;" frameborder="0" id="doc-frame"></iframe>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Tutup</button>
-                <button type="submit" id="btnDownload" class="btn btn-success">Download</button>
+                <button type="button" class="btn btn-success" style="background-color: #18D26E; color: #fff;" data-dismiss="modal">Tutup</button>
+                <button type="submit" id="btnDownload" class="btn btn-success" style="background-color: #18D26E; color: #fff;">Download</button>
             </div>
         </div>
     </div>
@@ -308,12 +308,24 @@
                     var i;
                     for (i = 0; i < data.length; i++) {
                         let lokasi = `${data[i].kabupaten}, KECAMATAN ${data[i].kecamatan}, DESA ${data[i].kelurahan}`;
+                        let disabled = '';
+                        let edit = 'warning';
+                        let hapus = 'danger';
+                        let color = ''
+
+                        if ((data[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
+                            disabled = 'disabled';
+                            edit = 'light';
+                            hapus = 'light';
+                            color = 'color: #fff !important;';
+                        }
+
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
                                     <td scope="col" style="width: 20%">
                                         <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewPengajuan" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${data[i].id_pengajuan}"><i class="ft-search"></i></a>
-                                        <a href="${ base_url }pengajuan/edit/${ data[i].url }/${data[i].id_pengajuan}" class="btn btn-sm btn-icon btn-warning editPengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Edit" data="${data[i].id_pengajuan}"><i class="ft-edit-2"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-danger deletePengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${data[i].id_pengajuan}"><i class="ft-trash-2"></i></a>
+                                        <a href="${ base_url }pengajuan/edit/${ data[i].url }/${data[i].id_pengajuan}" class="btn btn-sm btn-icon btn-${ edit } editPengajuan ${ disabled }" style="margin-left:10px; ${ color }" data-toggle="tooltip" data-placement="bottom" title="Edit" data="${data[i].id_pengajuan}"><i class="ft-edit-2"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ hapus } deletePengajuan ${ disabled }" style="margin-left:10px; ${ color }" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${data[i].id_pengajuan}"><i class="ft-trash-2"></i></a>
                                     </td>
                                     <td scope="col" style="width: 30%;">${ lokasi }</td>
                                     <td scope="col" style="width: 6%;">${ data[i].nomor_surat }</td>

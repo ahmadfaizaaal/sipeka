@@ -74,9 +74,9 @@
 <div class="modal fade" id="modal-preview-document" tabindex="-1" role="dialog" aria-labelledby="modal-preview-document-label" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content" style="z-index: 9999999;">
-            <div class="modal-header bg-success">
-                <h5 class="modal-title text-black font-weight-bold" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <div class="modal-header bg-teal bg-lighten-2">
+                <h5 class="modal-title text-white font-weight-bold" style="font-family: Calibri;" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #ffffff;">
                     <span aria-hidden="true"><strong>&times;</strong></span>
                 </button>
             </div>
@@ -84,7 +84,7 @@
                 <iframe src="" style="width:100%; height:700px;" frameborder="0" id="doc-frame"></iframe>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success" data-dismiss="modal">Tutup</button>
+                <button type="button" class="btn btn-success" style="background-color: #18D26E; color: #fff;" data-dismiss="modal">Tutup</button>
                 <button type="submit" id="btnDownload" class="btn btn-success">Download</button>
             </div>
         </div>
@@ -302,9 +302,9 @@
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
                                     <td scope="col" style="width: 20%">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${response[i].id_proposal}"><i class="ft-search"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-warning editPengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Edit" data="${response[i].id_proposal}"><i class="ft-edit-2"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-danger deletePengajuan" style="margin-left:10px;" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${response[i].id_proposal}"><i class="ft-trash-2"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${response[i].id_proposal}"><i class="ft-eye"></i></a>
+                                        
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-success deletePengajuan" style="margin-left:10px; background-color: #18D26E; color: #fff;" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${response[i].id_proposal}">Ajukan Penomoran</a>
                                     </td>
                                     <td scope="col" style="width: 20%;">${ response[i].nomor_surat }</td>
                                     <td scope="col" style="width: 20%;">${ response[i].nama_kabupaten }</td>
