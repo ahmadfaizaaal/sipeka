@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 29, 2022 at 03:06 PM
+-- Generation Time: Aug 04, 2022 at 07:04 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -55,7 +55,7 @@ CREATE TABLE `dokumen` (
   `id_dokumen` int(11) NOT NULL,
   `id_pengajuan` int(11) NOT NULL,
   `identifier` varchar(64) NOT NULL,
-  `folder_name` varchar(8) NOT NULL,
+  `nama_folder` varchar(8) NOT NULL,
   `nama_dokumen` varchar(255) NOT NULL,
   `user_input` int(11) NOT NULL,
   `tgl_buat` datetime NOT NULL DEFAULT current_timestamp(),
@@ -66,19 +66,25 @@ CREATE TABLE `dokumen` (
 -- Dumping data for table `dokumen`
 --
 
-INSERT INTO `dokumen` (`id_dokumen`, `id_pengajuan`, `identifier`, `folder_name`, `nama_dokumen`, `user_input`, `tgl_buat`, `tgl_update`) VALUES
+INSERT INTO `dokumen` (`id_dokumen`, `id_pengajuan`, `identifier`, `nama_folder`, `nama_dokumen`, `user_input`, `tgl_buat`, `tgl_update`) VALUES
 (1, 5, 'image', '28072022', '5_PLOTTING AREA_28072022.png', 2, '2022-07-28 21:38:41', '2022-07-29 13:40:33'),
 (2, 5, 'image', '28072022', '5_SUMBER AIR_28072022.png', 2, '2022-07-28 21:38:41', '2022-07-29 13:40:33'),
 (3, 5, 'image', '28072022', '5_LAHAN SAWAH_28072022.png', 2, '2022-07-28 21:38:41', '2022-07-29 13:40:33'),
-(7, 7, 'image', '28072022', '7_PLOTTING AREA_28072022.jpeg', 2, '2022-07-28 22:05:46', '2022-07-29 13:40:33'),
-(8, 7, 'image', '28072022', '7_SUMBER AIR_28072022.jpeg', 2, '2022-07-28 22:05:46', '2022-07-29 13:40:33'),
-(9, 7, 'image', '28072022', '7_LAHAN SAWAH_28072022.jpeg', 2, '2022-07-28 22:05:46', '2022-07-29 13:40:33'),
-(10, 8, 'image', '28072022', '8_PLOTTING AREA_LABUY_28072022.png', 2, '2022-07-28 22:11:20', '2022-07-29 13:40:33'),
-(11, 8, 'image', '28072022', '8_SUMBER AIR_LABUY_28072022.png', 2, '2022-07-28 22:11:20', '2022-07-29 13:40:33'),
-(12, 8, 'image', '28072022', '8_LAHAN SAWAH_LABUY_28072022.png', 2, '2022-07-28 22:11:20', '2022-07-29 13:40:33'),
-(19, 11, 'image', '29072022', '11_PLOTTING-AREA_BAROH-KRUENG-KALA_29072022.png', 2, '2022-07-29 05:45:04', '2022-07-29 13:40:22'),
-(20, 11, 'image', '29072022', '11_SUMBER-AIR_BAROH-KRUENG-KALA_29072022.png', 2, '2022-07-29 05:45:04', '2022-07-29 13:40:22'),
-(21, 11, 'image', '29072022', '11_LAHAN-SAWAH_BAROH-KRUENG-KALA_29072022.png', 2, '2022-07-29 05:45:04', '2022-07-29 13:40:22');
+(10, 8, 'image', '28072022', '8_PLOTTING-AREA_LABUY_28072022.png', 2, '2022-07-28 22:11:20', '2022-07-30 06:50:16'),
+(11, 8, 'image', '28072022', '8_SUMBER-AIR_LABUY_28072022.png', 2, '2022-07-28 22:11:20', '2022-07-30 06:50:23'),
+(12, 8, 'image', '28072022', '8_LAHAN-SAWAH_LABUY_28072022.png', 2, '2022-07-28 22:11:20', '2022-07-30 06:50:28'),
+(70, 7, 'image', '01082022', '7_PLOTTING-AREA_PANCA_01082022.png', 2, '2022-08-01 05:39:29', '2022-08-01 05:39:29'),
+(71, 7, 'image', '01082022', '7_SUMBER-AIR_PANCA_01082022.png', 2, '2022-08-01 05:39:29', '2022-08-01 05:39:29'),
+(72, 7, 'image', '01082022', '7_LAHAN-SAWAH_PANCA_01082022.png', 2, '2022-08-01 05:39:29', '2022-08-01 05:39:29'),
+(73, 20, 'image', '02082022', '20_PLOTTING-AREA_LAMPUJA_02082022.png', 2, '2022-08-02 08:25:54', '2022-08-02 08:25:54'),
+(74, 20, 'image', '02082022', '20_SUMBER-AIR_LAMPUJA_02082022.png', 2, '2022-08-02 08:25:54', '2022-08-02 08:25:54'),
+(75, 20, 'image', '02082022', '20_LAHAN-SAWAH_LAMPUJA_02082022.png', 2, '2022-08-02 08:25:54', '2022-08-02 08:25:54'),
+(76, 21, 'image', '02082022', '21_PLOTTING-AREA_MEULAYO_02082022.png', 2, '2022-08-02 08:30:17', '2022-08-02 08:30:17'),
+(77, 21, 'image', '02082022', '21_SUMBER-AIR_MEULAYO_02082022.png', 2, '2022-08-02 08:30:17', '2022-08-02 08:30:17'),
+(78, 21, 'image', '02082022', '21_LAHAN-SAWAH_MEULAYO_02082022.png', 2, '2022-08-02 08:30:17', '2022-08-02 08:30:17'),
+(79, 11, 'image', '03082022', '11_PLOTTING-AREA_BAROH-KRUENG-KALA_03082022.png', 2, '2022-08-03 23:54:21', '2022-08-03 23:54:21'),
+(80, 11, 'image', '03082022', '11_SUMBER-AIR_BAROH-KRUENG-KALA_03082022.png', 2, '2022-08-03 23:54:21', '2022-08-03 23:54:21'),
+(81, 11, 'image', '03082022', '11_LAHAN-SAWAH_BAROH-KRUENG-KALA_03082022.png', 2, '2022-08-03 23:54:21', '2022-08-03 23:54:21');
 
 -- --------------------------------------------------------
 
@@ -83018,12 +83024,15 @@ CREATE TABLE `lokasi` (
 --
 
 INSERT INTO `lokasi` (`id_lokasi`, `id_kelurahan`, `koordinat_a`, `koordinat_b`, `tgl_buat`, `tgl_update`) VALUES
-(1, '1108031005', 'asd', 'asd', '2022-07-28 17:18:44', '2022-07-28 17:18:44'),
 (6, '1108061004', '123', '456', '2022-07-28 21:38:41', '2022-07-28 21:38:41'),
 (7, '1108030001', '123', '456', '2022-07-28 21:56:55', '2022-07-28 21:56:55'),
-(8, '1108042001', 'asd', 'dsa', '2022-07-28 22:05:46', '2022-07-28 22:05:46'),
+(8, '1108042001', 'asd', 'dsa', '2022-08-01 05:39:29', '2022-08-01 05:39:29'),
 (9, '1108061012', '12q', '456', '2022-07-28 22:11:20', '2022-07-28 22:11:20'),
-(12, '1108010026', '\'5°17\',55 \"N', '95° 15\' 9 \" E', '2022-07-29 05:45:04', '2022-07-29 05:45:04');
+(12, '1108010026', '\'5°17\',55 ', '95° 15\' 9 ', '2022-08-03 23:54:21', '2022-08-03 23:54:21'),
+(15, '1108061001', '\'5°17\',55 ', '95° 15\' 9 ', '2022-07-31 23:53:48', '2022-07-31 23:53:48'),
+(19, '1108060024', '\'5°17\',55 \"N', '95° 15\' 9 \" E', '2022-08-01 05:22:06', '2022-08-01 05:22:06'),
+(21, '1108060001', '\'5°17\',55 ', '95° 15\' 9 ', '2022-08-02 08:25:54', '2022-08-02 08:25:54'),
+(22, '1108081005', '\'5°17\',55 \"N', '95° 15\' 9 \" E', '2022-08-02 08:30:17', '2022-08-02 08:30:17');
 
 -- --------------------------------------------------------
 
@@ -83034,15 +83043,21 @@ INSERT INTO `lokasi` (`id_lokasi`, `id_kelurahan`, `koordinat_a`, `koordinat_b`,
 CREATE TABLE `mapping` (
   `id_mapping` int(11) NOT NULL,
   `id_proposal` int(11) NOT NULL,
-  `id_pengajuan` int(11) NOT NULL
+  `id_pengajuan` int(11) NOT NULL,
+  `catatan` longtext DEFAULT NULL,
+  `tgl_buat` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mapping`
 --
 
-INSERT INTO `mapping` (`id_mapping`, `id_proposal`, `id_pengajuan`) VALUES
-(1, 4, 11);
+INSERT INTO `mapping` (`id_mapping`, `id_proposal`, `id_pengajuan`, `catatan`, `tgl_buat`) VALUES
+(1, 4, 11, 'Lanjutkan', '2022-07-29 07:25:56'),
+(2, 1, 7, NULL, '2022-07-28 07:25:56'),
+(3, 4, 8, 'Tidak', '2022-07-28 07:25:56'),
+(11, 3, 20, '', '2022-08-01 05:24:34'),
+(12, 15, 21, 'Silahkan dilanjutkan', '2022-08-02 08:30:17');
 
 -- --------------------------------------------------------
 
@@ -83072,7 +83087,7 @@ CREATE TABLE `pengajuan` (
   `rencana_solusi` text DEFAULT NULL,
   `beda_elevasi` varchar(256) DEFAULT NULL,
   `status_pengajuan` int(11) NOT NULL,
-  `kelayakan` enum('LAYAK','TIDAK LAYAK','','') NOT NULL,
+  `kelayakan` enum('LAYAK','TIDAK LAYAK') NOT NULL,
   `user_input` int(11) NOT NULL,
   `user_update` int(11) DEFAULT NULL,
   `tgl_buat` datetime NOT NULL DEFAULT current_timestamp(),
@@ -83085,9 +83100,12 @@ CREATE TABLE `pengajuan` (
 
 INSERT INTO `pengajuan` (`id_pengajuan`, `id_jenis`, `id_poktan`, `id_lokasi`, `nama_kegiatan`, `luas_layanan`, `unit`, `perkiraan_biaya`, `jarak`, `ukuran_pompa`, `bak_penampung`, `rumah_pompa`, `provitas`, `ip`, `lahan_sawah`, `sumber_air`, `komoditas`, `permasalahan`, `rencana_solusi`, `beda_elevasi`, `status_pengajuan`, `kelayakan`, `user_input`, `user_update`, `tgl_buat`, `tgl_update`) VALUES
 (5, 2, 7, 6, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '20', 1, 123000000, '20', '6', '2,3 m x 4,0 m x 2,0 m', '3,0 m x 2,0 m x 2,5 m', '10', '2', 'Sawah tadah hujan', 'embung', 'padi', 'kemarau', 'hujan', '', 1, 'LAYAK', 2, NULL, '2022-07-28 21:38:41', '2022-07-28 21:42:18'),
-(7, 2, 9, 8, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '21', 1, 125585000, '2', '6', '2,4 m x 2,3 m x 2,0 m', '1,5 m x 3,0 m x 2,6 m', '3', '2', 'Sawah tadah hujan', 'embung', 'padi', 'kemarau', 'bismillah', '', 1, 'LAYAK', 2, NULL, '2022-07-28 22:05:46', '2022-07-28 22:05:46'),
-(8, 2, 10, 9, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '12', 1, 78700000, '24', '6', '2,0 m x 1,0 m x 4,0 m', '3,0 m x 4,0 m x 2,0 m', '7', '2', 'Lahan Kering', 'embung', 'padi', 'kemarau', 'bismillah', '', 1, 'LAYAK', 2, NULL, '2022-07-28 22:11:20', '2022-07-28 22:11:20'),
-(11, 2, 13, 12, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '38.22', 1, 110000000, '12', '6', '2,0 m x 2,0 m x 1,5 m', '2,5 m x 2,5 m x 3,0 m', '2', '2', 'Sawah tadah hujan', 'mata air dan embung', 'padi', 'kekurangan air', 'pembuatan rumah pompa dan perpipaan', '', 1, 'LAYAK', 2, NULL, '2022-07-29 05:45:04', '2022-07-29 05:45:04');
+(7, 2, 9, 8, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '21.00 Ha', 1, 125585000, '2.00 m', '6.00 inchi', '2,4 m x 2,3 m x 2,0 m', '1,5 m x 3,0 m x 2,6 m', '3.00 ton/Ha', '2', 'Lahan Kering', 'embung', 'padi', 'kemarau', 'bismillah', '', 1, 'TIDAK LAYAK', 2, 2, '2022-07-28 22:05:46', '2022-08-01 05:39:29'),
+(8, 2, 10, 9, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '12', 1, 78700000, '24', '6', '2,0 m x 1,0 m x 4,0 m', '3,0 m x 4,0 m x 2,0 m', '7', '2', 'Lahan Kering', 'embung', 'padi', 'kemarau', 'bismillah', '', 5, 'LAYAK', 2, 3, '2022-07-28 22:11:20', '2022-08-02 21:40:01'),
+(11, 2, 13, 12, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '38.22 Ha', 1, 110000000, '12.00 m', '6.00 inchi', '2,0 m x 2,0 m x 1,5 m', '2,5 m x 2,5 m x 3,0 m', '2.00 ton/Ha', '2', 'Sawah tadah hujan', 'mata air dan embung', 'padi', 'kekurangan air', 'pembuatan rumah pompa dan perpipaan', '', 5, 'LAYAK', 2, 3, '2022-07-29 05:45:04', '2022-08-04 08:30:46'),
+(18, 1, 20, 19, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '12 Ha', 1, 120000000, '23 m', '6 inchi', '2,0 m x 2,0 m x 2,0 m', '2,0 m x 2,0 m x 2,0 m', '2 ton/Ha', '2', 'Sawah tadah hujan', 'mata air dan embung', 'padi', 'kekurangan air', 'pembuatan rumah pompa dan perpipaan', '4', 1, 'LAYAK', 2, NULL, '2022-08-01 05:22:06', '2022-08-01 05:22:06'),
+(20, 1, 22, 21, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '22.18 Ha', 1, 128000000, '2.00 m', '2.00 inchi', '2,0 m x 2,0 m x 2,0 m', '2,0 m x 2,0 m x 2,0 m', '2.00 ton/Ha', '2', 'Sawah tadah hujan', 'mata air dan embung', 'padi', 'kekurangan air', 'pembuatan rumah pompa dan perpipaan', '4', 5, 'LAYAK', 2, 3, '2022-08-01 05:24:34', '2022-08-02 22:28:11'),
+(21, 1, 23, 22, 'PENGEMBANGAN PADAT KARYA PRODUKTIF INFRASTRUKTUR PSP ASPEK IRIGASI PERTANIAN KABUPATEN ACEH BESAR', '31.13 Ha', 1, 123000000, '5 m', '6 inchi', '2,0 m x 2,0 m x 2,0 m', '2,0 m x 3,0 m x 1,0 m', '2 ton/Ha', '2', 'Irigasi Teknis', 'mata air dan embung', 'padi', 'kemarau', 'pembuatan rumah pompa dan perpipaan', '3', 5, 'LAYAK', 2, 3, '2022-08-02 08:30:17', '2022-08-02 22:09:32');
 
 -- --------------------------------------------------------
 
@@ -83114,14 +83132,42 @@ CREATE TABLE `poktan` (
 --
 
 INSERT INTO `poktan` (`id_poktan`, `nama_poktan`, `nik_ketua`, `nama_ketua`, `no_hp_ketua`, `nik_upkk`, `koordinator_upkk`, `user_input`, `user_update`, `tgl_buat`, `tgl_update`) VALUES
-(1, 'a', '', 'a', '', '', '', 2, NULL, '2022-07-28 14:01:28', '2022-07-28 14:01:28'),
 (7, 'Maju Jaya', '', 'Ahmad', '', '', '', 2, NULL, '2022-07-28 21:38:41', '2022-07-28 21:38:41'),
 (8, 'Maju Jaya', '', 'Ahmad', '', '', '', 2, NULL, '2022-07-28 21:56:55', '2022-07-28 21:56:55'),
-(9, 'Sentosa Makmur', '', 'Budi', '', '', '', 2, NULL, '2022-07-28 22:05:46', '2022-07-28 22:05:46'),
+(9, 'Sentosa Makmur', '', 'Joko Anwar', '', '', '', 2, 2, '2022-08-01 05:39:29', '2022-08-01 05:39:29'),
 (10, 'Sentosa Makmur Baru', '', 'Budi Ahmad', '', '', '', 2, NULL, '2022-07-28 22:11:20', '2022-07-28 22:11:20'),
 (11, 'Kelompok Tani Blang Kuta', '', 'Muhammad Jamil', '', '', '', 2, NULL, '2022-07-29 05:37:53', '2022-07-29 05:37:53'),
 (12, 'Kelompok Tani Blang Kuta', '', 'Muhammad Jamil', '', '', '', 2, NULL, '2022-07-29 05:41:10', '2022-07-29 05:41:10'),
-(13, 'Kelompok Tani Blang Kuta', '', 'Muhammad Jamil', '', '', '', 2, NULL, '2022-07-29 05:45:04', '2022-07-29 05:45:04');
+(13, 'Kelompok Tani Blang Kuta', '', 'Muhammad Jamil', '', '', '', 2, 2, '2022-08-03 23:54:21', '2022-08-03 23:54:21'),
+(20, 'Kelompok Tani Maju Jaya', '', 'Sholehuddin Muhammad', '', '', '', 2, NULL, '2022-08-01 05:22:06', '2022-08-01 05:22:06'),
+(22, 'Kelompok Tani Maju Jaya', '', 'Ridho Sebastian', '', '', '', 2, 2, '2022-08-02 08:25:54', '2022-08-02 08:25:54'),
+(23, 'Kelompok Tani Makmur Sentosa', '', 'Adhi Nugraha', '', '', '', 2, NULL, '2022-08-02 08:30:17', '2022-08-02 08:30:17');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `profil`
+--
+
+CREATE TABLE `profil` (
+  `id_profil` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
+  `nama_verifikator` varchar(512) NOT NULL,
+  `alamat_dinas` varchar(512) NOT NULL,
+  `nama_kadin` varchar(512) NOT NULL,
+  `jabatan` varchar(512) NOT NULL,
+  `nip` varchar(32) NOT NULL,
+  `tanda_tangan` varchar(128) NOT NULL,
+  `tgl_buat` datetime NOT NULL DEFAULT current_timestamp(),
+  `tgl_update` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `profil`
+--
+
+INSERT INTO `profil` (`id_profil`, `id_user`, `nama_verifikator`, `alamat_dinas`, `nama_kadin`, `jabatan`, `nip`, `tanda_tangan`, `tgl_buat`, `tgl_update`) VALUES
+(1, 2, 'Oki Ferdinand, S.T.', 'ACEH BESAR', 'SUBAGYO, S.T., M.T.', 'PEMBINA UTAMA MADYA', '197009251998031008', '2_KABUPATEN-ACEH-BESAR_20220804_005015.png', '2022-08-01 06:23:13', '2022-08-04 01:00:49');
 
 -- --------------------------------------------------------
 
@@ -83133,6 +83179,7 @@ CREATE TABLE `proposal` (
   `id_proposal` int(11) NOT NULL,
   `nomor_surat` varchar(128) NOT NULL,
   `user_input` int(11) NOT NULL,
+  `id_kabupatenkota` char(4) NOT NULL,
   `tgl_buat` datetime NOT NULL DEFAULT current_timestamp(),
   `tgl_update` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -83141,11 +83188,12 @@ CREATE TABLE `proposal` (
 -- Dumping data for table `proposal`
 --
 
-INSERT INTO `proposal` (`id_proposal`, `nomor_surat`, `user_input`, `tgl_buat`, `tgl_update`) VALUES
-(1, '125/UMK/2/2022', 2, '2022-07-27 04:42:32', '2022-07-27 04:42:32'),
-(2, '278/UMK/3/2022', 1, '2022-07-27 04:43:00', '2022-07-27 05:07:05'),
-(3, '12345/2022', 2, '2022-07-27 06:45:52', '2022-07-27 06:45:52'),
-(4, '1287/UMK/2022', 2, '2022-07-27 06:47:39', '2022-07-27 06:47:39');
+INSERT INTO `proposal` (`id_proposal`, `nomor_surat`, `user_input`, `id_kabupatenkota`, `tgl_buat`, `tgl_update`) VALUES
+(1, '125/UMK/2/2022', 2, '1108', '2022-07-27 04:42:32', '2022-07-30 21:00:12'),
+(2, '278/UMK/3/2022', 1, '', '2022-07-27 04:43:00', '2022-07-27 05:07:05'),
+(3, '12345/2022', 2, '1108', '2022-07-27 06:45:52', '2022-07-30 21:00:12'),
+(4, '1287/UMK/2022', 2, '1108', '2022-07-27 06:47:39', '2022-07-30 21:00:12'),
+(15, '3113/UMK/2022', 2, '1108', '2022-08-02 08:30:17', '2022-08-02 08:30:17');
 
 -- --------------------------------------------------------
 
@@ -83224,6 +83272,7 @@ CREATE TABLE `status` (
   `id_status` int(11) NOT NULL,
   `nama_status` varchar(32) NOT NULL,
   `kode` varchar(8) NOT NULL,
+  `warna` varchar(16) NOT NULL,
   `status` char(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -83231,12 +83280,12 @@ CREATE TABLE `status` (
 -- Dumping data for table `status`
 --
 
-INSERT INTO `status` (`id_status`, `nama_status`, `kode`, `status`) VALUES
-(1, 'Menunggu Verifikasi', 'VR', '1'),
-(2, 'Layak', 'L', '1'),
-(3, 'Tidak Layak', 'TL', '1'),
-(4, 'Dihapus', 'D', '1'),
-(5, 'Sudah Diverifikasi', 'DVR', '1');
+INSERT INTO `status` (`id_status`, `nama_status`, `kode`, `warna`, `status`) VALUES
+(1, 'Menunggu Verifikasi', 'VR', 'warning', '1'),
+(2, 'Layak', 'L', 'success', '1'),
+(3, 'Tidak Layak', 'TL', 'danger', '1'),
+(4, 'Dihapus', 'D', 'danger', '1'),
+(5, 'Sudah Diverifikasi', 'DVR', 'success', '1');
 
 -- --------------------------------------------------------
 
@@ -83248,7 +83297,7 @@ CREATE TABLE `user` (
   `id_user` int(11) NOT NULL,
   `id_akses` int(11) NOT NULL,
   `id_kabupatenkota` char(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `bagian` enum('perpipaan','perpompaan','embung','air tanah','-') NOT NULL,
+  `bagian` enum('-','Perpipaan','Perpompaan','Embung','Air Tanah') NOT NULL,
   `nama` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(512) NOT NULL,
@@ -83263,7 +83312,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `id_akses`, `id_kabupatenkota`, `bagian`, `nama`, `email`, `password`, `status`, `tgl_buat`, `tgl_update`) VALUES
 (1, 1, '0', '-', 'Admin Utama', 'sysadmin', '$2y$10$cOBZWZJkACpmbRO3h914wuEwIndld3xo56pc3SkaK9Bu5Ts/CdTBa', '1', '2022-07-25 02:21:49', '2022-07-26 04:18:20'),
-(2, 5, '1108', '-', 'Dinas Pertanian Kabupaten Aceh Besar', 'dp@gmail.com', '$2y$10$cOBZWZJkACpmbRO3h914wuEwIndld3xo56pc3SkaK9Bu5Ts/CdTBa', '1', '2022-07-25 02:22:43', '2022-07-27 03:52:44');
+(2, 5, '1108', '-', 'Dinas Pertanian Kabupaten Aceh Besar', 'aceh.besar@gmail.com', '$2y$10$cOBZWZJkACpmbRO3h914wuEwIndld3xo56pc3SkaK9Bu5Ts/CdTBa', '1', '2022-07-25 02:22:43', '2022-08-04 12:03:55'),
+(3, 2, '0', 'Perpompaan', 'Tim Teknis Pusat', 'psa.teknis@pertanian.go.id', '$2y$10$cOBZWZJkACpmbRO3h914wuEwIndld3xo56pc3SkaK9Bu5Ts/CdTBa', '1', '2022-07-25 02:21:49', '2022-08-04 12:03:35');
 
 --
 -- Indexes for dumped tables
@@ -83329,17 +83379,24 @@ ALTER TABLE `mapping`
 --
 ALTER TABLE `pengajuan`
   ADD PRIMARY KEY (`id_pengajuan`),
-  ADD KEY `jenis_pengajuan` (`id_jenis`),
   ADD KEY `pengajuan_status` (`status_pengajuan`),
-  ADD KEY `user_pengajuan` (`user_input`),
   ADD KEY `lokasi_pengajuan` (`id_lokasi`),
-  ADD KEY `poktan_pengajuan` (`id_poktan`);
+  ADD KEY `poktan_pengajuan` (`id_poktan`),
+  ADD KEY `user_pengajuan` (`user_input`),
+  ADD KEY `jenis_pengajuan` (`id_jenis`);
 
 --
 -- Indexes for table `poktan`
 --
 ALTER TABLE `poktan`
   ADD PRIMARY KEY (`id_poktan`);
+
+--
+-- Indexes for table `profil`
+--
+ALTER TABLE `profil`
+  ADD PRIMARY KEY (`id_profil`),
+  ADD KEY `user_profil` (`id_user`);
 
 --
 -- Indexes for table `proposal`
@@ -83387,7 +83444,7 @@ ALTER TABLE `akses`
 -- AUTO_INCREMENT for table `dokumen`
 --
 ALTER TABLE `dokumen`
-  MODIFY `id_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_dokumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=82;
 
 --
 -- AUTO_INCREMENT for table `jenis`
@@ -83399,31 +83456,37 @@ ALTER TABLE `jenis`
 -- AUTO_INCREMENT for table `lokasi`
 --
 ALTER TABLE `lokasi`
-  MODIFY `id_lokasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_lokasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `mapping`
 --
 ALTER TABLE `mapping`
-  MODIFY `id_mapping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_mapping` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `pengajuan`
 --
 ALTER TABLE `pengajuan`
-  MODIFY `id_pengajuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_pengajuan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `poktan`
 --
 ALTER TABLE `poktan`
-  MODIFY `id_poktan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_poktan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT for table `profil`
+--
+ALTER TABLE `profil`
+  MODIFY `id_profil` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `proposal`
 --
 ALTER TABLE `proposal`
-  MODIFY `id_proposal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_proposal` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `rekening`
@@ -83441,7 +83504,7 @@ ALTER TABLE `status`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -83481,18 +83544,24 @@ ALTER TABLE `lokasi`
 -- Constraints for table `mapping`
 --
 ALTER TABLE `mapping`
-  ADD CONSTRAINT `mapping_pengajuan` FOREIGN KEY (`id_pengajuan`) REFERENCES `pengajuan` (`id_pengajuan`),
+  ADD CONSTRAINT `mapping_pengajuan` FOREIGN KEY (`id_pengajuan`) REFERENCES `pengajuan` (`id_pengajuan`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `mapping_proposal` FOREIGN KEY (`id_proposal`) REFERENCES `proposal` (`id_proposal`);
 
 --
 -- Constraints for table `pengajuan`
 --
 ALTER TABLE `pengajuan`
-  ADD CONSTRAINT `jenis_pengajuan` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`),
+  ADD CONSTRAINT `jenis_pengajuan` FOREIGN KEY (`id_jenis`) REFERENCES `jenis` (`id_jenis`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `lokasi_pengajuan` FOREIGN KEY (`id_lokasi`) REFERENCES `lokasi` (`id_lokasi`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `pengajuan_status` FOREIGN KEY (`status_pengajuan`) REFERENCES `status` (`id_status`),
   ADD CONSTRAINT `poktan_pengajuan` FOREIGN KEY (`id_poktan`) REFERENCES `poktan` (`id_poktan`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `user_pengajuan` FOREIGN KEY (`user_input`) REFERENCES `user` (`id_user`);
+  ADD CONSTRAINT `user_pengajuan` FOREIGN KEY (`user_input`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `profil`
+--
+ALTER TABLE `profil`
+  ADD CONSTRAINT `user_profil` FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `rekening`

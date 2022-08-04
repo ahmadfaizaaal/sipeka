@@ -91,7 +91,7 @@
                                 <div class="card-body">
                                     <!-- <div class="alert alert-success" style="display: none;" role="alert"></div> -->
 
-                                    <table class="table table-striped table-responsive" id="dataTablePengajuan" style="font-family: Arial !important;" width="100%">
+                                    <table class="table table-responsive" id="dataTablePengajuan" style="font-family: Arial !important;" width="100%">
                                         <thead>
                                             <tr class="text-center">
                                                 <th scope="col" style="width: 2%;">No.</th>
@@ -114,7 +114,14 @@
                     </div>
                 </div>
                 <!-- END OF HEADER SIDE -->
-
+                <!-- <div class="row float-md-right">
+                    <div class="col-md-12" style="font-family: Calibri !important; font-size: 1.3em;"> -->
+                <!-- <a href="" id="btn-surat-alokasi" class="btn btn-icon btn-md btn-warning mb-2 font-medium-2 mr-1" style="font-size: 13px;"><i class="la la-file-pdf-o"></i> &nbsp;Surat Alokasi</a>
+                        <a href="" id="btn-nota-dinas" class="btn btn-icon btn-md btn-info mb-2 font-medium-2 mr-1" style="font-size: 13px;"><i class="la la-file-pdf-o"></i> &nbsp;Cetak Nota Dinas</a>
+                        <a href="" id="btn-export" class="btn btn-icon btn-md btn-info mb-2 font-medium-2" style="font-size: 13px; background-color: #18D26E; color: #fff;"><i class="la la-file-pdf-o"></i> &nbsp;Ekspor Data</a> -->
+                <!-- <input type="button" id="cancelSubmission" class="btn btn-danger btn-min-width mb-2" placeholder="" name="cancelSubmission" value="Batalkan Pengajuan"> -->
+                <!-- </div>
+                </div> -->
 
             </section>
         </div>
@@ -138,7 +145,7 @@
                     <div class="form-group position-relative has-icon-left">
                         <input type="hidden" id="id-pengajuan" name="id-pengajuan">
                         <textarea class="form-control" id="catatan" rows="7"></textarea>
-                        <p class="text-left"><small class="text-muted">Kosongkan apabila tidak ada catatan.</small></p>
+                        <p class="text-left"><small class="text-muted">Beri tanda (-) apabila tidak ada catatan.</small></p>
                         <div class="form-control-position">
                             <i class="la la-pencil-square font-medium-5 line-height-1 text-muted icon-align"></i>
                         </div>
@@ -153,15 +160,41 @@
     </div>
 </div>
 
+<!-- MODAL PREVIEW -->
+<div class="modal fade" id="modal-preview-document" tabindex="-1" role="dialog" aria-labelledby="modal-preview-document-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="z-index: 9999999;">
+            <div class="modal-header bg-teal bg-lighten-2">
+                <h5 class="modal-title text-white font-weight-bold" style="font-family: Calibri;" id="modal-preview-document-label"><strong>Preview Document</strong></h5>
+                <button type="button" class="close mr-0" data-dismiss="modal" aria-label="Close" style="color: #ffffff;">
+                    <span aria-hidden="true"><strong>&times;</strong></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- <input type="text"> -->
+                <iframe src="" style="width:100%; height:700px;" frameborder="0" id="doc-frame"></iframe>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" style="background-color: #18D26E; color: #fff;" data-dismiss="modal">Tutup</button>
+                <button type="submit" id="btnDownload" class="btn btn-success" style="background-color: #18D26E; color: #fff;">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(function() {
         const base_theme = '<?= BASE_THEME; ?>';
+        const kegiatan = '<?= $kegiatan; ?>';
 
         $('#kabupaten').prop('disabled', true);
         $('#nomor-surat').prop('disabled', true);
         $('#error-provinsi').hide();
         $('#error-kabupaten').hide();
         $('#error-nomor-surat').hide();
+        $('#btn-surat-alokasi').hide();
+        $('#btn-nota-dinas').hide();
+        // $('#btn-export').hide();
 
         $("#kabupaten").select2({
             placeholder: "PILIH KABUPATEN / KOTA",
@@ -333,31 +366,32 @@
             let provinsi = $('#provinsi').select2('data');
             let kabupaten = $('#kabupaten').select2('data');
             let nomorSurat = $('#nomor-surat').select2('data');
+
             if (provinsi != '' && kabupaten != '' && nomorSurat != '') {
                 showDataPengajuan();
 
-                if ($.fn.DataTable.isDataTable('#dataTablePengajuan')) {
-                    myTable.clear().destroy();
-                }
+                // if ($.fn.DataTable.isDataTable('#dataTablePengajuan')) {
+                //     myTable.clear().destroy();
+                // }
 
-                let myTable = $('#dataTablePengajuan').DataTable({
-                    "lengthMenu": [
-                        [5, 10, 25, 50, -1],
-                        [5, 10, 25, 50, "All"]
-                    ],
-                    autoWidth: false,
-                    scrollX: true,
-                    scrollY: "410px",
-                    paging: false,
-                    searching: false,
-                    info: false,
-                    destroy: true,
-                    retrieve: true
-                });
+                // let myTable = $('#dataTablePengajuan').DataTable({
+                //     "lengthMenu": [
+                //         [5, 10, 25, 50, -1],
+                //         [5, 10, 25, 50, "All"]
+                //     ],
+                //     autoWidth: false,
+                //     scrollX: true,
+                //     // scrollY: "410px",
+                //     paging: false,
+                //     searching: false,
+                //     info: false,
+                //     destroy: true,
+                //     retrieve: true
+                // });
 
-                $('#detailSection').show(function() {
-                    myTable.columns.adjust();
-                });
+                // $('#detailSection').show(function() {
+                //     myTable.columns.adjust();
+                // });
             } else {
                 if (provinsi == '') $('#error-provinsi').show();
                 if (kabupaten == '') $('#error-kabupaten').show();
@@ -410,6 +444,79 @@
             $('#id-pengajuan').val(id_pengajuan);
         });
 
+        //EXPORT TELAAH PENGAJUAN
+        $('#showDataPengajuan').on('click', '.btn-export', function() {
+            let id_kabupatenkota = $('#kabupaten').val();
+            let id_proposal = $('#nomor-surat').val();
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU DOKUMEN TELAAH');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/export-telaah'; ?>',
+                data: {
+                    id_kabupatenkota: id_kabupatenkota,
+                    id_proposal: id_proposal,
+                    url: kegiatan
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%');
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
+        //GEENRATE NOTA DINAS
+        $('#showDataPengajuan').on('click', '.btn-nota-dinas', function() {
+            let id_kabupatenkota = $('#kabupaten').val();
+            let id_proposal = $('#nomor-surat').val();
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU NOTA DINAS');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/generate-nota-dinas'; ?>',
+                data: {
+                    id_kabupatenkota: id_kabupatenkota,
+                    id_proposal: id_proposal,
+                    url: kegiatan
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%&toolbar=0');
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
+        // CLEAR TEMP FILES
+        $("#modal-preview-document").on('hide.bs.modal', function() {
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/clear-temp-files'; ?>',
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    // console.log('200 OK');
+                },
+                error: function() {
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
         //SHOW DATA PENGAJUAN
         function showDataPengajuan() {
             let id_kabupatenkota = $('#kabupaten').val();
@@ -427,24 +534,50 @@
                 async: false,
                 dataType: 'json',
                 success: function(data) {
-                    var html = '';
-                    var i;
-                    for (i = 0; i < data.length; i++) {
-                        let disabled = '';
-                        let btnColor = 'success';
-                        let style = 'background-color: #18D26E; color: #fff;';
+                    let html = '';
+                    let i;
+                    let jmlTerverif = 0;
+                    let generated = false;
 
+                    for (i = 0; i < data.length; i++) {
                         if ((data[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
-                            disabled = 'disabled';
-                            btnColor = 'light';
-                            style = 'color: #fff;';
+                            jmlTerverif++;
+                        }
+                    }
+
+                    for (i = 0; i < data.length; i++) {
+                        let disabled = ['', 'disabled'];
+                        let btnColor = ['light', 'info', 'success', 'warning'];
+                        let classId = ['layak', 'btn-export', 'btn-nota-dinas', 'btn-surat-penerbitan']
+                        let title = ['Tandai sudah ditelaah', 'Ekspor Data', 'Cetak Nota Dinas', 'Cetak Surat Penerbitan']
+                        let style = 'color: #fff;';
+                        let actionTd = '';
+
+                        if (data.length != 0 && data.length == jmlTerverif && !generated) {
+                            generated = true;
+                            styleTd = 'vertical-align: top;';
+                            icon = 'la la-file-pdf-o';
+                            rowspan = `rowspan="${ jmlTerverif }"`;
+                            actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor[1] } ${ classId[1] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 5px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[1] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor[2] } ${ classId[2] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 5px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[2] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor[3] } ${ classId[3] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 5px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[3] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                    </td>`;
+                        } else {
+                            styleTd = '';
+                            rowspan = '';
+                            icon = 'ft-check';
+
+                            if ((data[i].nama_status).toLowerCase() != 'sudah diverifikasi') {
+                                actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? btnColor[0] : btnColor[2] } ${ classId[0] } ${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? disabled[1] : disabled[0] }" style="margin-left:0px; ${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? 'background-color: #18D26E; color: #fff;' : style }" data-toggle="tooltip" data-placement="bottom" title="${ title[0] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>                                        
+                                    </td>`;
+                            }
                         }
 
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
-                                    <td scope="col" style="width: 5%">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor } layak ${ disabled }" style="margin-left:0px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Tandai Sudah Ditelaah" data="${data[i].id_pengajuan}"><i class="ft-check"></i></a>                                        
-                                    </td>
+                                    ${ actionTd }
                                     <td scope="col" style="width: 24%;">
                                         <ul style="list-style-type: none;">
                                             <li><strong>${ data[i].nama_poktan }</strong></li>
@@ -477,6 +610,29 @@
                     }
                     $('#showDataPengajuan').html(html);
                     $('[data-toggle="tooltip"]').tooltip();
+
+                    if ($.fn.DataTable.isDataTable('#dataTablePengajuan')) {
+                        myTable.clear().destroy();
+                    }
+
+                    let myTable = $('#dataTablePengajuan').DataTable({
+                        "lengthMenu": [
+                            [5, 10, 25, 50, -1],
+                            [5, 10, 25, 50, "All"]
+                        ],
+                        autoWidth: false,
+                        scrollX: true,
+                        // scrollY: "410px",
+                        paging: false,
+                        searching: false,
+                        info: false,
+                        destroy: true,
+                        retrieve: true
+                    });
+
+                    $('#detailSection').show(function() {
+                        myTable.columns.adjust();
+                    });
                 },
                 error: function() {
                     swal("Error!", "Could not get Data from Database!", "error");

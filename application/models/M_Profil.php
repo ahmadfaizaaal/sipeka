@@ -1,13 +1,48 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class M_Pengajuan extends CI_Model
+class M_Profil extends CI_Model
 {
     public function __construct()
     {
         parent::__construct();
         date_default_timezone_set('Asia/Bangkok');
     }
+
+    public function getDataProfil($param)
+    {
+        $this->db->select("pr.*, u.*, kb.nama as nama_kabupaten");
+        $this->db->from('profil pr');
+        $this->db->join('user u', 'pr.id_user = u.id_user');
+        $this->db->join('kabupatenkota kb', 'u.id_kabupatenkota = kb.id_kabupatenkota');
+        $this->db->where('pr.id_user', $param['id_user']);
+        $sql = $this->db->get();
+        if ($sql->num_rows() > 0) {
+            return $sql->result()[0];
+        } else {
+            return false;
+        }
+    }
+
+    public function updateData($table, $primaryKey, $data)
+    {
+        $this->db->where($primaryKey['column'], $primaryKey['value']);
+        $this->db->update($table, $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+
+
 
     public function getIdJenisByURL($url)
     {
@@ -123,10 +158,9 @@ class M_Pengajuan extends CI_Model
         if ($param['id_proposal'] != null) {
             $query .= " where pr.id_proposal = " . $param['id_proposal'];
         } else {
-            //$query .= " where mp.tgl_buat = (select max(mp2.tgl_buat) from mapping mp2 where mp2.id_proposal = mp.id_proposal)";
+            $query .= " where mp.tgl_buat = (select max(mp2.tgl_buat) from mapping mp2 where mp2.id_proposal = mp.id_proposal)";
         }
-        $query .= " and pj.user_input = '" . $param['id_user'] . "'
-                order by pr.nomor_surat asc, mp.tgl_buat desc";
+        $query .= " and pj.user_input = '" . $param['id_user'] . "'";
         $sql = $this->db->query($query);
         return $sql->result();
     }
@@ -156,7 +190,8 @@ class M_Pengajuan extends CI_Model
 
     public function getListPengajuan_admin($param)
     {
-        $this->db->select("pj.*, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tanggal_buat, prv.nama as nama_provinsi, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, l.koordinat_a, l.koordinat_b, st.*, u.nama as nama_instansi");
+        $this->db->select('pj.*, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.nama_poktan, 
+        pk.nama_ketua, l.koordinat_a, l.koordinat_b, st.*');
         $this->db->from('mapping mp');
         $this->db->join('pengajuan pj', 'mp.id_pengajuan = pj.id_pengajuan');
         $this->db->join('proposal pr', 'mp.id_proposal = pr.id_proposal');
@@ -164,10 +199,8 @@ class M_Pengajuan extends CI_Model
         $this->db->join('kelurahan kl', 'l.id_kelurahan = kl.id_kelurahan');
         $this->db->join('kecamatan kc', 'kl.id_kecamatan = kc.id_kecamatan');
         $this->db->join('kabupatenkota kb', 'kc.id_kabupatenkota = kb.id_kabupatenkota');
-        $this->db->join('provinsi prv', 'kb.id_provinsi = prv.id_provinsi');
         $this->db->join('poktan pk', 'pj.id_poktan = pk.id_poktan');
         $this->db->join('status st', 'pj.status_pengajuan = st.id_status');
-        $this->db->join('user u', 'pj.user_input = u.id_user');
         $this->db->where('pr.id_kabupatenkota', $param['id_kabupatenkota']);
         $this->db->where('pr.id_proposal', $param['id_proposal']);
         // $this->db->where('pj.status_pengajuan', $param['id_status']);
@@ -228,20 +261,6 @@ class M_Pengajuan extends CI_Model
         $insert_id = $this->db->insert_id();
 
         return $insert_id;
-    }
-
-    //UPDATE PROCESS
-    public function updateData($table, $primaryKey, $data)
-    {
-        // $this->db->set('DTM_UPD', date('Y-m-d H:i:s'));
-        // $this->db->set('user_update', $this->session->userdata('officer_column'));
-        $this->db->where($primaryKey['column'], $primaryKey['value']);
-        $this->db->update($table, $data);
-        if ($this->db->affected_rows() > 0) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     //DELETE PROCESS

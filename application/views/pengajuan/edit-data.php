@@ -537,7 +537,7 @@
                     //     newAdded = false;
                     $('#id-proposal').val(surat[0].text);
                     $('#detailSection').show();
-                    $('#cancelSubmission').show();
+                    // $('#cancelSubmission').show();
                     $('#nextToDetail').attr('disabled', true);
                     $('#nomor-surat').attr('disabled', true);
                     // }

@@ -42,7 +42,7 @@
                                     <!-- <div class="alert alert-success" style="display: none;" role="alert"></div> -->
 
                                     <table class="table table-striped table-responsive" id="dataTableDokumen" style="font-family: Arial !important;">
-                                        <thead>
+                                        <thead class="text-center">
                                             <tr>
                                                 <th scope="col" style="width: 2%;">No.</th>
                                                 <th scope="col" style="width: 20%"></th>
@@ -299,18 +299,28 @@
                     var html = '';
                     var i;
                     for (i = 0; i < response.length; i++) {
+                        let disabled = 'disabled';
+                        let ajukan = 'light';
+                        let style = 'color: #fff !important;';
+
+                        if ((response[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
+                            disabled = '';
+                            ajukan = 'success';
+                            style = 'background-color: #18D26E; color: #fff !important;';
+                        }
+
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
                                     <td scope="col" style="width: 20%">
                                         <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${response[i].id_proposal}"><i class="ft-eye"></i></a>
                                         
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-success deletePengajuan" style="margin-left:10px; background-color: #18D26E; color: #fff;" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${response[i].id_proposal}">Ajukan Penomoran</a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ ajukan } deletePengajuan ${ disabled }" style="margin-left:10px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Ajukan penomoran" data="${response[i].id_proposal}">Ajukan Penomoran</a>
                                     </td>
-                                    <td scope="col" style="width: 20%;">${ response[i].nomor_surat }</td>
-                                    <td scope="col" style="width: 20%;">${ response[i].nama_kabupaten }</td>
-                                    <td scope="col" style="width: 20%;">${ response[i].tgl_buat }</td>
-                                    <td scope="col" style="width: 18%;">
-                                        <div class="badge badge-warning">${ response[i].nama_status }</div>
+                                    <td scope="col" style="width: 20%;" class="text-center">${ response[i].nomor_surat }</td>
+                                    <td scope="col" style="width: 20%;" class="text-center">${ response[i].nama_kabupaten }</td>
+                                    <td scope="col" style="width: 20%;" class="text-center">${ response[i].tgl_buat }</td>
+                                    <td scope="col" style="width: 18%;" class="text-center">
+                                        <div class="badge badge-${ response[i].warna }">${ response[i].nama_status }</div>
                                     </td>
                                 </tr>`;
                     }

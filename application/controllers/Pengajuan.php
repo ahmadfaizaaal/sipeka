@@ -29,7 +29,7 @@ class Pengajuan extends CI_Controller
         $data['kegiatan'] = $param;
         $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($param);
         $data['userLogin'] = $this->session->userdata('role');
-        load_page('pengajuan/input-data', 'KEGIATAN ' . strtoupper(str_replace('-', ' ', $param)), $data);
+        load_page('pengajuan/input-data', 'TAMBAH KEGIATAN ' . strtoupper(str_replace('-', ' ', $param)), $data);
     }
 
     public function edit()
@@ -91,8 +91,11 @@ class Pengajuan extends CI_Controller
         }
     }
 
-    public function list($param)
+    public function list($param = null)
     {
+        if ($param == null) {
+            redirect('home');
+        }
         if (!$this->session->userdata('id_user')) {
             redirect('auth/login/' . $param);
         }
@@ -201,10 +204,7 @@ class Pengajuan extends CI_Controller
             'id_proposal' => null,
         );
         $result = $this->pengajuan->getProposal($param);
-        // $user = $this->session->userdata('id_user');
-        // $result = $this->pengajuan->getListProposal($user);
         foreach ($result as $items) {
-            // $tgl_buat = $items->tgl_buat;
             $tgl_buat = $items->tgl_mapping;
             $newDate = tgl_indo($tgl_buat, true); //date('l, d F Y', strtotime($tgl_buat));
             $items->tgl_buat = $newDate;
@@ -475,7 +475,8 @@ class Pengajuan extends CI_Controller
                 "nama_kadin" => $items->nama_kadin,
                 "jabatan" => $items->jabatan,
                 "nip" => $items->nip,
-                "tanda_tangan" => $items->tanda_tangan
+                "tanda_tangan" => $items->tanda_tangan,
+                "catatan" => $items->catatan
             );
             array_push($data['data'], $temp);
         }
@@ -665,10 +666,105 @@ class Pengajuan extends CI_Controller
         $param = array(
             'id_kabupatenkota' => $this->input->post('id_kabupatenkota'),
             'id_proposal' => $this->input->post('id_proposal'),
-            'id_status' => 1,
+            // 'id_status' => 1,
         );
         $result = $this->pengajuan->getListPengajuan_admin($param);
         echo json_encode($result);
+    }
+
+    public function export_telaah()
+    {
+        $param = array(
+            'id_kabupatenkota' => $this->input->post('id_kabupatenkota'),
+            'id_proposal' => $this->input->post('id_proposal'),
+            'url' => $this->input->post('url')
+        );
+
+        $result = $this->pengajuan->getListPengajuan_admin($param);
+
+        $data['data'] = array();
+
+        foreach ($result as $items) {
+            $param['id_pengajuan'] = $items->id_pengajuan;
+
+            $temp = array(
+                "url" => $param['url'],
+                "nama_kabupaten" => $items->nama_kabupaten,
+                "nama_kecamatan" => $items->nama_kecamatan,
+                "nama_kelurahan" => $items->nama_kelurahan,
+                "poktan" => array(
+                    "nama_poktan" => $items->nama_poktan,
+                    "nama_ketua" => $items->nama_ketua,
+                ),
+                "lokasi" => array(
+                    "koordinat_a" => $items->koordinat_a,
+                    "koordinat_b" => $items->koordinat_b,
+                ),
+                "pengajuan" => array(
+                    "id_jenis" => $items->id_jenis,
+                    "luas_layanan" => $items->luas_layanan,
+                    "unit" => $items->unit,
+                    "perkiraan_biaya" => $items->perkiraan_biaya,
+                    "jarak" => $items->jarak,
+                    "ukuran_pompa" => $items->ukuran_pompa,
+                    "bak_penampung" => $items->bak_penampung,
+                    "rumah_pompa" => $items->rumah_pompa,
+                    "provitas" => $items->provitas,
+                    "ip" => $items->ip,
+                    "lahan_sawah" => $items->lahan_sawah,
+                    "sumber_air" => $items->sumber_air,
+                    "komoditas" => $items->komoditas,
+                    "permasalahan" => $items->permasalahan,
+                    "rencana_solusi" => $items->rencana_solusi,
+                    "beda_elevasi" => $items->beda_elevasi,
+                    "user_input" => $items->user_input,
+                    "status_pengajuan" => $items->status_pengajuan,
+                    "kelayakan" => $items->kelayakan
+                ),
+                "user_input" => $items->user_input,
+                'nama_user' => $this->session->userdata('nama'),
+            );
+            array_push($data['data'], $temp);
+        }
+
+        $data['title'] = 'TELAAH';
+        $html = $this->load->view('pengajuan/data-telaah', $data, TRUE);
+        $fileName = export_pdf($html, 'TELAAH' . '_' . $result[0]->nama_kabupaten, 'A4', 'landscape', FALSE);
+        // $fileName = export_pdf($html, strtoupper($param['url']) . '_' . $this->input->post('id_proposal'), 'A4', 'landscape', FALSE);
+
+        echo json_encode(substr($fileName, 9));
+    }
+
+    public function generate_nota_dinas()
+    {
+        $param = array(
+            'id_kabupatenkota' => $this->input->post('id_kabupatenkota'),
+            'id_proposal' => $this->input->post('id_proposal'),
+            'url' => $this->input->post('url')
+        );
+
+        $result = $this->pengajuan->getListPengajuan_admin($param);
+
+        $data['data'] = array();
+
+        foreach ($result as $items) {
+            $temp = array(
+                "url" => $param['url'],
+                "nama_provinsi" => $items->nama_provinsi,
+                "nama_kabupaten" => $items->nama_kabupaten,
+                'tgl_buat' => tgl_indo($items->tanggal_buat, false),
+                'nama_instansi' => $items->nama_instansi,
+                "jumlah_alokasi" => count($result)
+            );
+            array_push($data['data'], $temp);
+        }
+
+        $data['title'] = 'NOTA DINAS';
+        $html = $this->load->view('pengajuan/data-nota-dinas', $data, TRUE);
+        $fileName = export_pdf($html, 'NOTA DINAS' . '_' . $result[0]->nama_kabupaten, 'A4', 'potrait', FALSE);
+        // $fileName = export_pdf($html, strtoupper($param['url']) . '_' . $this->input->post('id_proposal'), 'A4', 'landscape', FALSE);
+
+        echo json_encode(substr($fileName, 9));
     }
 
     public function simpan_telaah()

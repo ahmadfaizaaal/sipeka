@@ -74,6 +74,10 @@
             outline: 0 none;
         }
 
+        .custom-font {
+            font-size: 10px;
+        }
+
         /* html * {
             font-family: Arial !important;
         } */

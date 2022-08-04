@@ -9,6 +9,7 @@ class Profil extends CI_Controller
         date_default_timezone_set('Asia/Bangkok');
         $this->load->library('form_validation');
         $this->load->model('M_Pengajuan', 'pengajuan');
+        $this->load->model('M_Profil', 'profil');
         $this->load->model('M_Auth', 'auth');
 
         $this->is_logged_in = false;
@@ -17,6 +18,70 @@ class Profil extends CI_Controller
             $this->is_logged_in = true;
         }
     }
+
+    public function user()
+    {
+        if (!$this->session->userdata('id_user')) {
+            redirect('auth/login/');
+        }
+
+        $param = array(
+            'id_user' => $this->session->userdata('id_user')
+        );
+
+        $menu = ['perpipaan' => '', 'perpompaan' => '', 'embung' => '', 'air-tanah' => '', 'dokumen' => '', 'profil' => ''];
+        $menu['profil'] = 'active';
+        $data['menu'] = $menu;
+        $data['type'] = 'list';
+        $data['userLogin'] = $this->session->userdata('role');
+        $data['profil'] = $this->profil->getDataProfil($param);
+
+        load_page('profil/profil-user', 'PROFIL USER', $data);
+    }
+
+    public function updateProfil()
+    {
+        $idUser = $this->input->post('id-user');
+
+        $split       = explode(' ', $this->input->post('alamat-instansi'));
+        $alamatInstansi = $split[1] . ' ' . $split[2];
+
+        $param = array(
+            'user' => array(
+                'nama' => $this->input->post('nama-instansi'),
+                'id_kabupatenkota' => $this->input->post('kabupaten')
+            ),
+            'profil' => array(
+                'nama_verifikator' => $this->input->post('nama-verifikator'),
+                'alamat_dinas' => $alamatInstansi,
+                'nama_kadin' => $this->input->post('nama-kadin'),
+                'jabatan' => $this->input->post('jabatan-kadin'),
+                'nip' => $this->input->post('nip-kadin'),
+                'tanda_tangan' => $this->input->post('prev-ttd')
+            )
+        );
+
+        if ($_FILES['doc-ttd']['name']) {
+            $ttd = $this->uploadFile('doc-ttd', $param['profil']['tanda_tangan'], $param['profil']['alamat_dinas'], $idUser);
+            $param['profil']['tanda_tangan'] = $ttd[1];
+        }
+
+
+        $this->profil->updateData('user', array('column' => 'id_user', 'value' => $idUser), $param['user']);
+        $updated = $this->profil->updateData('profil', array('column' => 'id_user', 'value' => $idUser), $param['profil']);
+
+        if ($updated) {
+            redirect('profil/user/');
+        }
+    }
+
+
+
+
+
+
+
+
 
 
     public function add($param = null)
@@ -579,18 +644,14 @@ class Profil extends CI_Controller
         return $data;
     }
 
-    public function uploadFile($fileName, $fileType, $nama_kelurahan, $urlParam, $id_pengajuan)
+    public function uploadFile($fileName, $prevFileName, $nama_kabupaten, $id_user)
     {
         $file = $_FILES[$fileName]['name'];
         $new_fileName = '';
-        $date = date('dmY');
-        $upload_path = 'assets/pengajuan/' . $fileType . '/' . $date;
+        $date = date('Ymd_His');
+        $upload_path = 'assets/pengajuan/temp/signature';
 
-        if ($nama_kelurahan == '') {
-            $new_fileName = $id_pengajuan . '_' . str_replace(" ", "-", $fileType) . '_' .  $date;
-        } else {
-            $new_fileName = $id_pengajuan . '_' . str_replace(" ", "-", $fileType) . '_' . str_replace(" ", "-", $nama_kelurahan) . '_' . $date;
-        }
+        $new_fileName = $id_user . '_' . str_replace(" ", "-", $nama_kabupaten) . '_' . $date;
 
         if (!is_dir($upload_path)) {
             mkdir('./' . $upload_path, 0777, true);
@@ -606,20 +667,12 @@ class Profil extends CI_Controller
             $this->upload->initialize($config);
 
             if ($this->upload->do_upload($fileName)) {
+                $old_image = $prevFileName;
+                if ($old_image != 'default.png') {
+                    unlink('./assets/pengajuan/temp/signature/' . $old_image);
+                }
                 $result = array($date, $new_fileName . $this->upload->data('file_ext'));
                 return $result;
-            } else {
-                // $this->registration->deleteRegistration($id_pengajuan);
-                $this->session->set_flashdata(
-                    'message',
-                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">'
-                        . $this->upload->display_errors() .
-                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>'
-                );
-                redirect('pengajuan/add/' . $urlParam);
             }
         }
     }

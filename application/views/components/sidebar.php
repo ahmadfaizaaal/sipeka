@@ -13,7 +13,7 @@
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" style="font-family: Calibri !important; font-size: 1.3em;">
             <li class=" nav-item">
-                <a href="#"><i class="ft-user"></i><span class="menu-title" data-i18n="">Profil</span></a>
+                <a href="<?= BASE_URL ?>profil/user/"><i class="ft-user"></i><span class="menu-title" data-i18n="">Profil</span></a>
             </li>
             <li class=" nav-item"><a href="#"><i class="ft-server"></i><span class="menu-title" data-i18n="">Daftar Pengajuan</span></a>
                 <ul class="menu-content" style="font-family: Calibri !important; font-size: 1.1rem;">

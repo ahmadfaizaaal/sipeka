@@ -18,8 +18,14 @@
             text-align: center;
         }
 
+        #float-left td>p {
+            text-align: left;
+            vertical-align: top;
+        }
+
         #float-right td>p {
             text-align: right;
+            vertical-align: top;
         }
 
         .custom-padding {
@@ -206,15 +212,31 @@
             <tbody>
         </table>
         <div style="margin-top: 0px; width: 100%;">
-            <div class="text-center" style="width: 350px; margin-left: auto; margin-right: 0;">
-                <p class="ttd"><?= strtoupper($data[$i]['alamat_dinas']) . ', ' . strtoupper($data[$i]['tgl_buat']) ?></p>
-                <p class="ttd">KEPALA DINAS PERTANIAN</p>
-                <p class="ttd"><?= $data[$i]['nama_kabupaten'] ?></p>
-                <img style="margin-top: 20px !important; margin-bottom: 5px;" src="assets/pengajuan/temp/signature/<?= $data[$i]['tanda_tangan'] ?>" alt="" width="50%" height="50px">
-                <p class="ttd" style="text-decoration: underline;"><strong><?= strtoupper($data[$i]['nama_kadin']) ?></strong></p>
-                <p class="ttd"><?= strtoupper($data[$i]['jabatan']) ?></p>
-                <p class="ttd">NIP. <?= strtoupper($data[$i]['nip']) ?></p>
-            </div>
+            <table style="border: none; margin: 20px 20px 0px 20px; width: 100%; padding-bottom: -10px;">
+                <tr>
+                    <td id="float-left" style="margin-top: 0;">
+                        <div class="text-left" style="width: 350px; margin-left: 0; margin-right: auto; height: 116px;">
+                            <p style="margin-bottom: -3px;">CATATAN HASIL TELAAH :</p>
+                            <p class="ttd">&emsp; &emsp; &emsp; &emsp;-- <?= $data[$i]['catatan'] ?></p>
+                            <hr style="margin-top:23px; margin-bottom: 18px;" width="100%">
+                            <hr style="margin-bottom: 18px;" width="100%">
+                            <hr style="margin-bottom: 18px;" width="100%">
+                        </div>
+                    </td>
+                    <td id="float-right">
+                        <div class="text-center" style="width: 350px; vertical-align: top; margin-left: auto; margin-right: 0; padding-right: -50px;">
+                            <p class="ttd"><?= strtoupper($data[$i]['alamat_dinas']) . ', ' . strtoupper($data[$i]['tgl_buat']) ?></p>
+                            <p class="ttd">KEPALA DINAS PERTANIAN</p>
+                            <p class="ttd"><?= $data[$i]['nama_kabupaten'] ?></p>
+                            <img style="margin-top: 20px !important; margin-bottom: 5px;" src="assets/pengajuan/temp/signature/<?= $data[$i]['tanda_tangan'] ?>" alt="" width="50%" height="50px">
+                            <p class="ttd" style="text-decoration: underline;"><strong><?= strtoupper($data[$i]['nama_kadin']) ?></strong></p>
+                            <p class="ttd"><?= strtoupper($data[$i]['jabatan']) ?></p>
+                            <p class="ttd">NIP. <?= strtoupper($data[$i]['nip']) ?></p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
         </div>
         <?php if ($i != count($data) - 1) { ?>
             <div style="page-break-after: always;"></div>

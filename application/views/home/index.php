@@ -91,7 +91,7 @@
                                 <h2 style="margin-top: -25px">Pengajuan Alokasi Kegiatan (SIPEKA)</h2>
                                 <!-- <h2 style="margin-top: -25px">(SIPEKA)</h2> -->
                                 <p style="width: 100%;">Direktorat Irigasi Pertanian, Direktorat Jenderal Prasarana dan Sarana Pertanian, <br /> Kementerian Pertanian</p>
-                                <a href="<?= BASE_URL . 'auth/login/general' ?>" class="btn-get-started scrollto mt-5">Klik untuk Login!</a>
+                                <a href="<?= BASE_URL . 'auth/login/' ?>" class="btn-get-started scrollto mt-5">Klik untuk Login!</a>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
                                 <h2 style="margin-top: -25px">Pengajuan Alokasi Kegiatan (SIPEKA)</h2>
                                 <!-- <h2 style="margin-top: -25px">(SIPEKA)</h2> -->
                                 <p style="width: 100%;">Direktorat Irigasi Pertanian, Direktorat Jenderal Prasarana dan Sarana Pertanian, <br /> Kementerian Pertanian</p>
-                                <a href="<?= BASE_URL . 'auth/login/general' ?>" class="btn-get-started scrollto mt-5">Klik untuk Login!</a>
+                                <a href="<?= BASE_URL . 'auth/login/' ?>" class="btn-get-started scrollto mt-5">Klik untuk Login!</a>
                             </div>
                         </div>
                     </div>

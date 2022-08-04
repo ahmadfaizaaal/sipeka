@@ -84,7 +84,7 @@ class Auth extends CI_Controller
                     'last_time_login' => time()
                 ];
                 $this->session->set_userdata($data);
-                if ('general' == $param) {
+                if ('' == $param || null == $param) {
                     redirect('home');
                 } else {
                     redirect('pengajuan/list/' . $param);
