@@ -45,12 +45,15 @@
                                         <thead class="text-center">
                                             <tr>
                                                 <!-- <th scope="col" style="width: 2%;">No.</th> -->
-                                                <th scope="col" style="width: 18%">Aksi</th>
+                                                <!-- <th scope="col" style="width: 15%">Aksi</th> -->
+                                                <th scope="col" style="width: 3%">Aksi</th>
                                                 <th scope="col" style="width: 15%;">Nomor Surat</th>
-                                                <th scope="col" style="width: 20%;">Nama Gapoktan / Poktan</th>
-                                                <th scope="col" style="width: 20%;">Lokasi Kegiatan</th>
+                                                <th scope="col" style="width: 3%"></th>
+                                                <th scope="col" style="width: 26%;">Nama Gapoktan / Poktan</th>
+                                                <th scope="col" style="width: 26%;">Lokasi Kegiatan</th>
                                                 <th scope="col" style="width: 15%;">Tanggal Pengajuan</th>
                                                 <th scope="col" style="width: 12%;">Status Pengajuan</th>
+                                                <!-- <th scope="col" style="width: 2%;"></th> -->
                                             </tr>
                                         </thead>
                                         <tbody id="showDataProposal">
@@ -92,9 +95,89 @@
     </div>
 </div>
 
+<!-- MODAL AJUKAN PENOMORAN -->
+<div class="modal fade" id="modal-ajukan-penomoran" tabindex="-1" role="dialog" aria-labelledby="modal-ajukan-penomoran-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="z-index: 9999999;">
+            <div class="modal-header bg-teal bg-lighten-2">
+                <h5 class="modal-title text-white font-weight-bold" style="font-family: Calibri;" id="modal-ajukan-penomoran-label"><strong>Preview Document</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: #ffffff;">
+                    <span aria-hidden="true"><strong>&times;</strong></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <?= form_open_multipart('pengajuan/submitForm/', 'class="steps-validation" id="form"'); ?>
+                <h6><i class="step-icon ft-map-pin"></i> Lokasi Kegiatan</h6>
+                <fieldset class="mt-2">
+                    <div class="form-group row">
+                        <input type="hidden" name="id-lokasi" id="id-lokasi" value="">
+                        <label class="col-md-3 label-control" for="kabupaten">Kabupaten <span class="danger">*</span></label>
+                        <div class="col-md-9">
+                            <input type="hidden" name="id-kabupaten" id="id-kabupaten">
+                            <select type="text" style="width: 100%" id="kabupaten" class="select2 job form-control required" placeholder="PILIH KABUPATEN" name="kabupaten"></select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 label-control" for="kecamatan">Kecamatan <span class="danger">*</span></label>
+                        <div class="col-md-9">
+                            <select type="text" style="width: 100%" id="kecamatan" class="select2 job form-control required" placeholder="PILIH KECAMATAN" name="kecamatan"></select>
+                            <!-- <p class="text-left text-danger" style="margin-top: 5px;" id="error-kecamatan">This field is required!</p> -->
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 label-control" for="desa">Desa <span class="danger">*</span></label>
+                        <div class="col-md-9">
+                            <select type="text" style="width: 100%" id="desa" class="select2 job form-control required" placeholder="PILIH DESA" name="desa"></select>
+                            <!-- <p class="text-left text-danger" style="margin-top: 5px;" id="error-desa">This field is required!</p> -->
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <input type="hidden" name="koordinat" id="koordinat">
+                        <label class="col-md-3 label-control" for="a-koordinat">Koordinat <span class="danger">*</span></label>
+                        <div class="col-md-5">
+                            <input type="text" id="a-koordinat" class="form-control required" placeholder="" name="a-koordinat" value="">
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" id="b-koordinat" class="form-control required" placeholder="" name="b-koordinat" value="">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- GAPOKTAN / POKTAN -->
+                <h6><i class="step-icon ft-users"></i>Gapoktan / Poktan</h6>
+                <fieldset class="mt-2">
+                    <div class="form-group row">
+                        <input type="hidden" name="id-poktan" id="id-poktan" value="">
+                        <label class="col-md-3 label-control" for="nama-poktan">Nama Kelompok Tani <span class="danger">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" id="nama-poktan" class="form-control required" placeholder="" name="nama-poktan" value="">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 label-control" for="nama-ketua">Nama Ketua <span class="danger">*</span></label>
+                        <div class="col-md-9">
+                            <input type="text" id="nama-ketua" class="form-control required" placeholder="" name="nama-ketua" value="">
+                        </div>
+                    </div>
+                </fieldset>
+                </form>
+            </div>
+            <!-- <div class="modal-footer"> -->
+            <!-- <button type="button" class="btn btn-default js-btn-step pull-left" data-orientation="cancel" data-dismiss="modal"></button>
+                <button type="button" class="btn btn-warning js-btn-step" data-orientation="previous"></button>
+                <button type="button" class="btn btn-success js-btn-step" data-orientation="next"></button> -->
+            <!-- <button type="button" class="btn btn-success" style="background-color: #18D26E; color: #fff;" data-dismiss="modal">Tutup</button>
+                <button type="submit" id="btnSimpan" class="btn btn-success">Simpan Data</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
 <script>
     $(function() {
         const base_theme = '<?= BASE_THEME; ?>';
+        const base_url = '<?= BASE_URL; ?>';
         showDataProposal();
 
         $(document).ready(function() {
@@ -234,6 +317,31 @@
             });
         });
 
+
+        //INPUT SYARAT PENOMORAN
+        $('#showDataProposal').on('click', '.ajukan-penomoran', function() {
+            let id_pengajuan = $(this).attr('data');
+
+            $('#modal-ajukan-penomoran').modal('show');
+            $('#modal-ajukan-penomoran').find('.modal-title').text('SYARAT PENOMORAN');
+            // $.ajax({
+            //     type: 'ajax',
+            //     method: 'post',
+            //     url: '<?= BASE_URL . 'pengajuan/lihat-proposal'; ?>',
+            //     data: {
+            //         id_pengajuan: id_pengajuan
+            //     },
+            //     async: false,
+            //     dataType: 'json',
+            //     success: function(response) {
+            //         $('#doc-frame').attr('src', base_theme + response);
+            //     },
+            //     error: function() {
+            //         swal("Internal Server error 500!", "Error!", "error");
+            //     }
+            // });
+        });
+
         $("#modal-preview-document").on('hide.bs.modal', function() {
             $.ajax({
                 type: 'ajax',
@@ -289,7 +397,7 @@
             });
         });
 
-        //SHOW DATA PENGHULU
+        //SHOW DATA PROPOSAL
         function showDataProposal() {
             let base_url = '<?= BASE_URL ?>';
             $.ajax({
@@ -307,17 +415,14 @@
                     obj.forEach(function(x) {
                         nomorSurat[x.nomor_surat] = (nomorSurat[x.nomor_surat] || 0) + 1;
                     });
-                    // console.log(nomorSurat)
 
                     let repeated = false;
-                    let numbering = 1;
                     let jmlTerverif = 0
                     for (i = 0; i < response.length; i++) {
                         let disabled = '';
                         let ajukan = '';
                         let style = '';
 
-                        // here
                         let totalSpan = 0;
                         if (nomorSurat.hasOwnProperty(response[i].nomor_surat)) {
                             totalSpan = nomorSurat[response[i].nomor_surat];
@@ -326,7 +431,7 @@
                         if (totalSpan > 1) {
                             if (!repeated) {
                                 for (let j = 0, idx = i; j < totalSpan; j++) {
-                                    if ((response[idx].nama_status).toLowerCase() == 'sudah diverifikasi') {
+                                    if ((response[idx].kode).toLowerCase() == 'dvr' || (response[idx].kode).toLowerCase() == 'ppnmr') {
                                         jmlTerverif++;
                                     }
                                     idx++;
@@ -338,7 +443,7 @@
                             console.log(jmlTerverif)
                             repeated = true;
                         } else {
-                            if ((response[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
+                            if ((response[i].kode).toLowerCase() == 'dvr') {
                                 style = 'background-color: #18D26E; color: #fff !important;';
                             } else {
                                 disabled = 'disabled';
@@ -347,84 +452,52 @@
                             }
                         }
 
-                        // here
-
-                        // if ((response[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
-                        //     // disabled = '';
-                        //     // ajukan = 'success';
-                        //     style = 'background-color: #18D26E; color: #fff !important;';
-                        //     // style = 'background-color: #D2D6DB; color: #fff !important;';
-                        // } else {
-                        //     disabled = 'disabled';
-                        //     ajukan = 'light';
-                        //     style = 'color: #fff !important;';
-                        // }
-
-                        // let totalSpan = 0;
-                        // if (nomorSurat.hasOwnProperty(response[i].nomor_surat)) {
-                        //     totalSpan = nomorSurat[response[i].nomor_surat];
-                        // }
-
-                        html += `<tr>`;
-                        if (false) {
-
-                            if (!repeated) {
-                                // console.log('indeks i = ' + i)
-                                let jmlTerverif = 0
-                                for (let j = 0; j < totalSpan; j++) {
-                                    let idx = i;
-                                    // console.log('indeks j = ' + j)
-                                    if ((response[idx].nama_status).toLowerCase() == 'sudah diverifikasi') {
-                                        jmlTerverif++;
-                                        idx++;
-                                    }
-                                }
-                                disabled = jmlTerverif == totalSpan ? '' : 'disabled';
-                                ajukan = jmlTerverif == totalSpan ? 'success' : 'light';
-
-                                // console.log(jmlTerverif)
-                                // console.log(totalSpan)
-
-                                html += `<td scope="col" rowspan="${ totalSpan }" style="width: 2%;">${ numbering }</td>
-                                        <td scope="col" rowspan="${ totalSpan }" style="width: 20%">
-                                            <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${response[i].id_proposal}"><i class="ft-eye"></i></a>
-                                            
-                                            <a href="javascript:;" class="btn btn-sm btn-icon btn-${ ajukan } deletePengajuan ${ disabled }" style="margin-left:10px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Ajukan penomoran" data="${response[i].id_proposal}">Ajukan Penomoran</a>
-                                        </td>
-                                        <td scope="col" rowspan="${ totalSpan }" style="width: 20%;" class="text-center">${ response[i].nomor_surat }</td>
-                                        <td scope="col" style="width: 20%;" class="text-center">KECAMATAN ${ response[i].nama_kecamatan }</td>
-                                        <td scope="col" style="width: 20%;" class="text-center">${ response[i].tgl_buat }</td>
-                                        <td scope="col" style="width: 18%;" class="text-center">
-                                            <div class="badge badge-${ response[i].warna }">${ response[i].nama_status }</div>
-                                        </td>`;
-                            } else {
-                                html += `<td scope="col" style="width: 20%;" class="text-center">KECAMATAN ${ response[i].nama_kecamatan }</td>
-                                    <td scope="col" style="width: 20%;" class="text-center">${ response[i].tgl_buat }</td>
-                                    <td scope="col" style="width: 18%;" class="text-center">
-                                        <div class="badge badge-${ response[i].warna }">${ response[i].nama_status }</div>
-                                    </td>
-                                `;
-                                numbering--;
-                            }
-                            repeated = true;
+                        if ((response[i].kode).toLowerCase() == 'dvr') {
+                            style = 'background-color: #18D26E; color: #fff !important;';
                         } else {
-                            html += `
-                                    <td scope="col" style="width: 18%">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${response[i].id_proposal}"><i class="ft-eye"></i></a>
+                            disabled = 'disabled';
+                            ajukan = 'light';
+                            style = 'color: #fff !important;';
+                        }
+
+                        /*
+                        <td scope="col" style="width: 15%">
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewProposal" style="margin-left:0px; vertical-align: middle;" data-toggle="tooltip" data-placement="bottom" title="Unduh Dokumen Verifikasi" data="${response[i].id_proposal}"><i class="ft-download"></i>&nbsp; Unduh Dokumen</a>
                                         
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ ajukan } deletePengajuan ${ disabled }" style="margin-left:10px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Ajukan penomoran" data="${response[i].id_proposal}">Ajukan Penomoran</a>
                                     </td>
-                                    <td scope="col" style="width: 15%;" class="text-center">${ response[i].nomor_surat }</td>
-                                    <td scope="col" style="width: 20%;" class="text-center">${ response[i].nama_poktan }</td>
-                                    <td scope="col" style="width: 20%;" class="text-center">KECAMATAN ${ response[i].nama_kecamatan }</td>
-                                    <td scope="col" style="width: 15%;" class="text-center">${ response[i].tgl_buat }</td>
+                        */
+
+                        html += `<tr>
+                                    <td scope="col" style="width: 3%;" >
+                                        <span class="dropdown">
+                                            <button id="btnSearchDrop12" type="button" 
+                                                class="btn btn-sm btn-icon btn-pure font-medium-2"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                <i class="ft-more-vertical"></i>
+                                            </button>
+                                            <span aria-labelledby="btnSearchDrop12" class="dropdown-menu mt-1 dropdown-menu-right">
+                                                <a href="javascript:;" class="dropdown-item viewProposal" data="${response[i].id_proposal}">
+                                                    <i class="ft-download"></i> Unduh Dokumen Verifikasi</a>
+                                                <a href="#" class="dropdown-item ${ (response[i].kode).toLowerCase() == 'vr' ? 'disabled' : '' }">
+                                                    <i class="ft-search"></i> Pratinjau Syarat Penomoran</a>
+                                                <a href="#" class="dropdown-item">
+                                                    <i class="ft-download"></i> Unduh Format Kelengkapan Berkas</a>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    
+                                    <td scope="col" style="width: 15%;" >${ response[i].nomor_surat }</td>
+                                    <td scope="col" style="width: 3%;" >
+                                        <a href="${ base_url }pengajuan/ajukan-penomoran/${ response[i].url }/${ response[i].id_pengajuan }" class="btn btn-sm btn-icon btn-${ ajukan } ${ disabled }" style="margin-left:0px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Input Syarat Penomoran" data="${response[i].id_pengajuan}"><i class="ft-edit-3"></i></a>
+                                    </td>
+                                    <td scope="col" style="width: 26%;" >${ response[i].nama_poktan }</td>
+                                    <td scope="col" style="width: 26%;" >KECAMATAN ${ response[i].nama_kecamatan }</td>
+                                    <td scope="col" style="width: 15%;" >${ response[i].tgl_buat }</td>
                                     <td scope="col" style="width: 12%;" class="text-center">
                                         <div class="badge badge-${ response[i].warna }">${ response[i].nama_status }</div>
                                     </td>
-                                `;
-                        }
-                        html += `</tr>`;
-                        numbering++;
+                                </tr>`;
                     }
                     $('#showDataProposal').html(html);
                     $('[data-toggle="tooltip"]').tooltip();

@@ -94,8 +94,8 @@
                                     <table class="table table-responsive" id="dataTablePengajuan" style="font-family: Arial !important;" width="100%">
                                         <thead>
                                             <tr class="text-center">
-                                                <th scope="col" style="width: 2%;">No.</th>
-                                                <th scope="col" style="width: 5%"></th>
+                                                <!-- <th scope="col" style="width: 2%;">No.</th> -->
+                                                <th scope="col" style="width: 5%">Aksi</th>
                                                 <th scope="col" style="width: 24%;">Lokasi Kegiatan</th>
                                                 <th scope="col" style="width: 5%;">Luas Layanan (Ha)</th>
                                                 <th scope="col" style="width: 10%;">Perkiraan Biaya (Rp)</th>
@@ -472,7 +472,56 @@
             });
         });
 
-        //GEENRATE NOTA DINAS
+        //PRATINJAU DOKUMEN VERIFIKASI
+        $('#showDataPengajuan').on('click', '.pratinjau', function() {
+            let id_pengajuan = $(this).attr('data');
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU DOKUMEN VERIFIKASI');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/lihat-dokumen'; ?>',
+                data: {
+                    id_pengajuan: id_pengajuan,
+                    url: kegiatan
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%&toolbar=0');
+                },
+                error: function() {
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
+        //CETAK DOKUMEN VERIFIKASI
+        $('#showDataPengajuan').on('click', '.cetak-dokumen-verifikasi', function() {
+            let id_proposal = $('#nomor-surat').val();
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU DOKUMEN VERIFIKASI');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/lihat-proposal'; ?>',
+                data: {
+                    id_proposal: id_proposal
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response);
+                },
+                error: function() {
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
+        //GENERATE NOTA DINAS
         $('#showDataPengajuan').on('click', '.btn-nota-dinas', function() {
             let id_kabupatenkota = $('#kabupaten').val();
             let id_proposal = $('#nomor-surat').val();
@@ -491,7 +540,35 @@
                 async: false,
                 dataType: 'json',
                 success: function(response) {
-                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%&toolbar=0');
+                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%');
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
+        //GENERATE SURAT PENERBITAN
+        $('#showDataPengajuan').on('click', '.btn-surat-penerbitan', function() {
+            let id_kabupatenkota = $('#kabupaten').val();
+            let id_proposal = $('#nomor-surat').val();
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU SURAT PENERBITAN');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/generate-surat-penerbitan'; ?>',
+                data: {
+                    id_kabupatenkota: id_kabupatenkota,
+                    id_proposal: id_proposal,
+                    url: kegiatan
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%');
                 },
                 error: function(e) {
                     console.log(e.responseText);
@@ -540,43 +617,45 @@
                     let generated = false;
 
                     for (i = 0; i < data.length; i++) {
-                        if ((data[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
+                        if ((data[i].kode).toLowerCase() == 'dvr' || (data[i].kode).toLowerCase() == 'ppnmr') {
                             jmlTerverif++;
                         }
                     }
-
+                    console.log(jmlTerverif)
                     for (i = 0; i < data.length; i++) {
                         let disabled = ['', 'disabled'];
                         let btnColor = ['light', 'info', 'success', 'warning'];
                         let classId = ['layak', 'btn-export', 'btn-nota-dinas', 'btn-surat-penerbitan']
-                        let title = ['Tandai sudah ditelaah', 'Ekspor Data', 'Cetak Nota Dinas', 'Cetak Surat Penerbitan']
+                        let title = ['Tandai sudah ditelaah', 'Ekspor Data Telaah', 'Cetak Nota Dinas', 'Cetak Surat Penerbitan', 'Cetak Dokumen Verifikasi']
                         let style = 'color: #fff;';
                         let actionTd = '';
 
-                        if (data.length != 0 && data.length == jmlTerverif && !generated) {
-                            generated = true;
-                            styleTd = 'vertical-align: top;';
-                            icon = 'la la-file-pdf-o';
-                            rowspan = `rowspan="${ jmlTerverif }"`;
-                            actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor[1] } ${ classId[1] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 5px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[1] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor[2] } ${ classId[2] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 5px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[2] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ btnColor[3] } ${ classId[3] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 5px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[3] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                        if (data.length == jmlTerverif) {
+                            if (!generated) {
+                                styleTd = 'vertical-align: top;';
+                                icon = 'ft-printer';
+                                rowspan = `rowspan="${ jmlTerverif }"`;
+                                actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
+                                        <a href="javascript:;" class="btn btn-md btn-icon btn-danger cetak-dokumen-verifikasi ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[4] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                        <a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[1] } ${ classId[1] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[1] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                        <a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[2] } ${ classId[2] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[2] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                        <a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[3] } ${ classId[3] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[3] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
                                     </td>`;
+                                generated = true;
+                            }
                         } else {
                             styleTd = '';
                             rowspan = '';
                             icon = 'ft-check';
 
-                            if ((data[i].nama_status).toLowerCase() != 'sudah diverifikasi') {
-                                actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? btnColor[0] : btnColor[2] } ${ classId[0] } ${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? disabled[1] : disabled[0] }" style="margin-left:0px; ${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? 'background-color: #18D26E; color: #fff;' : style }" data-toggle="tooltip" data-placement="bottom" title="${ title[0] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>                                        
-                                    </td>`;
-                            }
+                            actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
+                                <a href="javascript:;" class="btn btn-md btn-icon btn-info pratinjau" style="margin-left:0px; margin-bottom: 10px;" data-toggle="tooltip" data-placement="right" title="Pratinjau Dokumen Verifikasi" data="${data[i].id_pengajuan}"><i class="ft-search"></i></a>
+                                <a href="javascript:;" class="btn btn-md btn-icon btn-${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? btnColor[0] : btnColor[2] } ${ classId[0] } ${ (data[i].nama_status).toLowerCase() == 'sudah diverifikasi' ? disabled[1] : disabled[0] }" style="margin-left:0px; ${ (data[i].nama_status).toLowerCase() != 'sudah diverifikasi' ? 'background-color: #18D26E; color: #fff;' : style }" data-toggle="tooltip" data-placement="right" title="${ title[0] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>                                        
+                                </td>`;
                         }
 
                         html += `<tr>
-                                    <td scope="col" style="width: 2%;">${ i + 1 }</td>
+                                    
                                     ${ actionTd }
                                     <td scope="col" style="width: 24%;">
                                         <ul style="list-style-type: none;">

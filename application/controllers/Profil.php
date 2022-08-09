@@ -33,8 +33,12 @@ class Profil extends CI_Controller
         $menu['profil'] = 'active';
         $data['menu'] = $menu;
         $data['type'] = 'list';
-        $data['userLogin'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
         $data['profil'] = $this->profil->getDataProfil($param);
+
+        if (strtolower($this->session->userdata('tipe_akses')) == 'tim teknis pusat') {
+            $data['bagian'] = $this->session->userdata('bagian');
+        }
 
         load_page('profil/profil-user', 'PROFIL USER', $data);
     }

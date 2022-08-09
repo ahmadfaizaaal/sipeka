@@ -125,15 +125,17 @@ class M_Pengajuan extends CI_Model
         } else {
             //$query .= " where mp.tgl_buat = (select max(mp2.tgl_buat) from mapping mp2 where mp2.id_proposal = mp.id_proposal)";
         }
-        $query .= " and pj.user_input = '" . $param['id_user'] . "'
-                order by pr.nomor_surat asc, mp.tgl_buat desc";
+        if ($param['id_user'] != null) {
+            $query .= " and pj.user_input = '" . $param['id_user'] . "'";
+        }
+        $query .= " order by pr.nomor_surat asc, mp.tgl_buat desc";
         $sql = $this->db->query($query);
         return $sql->result();
     }
 
     public function getListPengajuan($user, $jenis)
     {
-        $this->db->select('pj.*, kb.nama as kabupaten, kc.nama as kecamatan, kl.nama as kelurahan, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, st.*, j.url');
+        $this->db->select("pj.*, kb.nama as kabupaten, kc.nama as kecamatan, kl.nama as kelurahan, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, st.*, j.url, DATE_FORMAT(pj.tgl_buat, '%d-%m-%Y') as tanggal_buat");
         $this->db->from('mapping mp');
         $this->db->join('pengajuan pj', 'mp.id_pengajuan = pj.id_pengajuan');
         $this->db->join('proposal pr', 'mp.id_proposal = pr.id_proposal');
@@ -156,7 +158,7 @@ class M_Pengajuan extends CI_Model
 
     public function getListPengajuan_admin($param)
     {
-        $this->db->select("pj.*, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tanggal_buat, prv.nama as nama_provinsi, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, l.koordinat_a, l.koordinat_b, st.*, u.nama as nama_instansi");
+        $this->db->select("pj.*, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tanggal_buat, prv.nama as nama_provinsi, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, l.koordinat_a, l.koordinat_b, st.*, u.nama as nama_instansi, p.*");
         $this->db->from('mapping mp');
         $this->db->join('pengajuan pj', 'mp.id_pengajuan = pj.id_pengajuan');
         $this->db->join('proposal pr', 'mp.id_proposal = pr.id_proposal');
@@ -168,6 +170,7 @@ class M_Pengajuan extends CI_Model
         $this->db->join('poktan pk', 'pj.id_poktan = pk.id_poktan');
         $this->db->join('status st', 'pj.status_pengajuan = st.id_status');
         $this->db->join('user u', 'pj.user_input = u.id_user');
+        $this->db->join('profil p', 'u.id_user = p.id_user');
         $this->db->where('pr.id_kabupatenkota', $param['id_kabupatenkota']);
         $this->db->where('pr.id_proposal', $param['id_proposal']);
         // $this->db->where('pj.status_pengajuan', $param['id_status']);
@@ -200,7 +203,9 @@ class M_Pengajuan extends CI_Model
         if ($param['id_proposal'] != null) {
             $this->db->where('pr.id_proposal', $param['id_proposal']);
         }
-        $this->db->where('pj.user_input', $param['id_user']);
+        if ($param['id_user'] != null) {
+            $this->db->where('pj.user_input', $param['id_user']);
+        }
         $sql = $this->db->get();
         if ($sql->num_rows() > 0) {
             return $sql->result()[0];

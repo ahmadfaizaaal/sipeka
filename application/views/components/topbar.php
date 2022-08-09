@@ -10,8 +10,8 @@
 				<ul class="nav navbar-nav float-right">
 					<li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown"> <span class="avatar avatar-online"><img src="<?= BASE_THEME ?>adm/app-assets/images/portrait/small/user.png" alt="avatar"></span></a>
 						<div class="dropdown-menu dropdown-menu-right">
-							<div class="arrow_box_right" style="width: 300px !important;">
-								<a class="dropdown-item" href="#"><span class="avatar avatar-online"><img src="<?= BASE_THEME ?>adm/app-assets/images/portrait/small/user.png" alt="avatar"><span class="user-name text-bold-700 ml-1"><?= $userLogin; ?></span></span></a>
+							<div class="arrow_box_right" style="width: 300px !important; font-family: Calibri; font-size: 1.2em;">
+								<a class="dropdown-item" href="#" style="color: #18D26E;"><span class="avatar avatar-online"><img src="<?= BASE_THEME ?>adm/app-assets/images/portrait/small/user.png" alt="avatar"><span class="user-name text-bold-700 ml-1"><?= strlen($userLogin) > 25 ? substr($userLogin, 0, 25) . ' ...' : $userLogin; ?></span></span></a>
 								<!-- <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="user-profile.html"><i class="ft-user"></i> Edit Profile</a>
                                     <a class="dropdown-item" href="email-application.html"><i class="ft-mail"></i> My Inbox</a>

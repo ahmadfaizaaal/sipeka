@@ -9,6 +9,7 @@ class Pengajuan extends CI_Controller
         date_default_timezone_set('Asia/Bangkok');
         $this->load->library('form_validation');
         $this->load->model('M_Pengajuan', 'pengajuan');
+        $this->load->model('M_Profil', 'profil');
         $this->load->model('M_Auth', 'auth');
 
         $this->is_logged_in = false;
@@ -28,7 +29,8 @@ class Pengajuan extends CI_Controller
         $data['type'] = 'input';
         $data['kegiatan'] = $param;
         $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($param);
-        $data['userLogin'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
+        $data['role'] = $this->session->userdata('role');
         load_page('pengajuan/input-data', 'TAMBAH KEGIATAN ' . strtoupper(str_replace('-', ' ', $param)), $data);
     }
 
@@ -53,7 +55,8 @@ class Pengajuan extends CI_Controller
         $data['type'] = 'input';
         $data['kegiatan'] = $url;
         $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($url);
-        $data['userLogin'] = $this->session->userdata('role');
+        $data['role'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
         $data['data'] = $this->initializeResult(array(
             'attr' => $param,
             'result' => $result,
@@ -106,7 +109,8 @@ class Pengajuan extends CI_Controller
         $data['menu'] = $menu;
         $data['type'] = 'list';
         $data['kegiatan'] = $param;
-        $data['userLogin'] = $this->session->userdata('role');
+        $data['role'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
         $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($param);
 
         $page = 'pengajuan/list-data';
@@ -135,9 +139,10 @@ class Pengajuan extends CI_Controller
         $data['type'] = 'list';
         // $data['kegiatan'] = $param;
         // $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($param);
-        $data['userLogin'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
+        $data['role'] = $this->session->userdata('role');
 
-        load_page('dokumen/list-data', 'DOKUMEN PROPOSAL', $data);
+        load_page('dokumen/list-data-v2', 'DOKUMEN PENGAJUAN', $data);
     }
 
     public function cari_nomor_surat()
@@ -194,6 +199,13 @@ class Pengajuan extends CI_Controller
         $user = $this->session->userdata('id_user');
         $jenis = $this->input->post('id_jenis');
         $result = $this->pengajuan->getListPengajuan($user, $jenis);
+        if ($result) {
+            foreach ($result as $items) {
+                $tgl_buat = $items->tanggal_buat;
+                $newDate = tgl_indo($tgl_buat, false); //date('l, d F Y', strtotime($tgl_buat));
+                $items->tgl_buat = $newDate;
+            }
+        }
         echo json_encode($result);
     }
 
@@ -337,7 +349,8 @@ class Pengajuan extends CI_Controller
     public function lihat_dokumen()
     {
         $param = array(
-            'id_user' => $this->session->userdata('id_user'),
+            // 'id_user' => $this->session->userdata('id_user'),
+            'id_user' => null,
             'id_pengajuan' => $this->input->post('id_pengajuan'),
             'id_proposal' => null,
             'url' => $this->input->post('url'),
@@ -409,7 +422,7 @@ class Pengajuan extends CI_Controller
     public function lihat_proposal()
     {
         $param = array(
-            'id_user' => $this->session->userdata('id_user'),
+            'id_user' => strtolower($this->session->userdata('role')) == 'pusat' ? null : $this->session->userdata('id_user'),
             'id_pengajuan' => null,
             'id_proposal' => $this->input->post('id_proposal'),
             'url' => null,
@@ -491,6 +504,90 @@ class Pengajuan extends CI_Controller
         echo json_encode(substr($fileName, 9));
     }
 
+    public function ajukan_penomoran()
+    {
+        $url = $this->uri->segment(3);
+        $idPengajuan = $this->uri->segment(4);
+        $menu = ['perpipaan' => '', 'perpompaan' => '', 'embung' => '', 'air-tanah' => '', 'dokumen' => ''];
+        $menu['dokumen'] = 'active';
+
+        $param = array(
+            'id_user' => null,
+            'id_pengajuan' => $idPengajuan,
+            'id_proposal' => null,
+            'url' => $url,
+        );
+        $result = $this->pengajuan->getDetailPengajuan($param);
+        // $docs = $this->pengajuan->getDokumen($param);
+
+        $data['id_pengajuan'] = $idPengajuan;
+        $data['menu'] = $menu;
+        $data['type'] = 'input';
+        $data['kegiatan'] = $url;
+        $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($url);
+        $data['userLogin'] = $this->session->userdata('nama');
+        $data['data'] = $this->initializeResult(array(
+            'attr' => $param,
+            'result' => $result,
+            'docs' => null
+        ));
+
+        load_page('pengajuan/input-syarat-penomoran', 'SYARAT PENOMORAN', $data);
+    }
+
+    public function submit_syarat_penomoran($idPengajuan = null)
+    {
+        $param = $this->initializeParamPenomoran();
+
+        $idPoktan = $this->input->post('id-poktan');
+
+        $this->pengajuan->updateData('poktan', array('column' => 'id_poktan', 'value' => $idPoktan), $param['poktan']);
+        $this->pengajuan->updateData('pengajuan', array('column' => 'id_pengajuan', 'value' => $idPengajuan), $param['pengajuan']);
+        $rekening = $this->pengajuan->insertData('rekening', $param['rekening']);
+
+        if ($rekening) {
+            $scanKTP = '';
+            if ($_FILES['doc-scan-ktp']['name']) {
+                $scanKTP = $this->uploadFile('doc-scan-ktp', 'PENOMORAN', $param['nama_kelurahan'], $param['url'], $idPengajuan);
+            }
+            $scanBuktab = '';
+            if ($_FILES['doc-scan-buktab']['name']) {
+                $scanBuktab = $this->uploadFile('doc-scan-buktab', 'PENOMORAN', $param['nama_kelurahan'], $param['url'], $idPengajuan);
+            }
+            $scanRekAtif = '';
+            if ($_FILES['doc-scan-rekaktif']['name']) {
+                $scanRekAtif = $this->uploadFile('doc-scan-rekaktif', 'PENOMORAN', $param['nama_kelurahan'], $param['url'], $idPengajuan);
+            }
+
+            $documents = array($scanKTP, $scanBuktab, $scanRekAtif);
+
+            for ($i = 0; $i < count($documents); $i++) {
+                $item = $documents[$i];
+                $data = array(
+                    'id_pengajuan' => $idPengajuan,
+                    'identifier' => 'syarat',
+                    'nama_folder' => $item[0],
+                    'nama_dokumen' => $item[1],
+                    'user_input' => $this->session->userdata('id_user'),
+                    'tgl_buat' => date('Y-m-d H:i:s')
+                );
+
+                $this->pengajuan->insertData('dokumen', $data);
+            }
+
+            $this->session->set_flashdata(
+                'message',
+                '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Selamat!</strong> Status data pengajuan anda berhasil diperbarui. Silahkan tunggu informasi selanjutnya!' .
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>'
+            );
+            redirect('pengajuan/dokumen');
+        }
+    }
+
     public function clear_temp_files()
     {
         $files = glob('./assets/pengajuan/temp/pdf/*'); // get all file names
@@ -504,6 +601,14 @@ class Pengajuan extends CI_Controller
 
     private function initializeResult($param)
     {
+        $docs = array();
+        if ($param['docs'] != null) {
+            $docs = array(
+                "plotting_area" => $param['docs'][0]->nama_folder . '/' . $param['docs'][0]->nama_dokumen,
+                "sumber_air" => $param['docs'][1]->nama_folder . '/' . $param['docs'][1]->nama_dokumen,
+                "lahan_sawah" => $param['docs'][2]->nama_folder . '/' . $param['docs'][2]->nama_dokumen
+            );
+        }
         $data = array(
             "url" => $param['attr']['url'],
             "id_proposal" => $param['result']->id_proposal,
@@ -546,14 +651,40 @@ class Pengajuan extends CI_Controller
                 "status_pengajuan" => $param['result']->status_pengajuan,
                 "kelayakan" => $param['result']->kelayakan
             ),
-            "dokumen" => array(
-                "plotting_area" => $param['docs'][0]->nama_folder . '/' . $param['docs'][0]->nama_dokumen,
-                "sumber_air" => $param['docs'][1]->nama_folder . '/' . $param['docs'][1]->nama_dokumen,
-                "lahan_sawah" => $param['docs'][2]->nama_folder . '/' . $param['docs'][2]->nama_dokumen
-            ),
+            "dokumen" => $docs,
             "user_input" => $param['result']->user_input,
             'nama_user' => $this->session->userdata('nama'),
             "tgl_buat" => $param['result']->tgl_buat
+        );
+
+        return $data;
+    }
+
+    private function initializeParamPenomoran()
+    {
+        $user_update = $this->session->userdata('id_user');
+        $data = array(
+            'url' => $this->input->post('url'),
+            'nama_kelurahan' => $this->input->post('nama-kelurahan'),
+            'pengajuan' => array(
+                'status_pengajuan' => $this->pengajuan->getIdStatusByCode('PPNMR'), //Pengajuan Penomoran
+                'detail_kegiatan' => $this->input->post('penggunaan'),
+                'user_update' => $user_update
+            ),
+            'poktan' => array(
+                'nik_ketua' => $this->input->post('nik-ketua'),
+                'no_hp_ketua' => $this->input->post('no-hp-ketua'),
+                'nik_upkk' => $this->input->post('nik-koord-upkk'),
+                'koordinator_upkk' => $this->input->post('nama-koord-upkk'),
+                'user_update' => $user_update
+            ),
+            'rekening' => array(
+                'id_poktan' => $this->input->post('id-poktan'),
+                'no_rekening' => $this->input->post('no-rekening'),
+                'nama_rekening' => $this->input->post('nama-rekening'),
+                'nama_bank' => $this->input->post('nama-bank'),
+                'tgl_buat' => date('Y-m-d H:i:s', strtotime($this->input->post('tgl-rekening')))
+            )
         );
 
         return $data;
@@ -744,6 +875,43 @@ class Pengajuan extends CI_Controller
         );
 
         $result = $this->pengajuan->getListPengajuan_admin($param);
+        $profil = $this->profil->getDataProfil(array('id_user' => $this->session->userdata('id_user')));
+
+        $data['data'] = array();
+
+        foreach ($result as $items) {
+            $temp = array(
+                "url" => $param['url'],
+                "nama_provinsi" => $items->nama_provinsi,
+                "nama_kabupaten" => $items->nama_kabupaten,
+                'tgl_buat' => tgl_indo(date('d-m-Y'), false),
+                'nama_instansi' => $items->nama_instansi,
+                "jumlah_alokasi" => count($result),
+                "jabatan" => $profil->jabatan,
+                "nama_kadin" => $profil->nama_kadin,
+                "tanda_tangan" => $profil->tanda_tangan
+            );
+            array_push($data['data'], $temp);
+        }
+
+        $data['title'] = 'NOTA DINAS';
+        $html = $this->load->view('pengajuan/data-nota-dinas', $data, TRUE);
+        $fileName = export_pdf($html, 'NOTA DINAS' . '_' . $result[0]->nama_kabupaten, 'A4', 'potrait', FALSE);
+        // $fileName = export_pdf($html, strtoupper($param['url']) . '_' . $this->input->post('id_proposal'), 'A4', 'landscape', FALSE);
+
+        echo json_encode(substr($fileName, 9));
+    }
+
+    public function generate_surat_penerbitan()
+    {
+        $param = array(
+            'id_kabupatenkota' => $this->input->post('id_kabupatenkota'),
+            'id_proposal' => $this->input->post('id_proposal'),
+            'url' => $this->input->post('url')
+        );
+
+        $result = $this->pengajuan->getListPengajuan_admin($param);
+        $profil = $this->profil->getDataProfil(array('id_user' => $this->session->userdata('id_user')));
 
         $data['data'] = array();
 
@@ -754,14 +922,19 @@ class Pengajuan extends CI_Controller
                 "nama_kabupaten" => $items->nama_kabupaten,
                 'tgl_buat' => tgl_indo($items->tanggal_buat, false),
                 'nama_instansi' => $items->nama_instansi,
-                "jumlah_alokasi" => count($result)
+                'alamat_instansi' => $items->alamat_dinas,
+                'nomor_surat' => $items->nomor_surat,
+                "jumlah_alokasi" => count($result),
+                "jabatan" => $profil->jabatan,
+                "nama_kadin" => $profil->nama_kadin,
+                "tanda_tangan" => $profil->tanda_tangan
             );
             array_push($data['data'], $temp);
         }
 
-        $data['title'] = 'NOTA DINAS';
-        $html = $this->load->view('pengajuan/data-nota-dinas', $data, TRUE);
-        $fileName = export_pdf($html, 'NOTA DINAS' . '_' . $result[0]->nama_kabupaten, 'A4', 'potrait', FALSE);
+        $data['title'] = 'SURAT PENERBITAN';
+        $html = $this->load->view('pengajuan/data-surat-penerbitan', $data, TRUE);
+        $fileName = export_pdf($html, 'SURAT PENERBITAN' . '_' . $result[0]->nama_kabupaten, 'A4', 'potrait', FALSE);
         // $fileName = export_pdf($html, strtoupper($param['url']) . '_' . $this->input->post('id_proposal'), 'A4', 'landscape', FALSE);
 
         echo json_encode(substr($fileName, 9));

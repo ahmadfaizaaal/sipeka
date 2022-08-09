@@ -61,7 +61,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title" style="font-family: Calibri !important; font-size: 1.5em;">FORM EDIT PENGAJUAN</h4>
+                                <h4 class="card-title" style="font-family: Calibri !important; font-size: 1.5em;">FORM SYARAT PENOMORAN</h4>
                                 <a class="heading-elements-toggle"><i class="la la-ellipsis-h font-medium-3"></i></a>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
@@ -71,18 +71,17 @@
                             </div>
                             <div class="card-content collapse show" style="font-family: Calibri !important; font-size: 1.3em;">
                                 <div class="card-body">
-                                    <?= form_open_multipart('pengajuan/submitForm/' . $data['pengajuan']['id_pengajuan'], 'class="steps-validation" id="form"'); ?>
+                                    <?= form_open_multipart('pengajuan/submit-syarat-penomoran/' . $data['pengajuan']['id_pengajuan'], 'class="steps-validation" id="form"'); ?>
                                     <!-- <input type="hidden" id="regID" name="regID"> -->
-                                    <input type="hidden" id="id-jenis" name="id-jenis" value="<?= $id_jenis; ?>">
                                     <input type="hidden" id="url" name="url" value="<?= $kegiatan; ?>">
-                                    <input type="hidden" name="id-proposal" id="id-proposal">
+                                    <input type="hidden" id="id-poktan" name="id-poktan" value="<?= $data['poktan']['id_poktan'] ?>">
                                     <input type="hidden" id="nama-kabupaten" name="nama-kabupaten" value="">
                                     <input type="hidden" id="nama-kecamatan" name="nama-kecamatan" value="">
-                                    <input type="hidden" id="nama-kelurahan" name="nama-kelurahan" value="">
+                                    <input type="hidden" id="nama-kelurahan" name="nama-kelurahan" value="<?= $data['nama_kelurahan'] ?>">
 
 
                                     <!-- LOKASI KEGIATAN -->
-                                    <h6><i class="step-icon ft-map-pin"></i> Lokasi Kegiatan</h6>
+                                    <h6><i class="step-icon ft-activity"></i> DETAIL KEGIATAN</h6>
                                     <fieldset class="mt-2">
                                         <div class="form-group row">
                                             <input type="hidden" name="id-lokasi" id="id-lokasi" value="<?= $data['lokasi']['id_lokasi'] ?>">
@@ -107,163 +106,111 @@
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <input type="hidden" name="koordinat" id="koordinat">
-                                            <label class="col-md-3 label-control" for="a-koordinat">Koordinat <span class="danger">*</span></label>
-                                            <div class="col-md-5">
-                                                <input type="text" id="a-koordinat" class="form-control required" placeholder="" name="a-koordinat" value="<?= $data['lokasi']['koordinat_a'] ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <input type="text" id="b-koordinat" class="form-control required" placeholder="" name="b-koordinat" value="<?= $data['lokasi']['koordinat_b'] ?>">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
-                                    <!-- GAPOKTAN / POKTAN -->
-                                    <h6><i class="step-icon ft-users"></i>Gapoktan / Poktan</h6>
-                                    <fieldset class="mt-2">
-                                        <div class="form-group row">
-                                            <input type="hidden" name="id-poktan" id="id-poktan" value="<?= $data['poktan']['id_poktan'] ?>">
-                                            <label class="col-md-3 label-control" for="nama-poktan">Nama Kelompok Tani <span class="danger">*</span></label>
+                                            <label class="col-md-3 label-control" for="nama-kegiatan">Nama Kegiatan <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="nama-poktan" class="form-control required" placeholder="" name="nama-poktan" value="<?= $data['poktan']['nama_poktan'] ?>">
+                                                <input type="text" id="nama-kegiatan" class="form-control required" placeholder="" name="nama-kegiatan" value="<?= strtoupper(str_replace('-', ' ', $kegiatan)) ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="nama-ketua">Nama Ketua <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="nama-ketua" class="form-control required" placeholder="" name="nama-ketua" value="<?= $data['poktan']['nama_ketua'] ?>">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
-                                    <!-- DETAIL KEGIATAN -->
-                                    <h6><i class="step-icon ft-edit"></i>Detail Kegiatan</h6>
-                                    <fieldset class="mt-2">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="luas-layanan">Luas Layanan (Ha) <span class="danger">*</span></label>
+                                            <label class="col-md-3 label-control" for="luas-layanan">Luas (Ha) <span class="danger">*</span></label>
                                             <div class="col-md-9">
                                                 <input type="number" id="luas-layanan" class="form-control required" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" placeholder="" name="luas-layanan">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="unit">Unit <span class="danger">*</span></label>
+                                            <label class="col-md-3 label-control" for="perkiraan-biaya">Nominal Anggaran (Rp) <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="unit" class="form-control required number " placeholder="" name="unit" value="<?= $data['pengajuan']['unit'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="perkiraan-biaya">Perkiraan Biaya (Rp) <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="perkiraan-biaya" class="form-control required price " placeholder="" name="perkiraan-biaya" value="<?= $data['pengajuan']['perkiraan_biaya'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="panjang-jarak">Panjang/Jarak dari Sumber (m) <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="number" id="panjang-jarak" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="panjang-jarak" value="<?= $data['pengajuan']['jarak'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="ukuran-pompa">Ukuran Pompa (inch) / Pipa (m) <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="number" id="ukuran-pompa" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="ukuran-pompa" value="<?= $data['pengajuan']['ukuran_pompa'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <input type="hidden" name="bak-penampung" id="bak-penampung">
-                                            <label class="col-md-3 label-control" for="p-bak-penampung">Bak Penampung <span class="danger">*</span></label>
-                                            <div class="col-md-3">
-                                                <input type="number" id="p-bak-penampung" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="p-bak-penampung">
-                                                <p class="text-left"><small class="text-muted">Panjang (m)</small></p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="number" id="l-bak-penampung" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="l-bak-penampung">
-                                                <p class="text-left"><small class="text-muted">Lebar (m)</small></p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="number" id="t-bak-penampung" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="t-bak-penampung">
-                                                <p class="text-left"><small class="text-muted">Tinggi (m)</small></p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row" style="margin-top: -20px;">
-                                            <input type="hidden" name="rumah-pompa" id="rumah-pompa">
-                                            <label class="col-md-3 label-control" for="p-rumah-pompa">Rumah Pompa <span class="danger">*</span></label>
-                                            <div class="col-md-3">
-                                                <input type="number" id="p-rumah-pompa" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="p-rumah-pompa">
-                                                <p class="text-left"><small class="text-muted">Panjang (m)</small></p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="number" id="l-rumah-pompa" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="l-rumah-pompa">
-                                                <p class="text-left"><small class="text-muted">Lebar (m)</small></p>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <input type="number" id="t-rumah-pompa" class="form-control required " placeholder="" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" name="t-rumah-pompa">
-                                                <p class="text-left"><small class="text-muted">Tinggi (m)</small></p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row" style="margin-top: -20px;">
-                                            <label class="col-md-3 label-control" for="provitas">Provitas <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="number" id="provitas" class="form-control required" pattern="^[0-9]+(?:\,[0-9]{1,2})?$" step="0.01" placeholder="" name="provitas" value="<?= $data['pengajuan']['provitas'] ?>">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="ip">IP <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <input type="text" id="ip" class="form-control required number " placeholder="" name="ip" value="<?= $data['pengajuan']['ip'] ?>">
+                                                <input type="text" id="perkiraan-biaya" class="form-control required price " placeholder="" name="perkiraan-biaya" value="<?= 'Rp. ' . number_format($data['pengajuan']['perkiraan_biaya'], 0, ',', '.') ?>">
                                             </div>
                                         </div>
                                     </fieldset>
 
-                                    <!-- KETERANGAN -->
-                                    <h6><i class="step-icon ft-list"></i>Keterangan</h6>
+                                    <!-- URAIAN BANPEM -->
+                                    <h6><i class="step-icon ft-package"></i>URAIAN BANPEM</h6>
                                     <fieldset class="mt-2">
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="lahan-sawah">Lahan sawah merupakan</label>
+                                            <input type="hidden" name="id-poktan" id="id-poktan" value="<?= $data['poktan']['id_poktan'] ?>">
+                                            <label class="col-md-3 label-control" for="nama-poktan">Nama Kelompok Tani <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <!-- <input type="hidden" name="lahan" id="lahan"> -->
-                                                <select id="lahan-sawah" name="lahan-sawah" class="form-control select2">
-                                                    <option value="Sawah tadah hujan">Sawah tadah hujan</option>
-                                                    <option value="Irigasi Teknis">Irigasi Teknis</option>
-                                                    <option value="Lahan Kering">Lahan Kering</option>
-                                                </select>
+                                                <input type="text" id="nama-poktan" class="form-control required" placeholder="" name="nama-poktan" value="<?= strtoupper($data['poktan']['nama_poktan']) ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="sumber-air">Sumber air yang digunakan berasal dari</label>
+                                            <label class="col-md-3 label-control" for="nama-ketua">Nama Ketua <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="sumber-air" class="form-control " placeholder="" name="sumber-air" value="<?= $data['pengajuan']['sumber_air'] ?>">
+                                                <input type="text" id="nama-ketua" class="form-control required" placeholder="" name="nama-ketua" value="<?= strtoupper($data['poktan']['nama_ketua']) ?>">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="komoditas">Komoditas yang ditanam </label>
+                                            <label class="col-md-3 label-control" for="nik-ketua">NIK Ketua <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="komoditas" class="form-control " placeholder="" name="komoditas" value="<?= $data['pengajuan']['komoditas'] ?>">
+                                                <input type="text" id="nik-ketua" class="form-control required nik" placeholder="" name="nik-ketua" value="">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="permasalahan">Permasalahan yang dialami </label>
+                                            <label class="col-md-3 label-control" for="no-hp-ketua">No. HP Ketua <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="permasalahan" class="form-control " placeholder="" name="permasalahan" value="<?= $data['pengajuan']['permasalahan'] ?>">
+                                                <input type="text" id="no-hp-ketua" class="form-control required mobile-phone" placeholder="" name="no-hp-ketua" value="">
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="rencana-solusi">Rencana solusi </label>
+                                            <label class="col-md-3 label-control" for="nama-koord-upkk">Nama Koordinator UPKK <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="rencana-solusi" class="form-control " placeholder="" name="rencana-solusi" value="<?= $data['pengajuan']['rencana_solusi'] ?>">
+                                                <input type="text" id="nama-koord-upkk" class="form-control required" placeholder="" name="nama-koord-upkk" value="">
                                             </div>
                                         </div>
-                                        <div class="form-group row" id="elevasi">
-                                            <label class="col-md-3 label-control" for="beda-elevasi">Beda elevasi </label>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="nik-koord-upkk">NIK Koordinator UPKK <span class="danger">*</span></label>
                                             <div class="col-md-9">
-                                                <input type="text" id="beda-elevasi" class="form-control " placeholder="" name="beda-elevasi" value="<?= $data['pengajuan']['beda_elevasi'] ?>">
+                                                <input type="text" id="nik-koord-upkk" class="form-control required nik" placeholder="" name="nik-koord-upkk" value="">
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="penggunaan">Penggunaan <span class="danger">*</span></label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="penggunaan" class="form-control required" placeholder="" name="penggunaan" value="">
+                                            </div>
+                                        </div>
+                                    </fieldset>
 
-                                        <strong>
-                                            <h4 class="card-title mt-3 mb-3" style="font-family: Calibri !important; font-size: 1.1em;">DOKUMENTASI (SUMBER AIR, LOKASI LAHAN / SAWAH DAN CATCHMENT AREA) OPEN CAMERA</h4>
-                                        </strong>
+                                    <!-- DATA REKENING PENERIMA -->
+                                    <h6><i class="step-icon la la-money"></i>DATA REKENING PENERIMA</h6>
+                                    <fieldset class="mt-2">
+                                        <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="nama-bank">Nama Bank <span class="danger">*</span></label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="nama-bank" class="form-control required" placeholder="" name="nama-bank" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="no-rekening">No. Rekening <span class="danger">*</span></label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="no-rekening" class="form-control required" placeholder="" name="no-rekening" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="nama-rekening">Nama Pemilik Rekening <span class="danger">*</span></label>
+                                            <div class="col-md-9">
+                                                <input type="text" id="nama-rekening" class="form-control required" placeholder="" name="nama-rekening" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-md-3 label-control" for="tgl-rekening">Tanggal Pembukaan Rekening <span class="danger">*</span></label>
+                                            <div class="col-md-9 position-relative datepicker">
+                                                <input type="text" id="tgl-rekening" class="form-control" name="tgl-rekening">
+                                                <!-- <div class="form-control-position">
+                                                    <i class="ft-calendar"></i>
+                                                </div> -->
+                                            </div>
+                                            <!-- <div class="col-md-9">
+                                                <input type="text" id="tgl-rekening" class="form-control required" placeholder="" name="tgl-rekening" value="">
+                                            </div> -->
+                                        </div>
+                                    </fieldset>
 
+                                    <!-- KETERANGAN -->
+                                    <h6><i class="step-icon ft-image"></i>UNGGAH BERKAS</h6>
+                                    <fieldset class="mt-2">
                                         <div class="form-group row">
                                             <div class="col-md-12">
                                                 <div class="card text-white box-shadow-0 bg-gradient-x-warning">
@@ -278,52 +225,34 @@
 
 
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="doc-plotting-area">Plotting Area <span class="danger">*</span></label>
+                                            <label class="col-md-3 label-control" for="doc-scan-ktp">Scan KTP <span class="danger">*</span></label>
                                             <div class="col-md-9">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="doc-plotting-area" id="doc-plotting-area" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('doc-plotting-area', 'label-plotting-area')">
-                                                    <label for="doc-plotting-area" class="custom-file-label" id="label-plotting-area"></label>
+                                                    <input type="file" class="custom-file-input" name="doc-scan-ktp" id="doc-scan-ktp" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('doc-scan-ktp', 'label-scan-ktp')">
+                                                    <label for="doc-scan-ktp" class="custom-file-label" id="label-scan-ktp"></label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="doc-sumber-air">Sumber Air <span class="danger">*</span></label>
+                                            <label class="col-md-3 label-control" for="doc-scan-buktab">Scan Buku Tabungan <span class="danger">*</span></label>
                                             <div class="col-md-9">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="doc-sumber-air" id="doc-sumber-air" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('doc-sumber-air', 'label-sumber-air')">
-                                                    <label for="doc-sumber-air" class="custom-file-label" id="label-sumber-air"></label>
+                                                    <input type="file" class="custom-file-input" name="doc-scan-buktab" id="doc-scan-buktab" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('doc-scan-buktab', 'label-scan-buktab')">
+                                                    <label for="doc-scan-buktab" class="custom-file-label" id="label-scan-buktab"></label>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="doc-lahan-sawah">Lahan Sawah <span class="danger">*</span></label>
+                                        <div class="form-group row mb-2">
+                                            <label class="col-md-3 label-control" for="doc-scan-rekaktif">Surat Rekening Aktif <span class="danger">*</span></label>
                                             <div class="col-md-9">
                                                 <div class="custom-file">
-                                                    <input type="file" class="custom-file-input" name="doc-lahan-sawah" id="doc-lahan-sawah" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('doc-lahan-sawah', 'label-lahan-sawah')">
-                                                    <label for="doc-lahan-sawah" class="custom-file-label" id="label-lahan-sawah"></label>
+                                                    <input type="file" class="custom-file-input" name="doc-scan-rekaktif" id="doc-scan-rekaktif" accept="image/jpg, image/jpeg, image/png" required onchange="getFileNameOfImage('doc-scan-rekaktif', 'label-scan-rekaktif')">
+                                                    <label for="doc-scan-rekaktif" class="custom-file-label" id="label-scan-rekaktif"></label>
                                                 </div>
                                             </div>
                                         </div>
 
                                     </fieldset>
-
-                                    <!-- STATUS KELAYAKAN -->
-                                    <h6><i class="step-icon ft-check-circle"></i> Status Kelayakan</h6>
-                                    <fieldset class="mt-2">
-                                        <div class="form-group row">
-                                            <label class="col-md-3 label-control" for="status_kelayakan">Status Kelayakan <span class="danger">*</span></label>
-                                            <div class="col-md-9">
-                                                <!-- <input type="hidden" name="status-kelayakan" id="status-kelayakan"> -->
-                                                <select id="status-kelayakan" name="status-kelayakan" class="form-control required">
-                                                    <!-- <option value="none" selected="" disabled="">Pilih salah satu</option> -->
-                                                    <option value="LAYAK" selected="">LAYAK</option>
-                                                    <option value="TIDAK LAYAK">TIDAK LAYAK</option>
-                                                </select>
-                                                <p class="text-left text-danger" style="margin-top: 5px;" id="error-status-kelayakan">This field is required!</p>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-
                                     </form>
                                 </div>
                             </div>
@@ -352,6 +281,8 @@
     <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/forms/validation/jquery.validate.min.js" type="text/javascript"></script>
     <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/extensions/sweetalert2.all.js" type="text/javascript"></script>
     <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/locale/id.js" type="text/javascript"></script>
     <script src="<?= BASE_THEME ?>datetime/build/js/bootstrap-datetimepicker.min.js"></script>
 
     <!-- BEGIN CHAMELEON  JS-->
@@ -364,57 +295,32 @@
     <script src="<?= BASE_THEME ?>adm/app-assets/js/scripts/forms/select/form-select2.js" type="text/javascript"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/locale/id.js" type="text/javascript"></script>
 
     <script>
         $(function() {
-            let numberLength = 0;
-            let newAdded = false;
 
+            // $('#nama-rekening').on('change', function() {
+            //     alert($('#tgl-rekening').val())
+            // })
+
+            $('#tgl-rekening').datetimepicker({
+                locale: 'id',
+                format: 'DD-MM-YYYY HH:mm:ss',
+                maxDate: moment().add(0, 'days')
+            });
+
+            const kegiatan = '<?= $kegiatan ?>';
+            let numberLength = 0;
             let value_luas_layanan = '<?= $data['pengajuan']['luas_layanan'] ?>';
             $('#luas-layanan').val(parseFloat(value_luas_layanan.split(' ')[0].replace(',', '.')).toFixed(2));
-            let value_panjang_jarak = '<?= $data['pengajuan']['jarak'] ?>';
-            $('#panjang-jarak').val(parseFloat(value_panjang_jarak.split(' ')[0].replace(',', '.')).toFixed(2));
-            let value_ukuran_pompa = '<?= $data['pengajuan']['ukuran_pompa'] ?>';
-            $('#ukuran-pompa').val(parseFloat(value_ukuran_pompa.split(' ')[0].replace(',', '.')).toFixed(2));
-            let value_provitas = '<?= $data['pengajuan']['provitas'] ?>';
-            $('#provitas').val(parseFloat(value_provitas.split(' ')[0].replace(',', '.')).toFixed(2));
-
-            let value_bak_penampung = '<?= $data['pengajuan']['bak_penampung'] ?>';
-            $('#p-bak-penampung').val(parseFloat(value_bak_penampung.substring(0, 3).replace(',', '.')).toFixed(1));
-            $('#l-bak-penampung').val(parseFloat(value_bak_penampung.substring(8, 11).replace(',', '.')).toFixed(1));
-            $('#t-bak-penampung').val(parseFloat(value_bak_penampung.substring(16, 19).replace(',', '.')).toFixed(1));
-
-            let value_rumah_pompa = '<?= $data['pengajuan']['rumah_pompa'] ?>';
-            $('#p-rumah-pompa').val(parseFloat(value_rumah_pompa.substring(0, 3).replace(',', '.')).toFixed(1));
-            $('#l-rumah-pompa').val(parseFloat(value_rumah_pompa.substring(8, 11).replace(',', '.')).toFixed(1));
-            $('#t-rumah-pompa').val(parseFloat(value_rumah_pompa.substring(16, 19).replace(',', '.')).toFixed(1));
 
             validateNumber('price');
             validateNumber('number');
             validateNumber('nik');
+            validateMobilePhone();
 
             $('#error-nomor-surat').hide();
-            $('#error-status-kelayakan').hide();
-            $('#detailSection').hide();
             $('#cancelSubmission').hide();
-            $('#elevasi').hide();
-
-            const kegiatan = '<?= $kegiatan ?>';
-
-            if (kegiatan == 'perpipaan') {
-                $('#elevasi').show();
-            } else {
-                $('#elevasi').hide();
-            }
-
-            const kelayakan = '<?= $data['pengajuan']['kelayakan'] ?>';
-            $("#status-kelayakan").val(kelayakan).trigger('change');
-            $('#status-kelayakan').select2({
-                width: '100%',
-                placeholder: 'PILIH STATUS KELAYAKAN'
-            });
 
             let selected_id = '<?= $data['id_proposal'] ?>';
             let selected_text = '<?= $data['nomor_surat'] ?>';
@@ -426,19 +332,6 @@
                     text: selected_text
                 }],
                 placeholder: 'PILIH NOMOR SURAT',
-                language: {
-                    noResults: function(params) {
-                        return "Tidak ada Data yang cocok dengan Keyword.";
-                    },
-                    searching: function(params) {
-                        return "Mencari...";
-                    },
-                    inputTooShort: function(params) {
-                        var x = params.minimum - params.input.length;
-                        return "Masukkan " + x + " karakter lagi";
-                    }
-                },
-                minimumInputLength: 1,
                 ajax: {
                     url: '<?= BASE_URL ?>pengajuan/cari-nomor-surat',
                     dataType: 'json',
@@ -465,146 +358,56 @@
                     cache: true
                 },
                 tags: true,
-                // createTag: function(params) {
-                //     return {
-                //         id: 0,
-                //         text: params.term,
-                //         newOption: true
-                //     }
-                // },
-                // templateResult: function(data) {
-                //     var $result = $("<span></span>");
-
-                //     $result.text(data.text);
-
-                //     if (data.newOption) {
-                //         $result.append(" <em>(BARU)</em>");
-                //     }
-
-                //     return $result;
-                // }
-            }).on("select2:select", function(e) {
-                // var selected = e.params.data;
-                // if (typeof selected !== "undefined") {
-                //     $("[name='creditor_id']").val(selected.creditor_id);
-                //     $("#allocationsDiv").hide();
-                //     $("[name='amount_cash']").val("");
-                //     $("[name='amount_cheque']").val("");
-                //     $("[name='amount_direct']").val("");
-                //     $("[name='amount_creditcard']").val("");
-                // }
-            }).on("select2:unselecting", function(e) {
-                // $("form").each(function() {
-                //     this.reset()
-                // });
-                // ("#allocationsDiv").hide();
-                // $("[name='creditor_id']").val("");
-            }).val(selected_id).trigger('change');
+            });
 
             $('#nomor-surat').on('change', function() {
                 $('#error-nomor-surat').hide();
             });
 
-            $('#nextToDetail').on('click', function() {
-                let surat = $('#nomor-surat').select2('data');
-                if (surat != '') {
-                    // if (surat[0].id == 0) {
-                    //     $.ajax({
-                    //         type: 'ajax',
-                    //         method: 'post',
-                    //         url: '<?= BASE_URL . 'pengajuan/insert-nomor-surat'; ?>',
-                    //         data: {
-                    //             nomorSurat: surat[0].text
-                    //         },
-                    //         async: false,
-                    //         dataType: 'json',
-                    //         success: function(data) {
-                    //             if (data != '') {
-                    //                 newAdded = true;
-                    //                 $('#id-proposal').val(data);
-                    //                 $('#detailSection').show();
-                    //                 $('#cancelSubmission').show();
-                    //                 $('#nextToDetail').attr('disabled', true);
-                    //             } else {
-                    //                 swal("Error!", "Gagal simpan nomor surat!", "error");
-                    //             }
-                    //         },
-                    //         error: function() {
-                    //             swal("Error!", "Internal Server error 500!", "error");
-                    //         }
-                    //     });
-                    // } else {
-                    //     newAdded = false;
-                    $('#id-proposal').val(surat[0].text);
-                    $('#detailSection').show();
-                    // $('#cancelSubmission').show();
-                    $('#nextToDetail').attr('disabled', true);
-                    $('#nomor-surat').attr('disabled', true);
-                    // }
+            // $('#nextToDetail').on('click', function() {
+            let surat = $('#nomor-surat').select2('data');
+            if (surat != '') {
+                $('#id-proposal').val(surat[0].text);
+                $('#detailSection').show();
+                $('#nextToDetail').attr('disabled', true);
+                $('#nomor-surat').attr('disabled', true);
+                // }
 
-                    const p_bak_penampung = $('#p-bak-penampung').val();
-                    const l_bak_penampung = $('#l-bak-penampung').val();
-                    const t_bak_penampung = $('#t-bak-penampung').val();
+                const p_bak_penampung = $('#p-bak-penampung').val();
+                const l_bak_penampung = $('#l-bak-penampung').val();
+                const t_bak_penampung = $('#t-bak-penampung').val();
 
-                    const p_rumah_pompa = $('#p-rumah-pompa').val();
-                    const l_rumah_pompa = $('#l-rumah-pompa').val();
-                    const t_rumah_pompa = $('#t-rumah-pompa').val();
+                const p_rumah_pompa = $('#p-rumah-pompa').val();
+                const l_rumah_pompa = $('#l-rumah-pompa').val();
+                const t_rumah_pompa = $('#t-rumah-pompa').val();
 
-                    if (p_bak_penampung != '' && l_bak_penampung != '' && t_bak_penampung != '') {
-                        const bak_penampung = `${parseFloat(p_bak_penampung).toFixed(1).replace('.', ',')} m x ${parseFloat(l_bak_penampung).toFixed(1).replace('.', ',')} m x ${parseFloat(t_bak_penampung).toFixed(1).replace('.', ',')} m`;
-                        $('#bak-penampung').val(bak_penampung);
-                    }
-
-                    if (p_rumah_pompa != '' && l_rumah_pompa != '' && t_rumah_pompa != '') {
-                        const rumah_pompa = `${parseFloat(p_rumah_pompa).toFixed(1).replace('.', ',')} m x ${parseFloat(l_rumah_pompa).toFixed(1).replace('.', ',')} m x ${parseFloat(t_rumah_pompa).toFixed(1).replace('.', ',')} m`;
-                        $('#rumah-pompa').val(rumah_pompa);
-                    }
-
-                    let kelurahan = $('#desa').select2('data');
-                    $('#nama-kelurahan').val(kelurahan[0].text);
-                } else {
-                    $('#error-nomor-surat').show();
+                if (p_bak_penampung != '' && l_bak_penampung != '' && t_bak_penampung != '') {
+                    const bak_penampung = `${parseFloat(p_bak_penampung).toFixed(1).replace('.', ',')} m x ${parseFloat(l_bak_penampung).toFixed(1).replace('.', ',')} m x ${parseFloat(t_bak_penampung).toFixed(1).replace('.', ',')} m`;
+                    $('#bak-penampung').val(bak_penampung);
                 }
-            });
 
-            $('#cancelSubmission').on('click', function() {
-                swal({
-                    title: 'Anda yakin ingin batalkan pengajuan?',
-                    type: 'warning',
-                    showCancelButton: true,
-                    focusConfirm: false,
-                    confirmButtonColor: '#18d26e',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya',
-                    cancelButtonText: 'Tidak'
-                }).then(result => {
-                    if (result.value && newAdded) {
-                        $.ajax({
-                            type: 'ajax',
-                            method: 'post',
-                            url: '<?= BASE_URL . 'pengajuan/rollback/'; ?>' + kegiatan + '/' + $('#id-proposal').val(),
-                            data: {
-                                id_proposal: $('#id-proposal').val()
-                            },
-                            async: false,
-                            dataType: 'json',
-                            success: function(response) {
-                                if (response.success) {
-                                    window.location.href = response.redirect_url;
-                                }
-                            },
-                            error: function() {
-                                swal("Error!", "Internal Server error 500!", "error");
-                            }
-                        });
-                    } else {
-                        window.location.href = base_url + 'pengajuan/list/' + kegiatan;
-                    }
-                })
-            });
+                if (p_rumah_pompa != '' && l_rumah_pompa != '' && t_rumah_pompa != '') {
+                    const rumah_pompa = `${parseFloat(p_rumah_pompa).toFixed(1).replace('.', ',')} m x ${parseFloat(l_rumah_pompa).toFixed(1).replace('.', ',')} m x ${parseFloat(t_rumah_pompa).toFixed(1).replace('.', ',')} m`;
+                    $('#rumah-pompa').val(rumah_pompa);
+                }
+
+                // let kelurahan = $('#desa').select2('data');
+                // $('#nama-kelurahan').val(kelurahan[0].text);
+            } else {
+                $('#error-nomor-surat').show();
+            }
+            // });
+
 
             $('#kabupaten').prop('disabled', true);
-            // $('#desa').attr('disabled', true);
+            $('#kecamatan').prop('disabled', true);
+            $('#desa').attr('disabled', true);
+            $('#nama-kegiatan').attr('readonly', true);
+            $('#luas-layanan').attr('readonly', true);
+            $('#perkiraan-biaya').attr('readonly', true);
+
+            $('#nama-poktan').attr('readonly', true);
+            $('#nama-ketua').attr('readonly', true);
 
             $("#kecamatan").select2({
                 placeholder: "PILIH KECAMATAN",
@@ -646,12 +449,12 @@
                     $('#rumah-pompa').val(rumah_pompa);
                 }
 
-                let kelurahan = $('#desa').select2('data');
-                $('#nama-kelurahan').val(kelurahan[0].text);
+                // let kelurahan = $('#desa').select2('data');
+                // $('#nama-kelurahan').val(kelurahan[0].text);
 
             })
 
-            id_kota = '<?= $this->session->userdata('kabupatenkota'); ?>';
+            id_kota = '<?= $data['id_kabupatenkota'] ?>';
             let dataKota = []
             $('#id-kabupaten').val(id_kota);
             $.ajax({
@@ -739,9 +542,18 @@
                 let kecamatan = $('#kecamatan').select2('data');
                 $('#nama-kecamatan').val(kecamatan[0].text);
 
+                let kelurahan = $('#desa').select2('data');
+                $('#nama-kelurahan').val(kelurahan[0].text);
+                let selected_kelurahan_id = '<?= $data['id_kelurahan'] ?>';
+                let selected_kelurahan_text = '<?= $data['nama_kelurahan'] ?>';
+
                 $('#desa').select2({
                     width: '100%',
                     placeholder: 'PILIH DESA',
+                    data: [{
+                        id: selected_kelurahan_id,
+                        text: selected_kelurahan_text
+                    }],
                     language: {
                         noResults: function(params) {
                             return "Tidak ada Data yang cocok dengan Keyword.";
@@ -785,18 +597,18 @@
             });
         });
 
-        function validateMobilePhone(component) {
-            $('#' + component).on('keyup', function(e) {
-                numberLength = $('#' + component).val().length;
+        function validateMobilePhone() {
+            $('.mobile-phone').on('keyup', function(e) {
+                numberLength = $('.mobile-phone').val().length;
             });
 
-            $('#' + component).on('keypress', function(e) {
+            $('.mobile-phone').on('keypress', function(e) {
                 var $this = $(this);
                 var regex = new RegExp("^[0-9\b]+$");
                 var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
                 var currentNum = 48;
-                // for 12 digit number only
-                if ($this.val().length > 11) {
+                // for 13 digit number only
+                if ($this.val().length > 12) {
                     e.preventDefault();
                     return false;
                 }

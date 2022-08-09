@@ -41,15 +41,16 @@
                                 <div class="card-body">
                                     <!-- <div class="alert alert-success" style="display: none;" role="alert"></div> -->
 
-                                    <table class="table table-striped table-responsive" id="dataTablePengajuan" style="font-family: Arial !important;">
+                                    <table class="table table-striped" id="dataTablePengajuan" style="font-family: Arial !important;">
                                         <thead>
-                                            <tr>
+                                            <tr class="text-center">
                                                 <th scope="col" style="width: 2%;">No.</th>
-                                                <th scope="col" style="width: 20%"></th>
-                                                <th scope="col" style="width: 30%;">Lokasi Kegiatan</th>
+                                                <th scope="col" style="width: 18%">Aksi</th>
+                                                <th scope="col" style="width: 27%;">Lokasi Kegiatan</th>
                                                 <th scope="col" style="width: 6%;">Nomor Surat</th>
-                                                <th scope="col" style="width: 19%;">Nama Gapoktan / Poktan</th>
+                                                <th scope="col" style="width: 18%;">Nama Gapoktan / Poktan</th>
                                                 <th scope="col" style="width: 18%;">Nama Ketua</th>
+                                                <th scope="col" style="width: 8%;">Tanggal Pengajuan</th>
                                                 <th scope="col" style="width: 5%;">Status Pengajuan</th>
                                             </tr>
                                         </thead>
@@ -320,17 +321,20 @@
                             color = 'color: #fff !important;';
                         }
 
+                        //<a href="javascript:;" class="btn btn-sm btn-icon btn-info viewPengajuan" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${data[i].id_pengajuan}"><i class="ft-search"></i></a>
+
                         html += `<tr>
                                     <td scope="col" style="width: 2%;">${ i + 1 }</td>
-                                    <td scope="col" style="width: 20%">
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-info viewPengajuan" style="margin-left:0px;" data-toggle="tooltip" data-placement="bottom" title="Pratinjau" data="${data[i].id_pengajuan}"><i class="ft-search"></i></a>
+                                    <td scope="col" style="width: 18%">
+                                        
                                         <a href="${ base_url }pengajuan/edit/${ data[i].url }/${data[i].id_pengajuan}" class="btn btn-sm btn-icon btn-${ edit } editPengajuan ${ disabled }" style="margin-left:10px; ${ color }" data-toggle="tooltip" data-placement="bottom" title="Edit" data="${data[i].id_pengajuan}"><i class="ft-edit-2"></i></a>
-                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ hapus } deletePengajuan ${ disabled }" style="margin-left:10px; ${ color }" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${data[i].id_pengajuan}"><i class="ft-trash-2"></i></a>
+                                        <a href="javascript:;" class="btn btn-sm btn-icon btn-${ hapus } deletePengajuan ${ disabled }" style="margin-left:10px; ${ color }" data-toggle="tooltip" data-placement="bottom" title="Hapus" data="${data[i].id_pengajuan}"><i class="ft-trash"></i></a>
                                     </td>
-                                    <td scope="col" style="width: 30%;">${ lokasi }</td>
+                                    <td scope="col" style="width: 27%;">${ lokasi }</td>
                                     <td scope="col" style="width: 6%;">${ data[i].nomor_surat }</td>
-                                    <td scope="col" style="width: 19%;">${ data[i].nama_poktan }</td>
+                                    <td scope="col" style="width: 18%;">${ data[i].nama_poktan }</td>
                                     <td scope="col" style="width: 18%;">${ data[i].nama_ketua }</td>
+                                    <td scope="col" style="width: 8%;">${ data[i].tgl_buat }</td>
                                     <td scope="col" style="width: 5%;" class="text-center">
                                         <div class="badge badge-${ data[i].warna }">${ data[i].nama_status }</div>
                                     </td>

@@ -9,6 +9,7 @@
 <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/extensions/sweetalert2.all.js" type="text/javascript"></script>
 <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/forms/select/select2.full.min.js" type="text/javascript"></script>
 <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/tables/datatable/datatables.min.js" type="text/javascript"></script>
+<script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/tables/datatable/dataTables.rowsGroup.js"></script>
 <script src="<?= BASE_THEME ?>adm/app-assets/vendors/js/charts/chart.min.js" type="text/javascript"></script>
 <!-- <script src="<?= BASE_THEME ?>datetime/build/js/bootstrap-datetimepicker.min.js"></script> -->
 

@@ -75,51 +75,67 @@
 
 <body style="font-family: Arial, Helvetica, sans-serif !important;">
     <img style="margin-top: -15px !important; margin-bottom: 5px;" src="assets/pengajuan/temp/surat/kop-surat.png" alt="" width="100%" height="auto">
-    <h5 class="text-center" style="margin-bottom: 5px; font-weight: bold; font-size: 16px;">NOTA DINAS</h5>
 
-    <table style="border: none; font-size: 14px !important; width: 100%; margin: 20px 80px 0px 50px; padding-bottom: -10px;">
+    <table style="border: none; font-size: 14px !important; width: 100%; margin: 0px 80px 0px 50px; padding-bottom: -10px;">
         <tr>
-            <td class="align-top">Yth.</td>
+            <td class="align-top">Nomor</td>
             <td class="align-top"> : </td>
-            <td class="align-top" id="float-right">PPK Pengembangan Kegiatan Irigasi Pertanian dan Pembangunan Bangunan Konservasi Air dan Antisipasi Anomali Iklim</td>
+            <td class="align-top" style="text-align: right;">
+                <?php
+                $split = explode(' ', tgl_indo(date('d-m-Y'), false));
+                echo $split[1] . ' ' . $split[2];
+                ?>
+            </td>
         </tr>
         <tr>
-            <td class="align-top">Dari</td>
+            <td class="align-top">Sifat</td>
             <td class="align-top"> : </td>
-            <td class="align-top" id="float-right">Sub Koordinator Air Tanah</td>
+            <td class="align-top" id="float-right"><strong>Segera</strong></td>
         </tr>
         <tr>
             <td class="align-top">Hal</td>
             <td class="align-top"> : </td>
-            <td class="align-top" id="float-right">Telaah Laporan Verifikasi Lapang Kegiatan Pengembangan Irigasi <?= ucfirst($data[0]['url']) ?> Besar <?= ucwords(strtolower($data[0]['nama_kabupaten'])) ?></td>
-        </tr>
-        <tr>
-            <td class="align-top">Tanggal</td>
-            <td class="align-top"> : </td>
-            <td class="align-top" id="float-right"><?= $data[0]['tgl_buat'] ?></td>
+            <td class="align-top" id="float-right">Pelaksanaan Pembangunan Bangunan Konservasi Air dan Antisipasi Anomali Iklim T.A. 2022</td>
         </tr>
     </table>
 
     <table style="border: none; font-size: 14px !important; width: 100%; margin: 10px 50px 0px 50px; padding-bottom: -10px;">
         <tr>
             <td colspan="3" class="align-top">
-                <hr style="border: 1px solid black;" width="100%">
+                Yth.
             </td>
         </tr>
         <tr>
-            <td colspan="3" class="align-top" style="line-height: 1.7; text-align: justify; text-justify: inter-word;">Berdasarkan hasil verifikasi lapangan calon lokasi kegiatan Pengembangan Irigasi <?= ucfirst($data[0]['url']) ?> Besar yang dilaksanakan oleh <?= ucfirst($data[0]['nama_instansi']) ?>, bersama ini disampaikan hasil telaah teknis terhadap laporan verifikasi lapang:</td>
+            <td colspan="3" class="align-top">
+                Kepala <?= ucfirst($data[0]['nama_instansi']) ?>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="align-top">
+                di-
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="align-top">
+                <?= ucfirst(strtolower($data[0]['alamat_instansi'])) ?>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" class="align-top" style="line-height: 1.7; text-align: justify; text-justify: inter-word;">Menindaklanjuti Surat Saudara Nomor <?= $data[0]['nomor_surat'] ?> tanggal <?= $data[0]['tgl_buat'] ?> perihal Pernyataan Kesanggupan dan Tanggung Jawab untuk melaksanakan Kegiatan Pengembangan Pembangunan Bangunan Konservasi Air dan Antisipasi Anomali Iklim T.A. 2022 berupa <?= ucfirst($data[0]['url']) ?> melalui dana Bantuan Pemerintah Pusat, disampaikan hal sebagai berikut :</td>
         </tr>
         <tr style="vertical-align: top;">
             <td colspan="3" class="align-top" style="margin-top: 0; margin-bottom: -10px; vertical-align: top;">
                 <ol style="line-height: 1.7; text-align: justify; text-justify: inter-word; margin-top: 0; vertical-align: top;">
-                    <li>Laporan hasil verifikasi lapang dari <?= ucwords(strtolower($data[0]['nama_kabupaten'])) ?> mengusulkan kegiatan pengembangan irigasi <?= ucfirst($data[0]['url']) ?> besar sebanyak <strong><?= $data[0]['jumlah_alokasi'] ?> unit</strong>.</li>
-                    <li>Berdasarkan sumber air, indeks pertanaman, luas layanan dan rencana konstruksi sesuai dengan kriteria teknis pengembangan irigasi <?= ucfirst($data[0]['url']) ?> besar Tahun Anggaran 2022, layak untuk menerima kegiatan dimaksud</li>
-                    <li>Telaah per kelompok tani sebagaimana terlampir</li>
+                    <li>Setelah dilakukan review dokumen oleh Tim Teknis Pusat berdasarkan persyaratan yang telah ditetapkan dalam petunjuk teknis dan pertimbangan ketersediaan anggaran, maka alokasi kegiatan yang dapat diproses pemberkasan pembangunan <?= ucfirst($data[0]['url']) ?> sebanyak <strong><?= $data[0]['jumlah_alokasi'] ?> unit</strong>.</li>
+                    <li>Dokumen pemberkasan dan pola pelaksanaan kegiatan mengacu pada Petunjuk Teknis Bantuan Pemerintah Lingkup Direktorat Jenderal Prasarana dan Sarana Pertanian T.A. 2022.</li>
                 </ol>
             </td>
         </tr>
         <tr>
-            <td colspan="3" class="align-top" style="line-height: 1.7; text-align: justify; text-justify: inter-word;">Demikian disampaikan atas perkenan Bapak diucapkan terima kasih.</td>
+            <td colspan="3" class="align-top" style="line-height: 1.7; text-align: justify; text-justify: inter-word;">Dimohon Saudara segera menyampaikan dokumen dimaksud untuk diproses lebih lanjut.</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="align-top" style="line-height: 1.7; text-align: justify; text-justify: inter-word;">Demikian disampaikan, atas perhatian dan kerjasamanya diucapkan terima kasih.</td>
         </tr>
     </table>
     <div style="margin-top: 40px; width: 100%;">
@@ -127,9 +143,10 @@
             <tr>
                 <td id="float-right">
                     <div class="text-center" style="width: 350px; vertical-align: top; margin-left: auto; margin-right: 0; padding-right: -50px; font-size: 14px !important;">
-                        <p class="ttd"><?= $data[0]['jabatan'] ?></p>
-                        <img style="margin-top: 5px !important; margin-bottom: 5px;" src="assets/pengajuan/temp/signature/<?= $data[0]['tanda_tangan'] ?>" alt="" width="50%" height="50px">
-                        <p class="ttd" style="margin-top: 10px;"><?= $data[0]['nama_kadin'] ?></p>
+                        <p class="ttd">Direktur Irigasi Pertanian</p>
+                        <!-- <img style="margin-top: 5px !important; margin-bottom: 5px;" src="assets/pengajuan/temp/signature/" alt="" width="50%" height="50px"> -->
+                        <p class="ttd" style="text-decoration: underline; margin-top: 80px;"><strong>Rahmanto</strong></p>
+                        <p class="ttd" style="margin-top: -10px;">NIP. 196811051994031001</p>
                     </div>
                 </td>
             </tr>
