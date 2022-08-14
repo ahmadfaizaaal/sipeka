@@ -34,6 +34,7 @@ class Profil extends CI_Controller
         $data['menu'] = $menu;
         $data['type'] = 'list';
         $data['userLogin'] = $this->session->userdata('nama');
+        $data['role'] = $this->session->userdata('role');
         $data['profil'] = $this->profil->getDataProfil($param);
 
         if (strtolower($this->session->userdata('tipe_akses')) == 'tim teknis pusat') {

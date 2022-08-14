@@ -479,6 +479,8 @@
                             if (temp != response[i].nomor_surat) {
                                 temp = response[i].nomor_surat;
                                 repeated = false;
+                                jmlInputPenomoran = 0;
+                                jmlTerverif = 0;
                             }
                         }
 

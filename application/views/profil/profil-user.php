@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-md-3 label-control" for="nama-kadin"><?= $userLogin == 'Pusat' ? 'Nama Sub Koordinator ' : 'Nama Kepala Dinas' ?></label>
+                                        <label class="col-md-3 label-control" for="nama-kadin"><?= $role == 'Pusat' ? 'Nama Sub Koordinator ' : 'Nama Kepala Dinas' ?></label>
                                         <div class="col-md-9">
                                             <input type="text" id="nama-kadin" class="form-control " placeholder="" name="nama-kadin" value="<?= $profil->nama_kadin; ?>">
                                         </div>
@@ -65,13 +65,13 @@
                                         </div>
                                     </div>
                                     <div class="form-group row" id="elevasi">
-                                        <label class="col-md-3 label-control" for="jabatan-kadin"><?= $userLogin == 'Pusat' ? 'Jabatan ' : 'Jabatan Kepala Dinas' ?></label>
+                                        <label class="col-md-3 label-control" for="jabatan-kadin"><?= $role == 'Pusat' ? 'Jabatan ' : 'Jabatan Kepala Dinas' ?></label>
                                         <div class="col-md-9">
                                             <input type="text" id="jabatan-kadin" class="form-control " placeholder="" name="jabatan-kadin" value="<?= $profil->jabatan; ?>">
                                         </div>
                                     </div>
 
-                                    <?php if ($userLogin == 'Daerah') { ?>
+                                    <?php if ($role == 'Daerah') { ?>
                                         <div class="form-group row" id="elevasi">
                                             <label class="col-md-3 label-control" for="nama-verifikator">Nama Verifikator Lapangan </label>
                                             <div class="col-md-9">
@@ -94,7 +94,7 @@
 
 
                                     <div class="form-group row">
-                                        <label class="col-md-3 label-control" for="doc-ttd"><?php echo $userLogin == 'Pusat' ? 'Tanda Tangan Sub Koordinator' : 'Tanda Tangan Kepala Dinas' ?></label>
+                                        <label class="col-md-3 label-control" for="doc-ttd"><?php echo $role == 'Pusat' ? 'Tanda Tangan Sub Koordinator' : 'Tanda Tangan Kepala Dinas' ?></label>
                                         <div class="col-md-9">
                                             <div class="custom-file">
                                                 <input type="hidden" id="prev-ttd" name="prev-ttd" value="<?= $profil->tanda_tangan; ?>">
@@ -158,7 +158,7 @@
 
                         <div class="card-body border-top-blue-grey border-top-lighten-5 text-center" style="font-family: Calibri !important;">
                             <span class="font-medium-2 text-uppercase text-bold-700">TANDA TANGAN</span>
-                            <p class="blue-grey text-uppercase font-small-2 mb-0">( <?= $userLogin == 'Pusat' ? 'SUB KOORDINATOR' : 'KEPALA DINAS' ?> )</p>
+                            <p class="blue-grey text-uppercase font-small-2 mb-0">( <?= $role == 'Pusat' ? 'SUB KOORDINATOR' : 'KEPALA DINAS' ?> )</p>
                         </div>
                     </div>
                     <!--/ Predefined Views -->
