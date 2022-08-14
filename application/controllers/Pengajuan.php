@@ -504,6 +504,117 @@ class Pengajuan extends CI_Controller
         echo json_encode(substr($fileName, 9));
     }
 
+    public function test()
+    {
+        // $penomoran = $this->pengajuan->getOne('penomoran', null, array('column' => 'id_penomoran', 'option' => 'desc'));
+        // $lastId = $penomoran ? $penomoran->id_penomoran : 0;
+        // echo json_encode($penomoran);
+
+        $spks = $this->pengajuan->getOne('spks', array('column' => 'id_penomoran', 'value' => 3), array('column' => 'id_spks', 'option' => 'desc'));
+        $noUrutSpks = $spks ? $spks->id_spks : 0;
+        echo json_encode($noUrutSpks);
+    }
+
+    public function lihat_syarat_penomoran()
+    {
+        $param = array(
+            'id_user' => strtolower($this->session->userdata('role')) == 'pusat' ? null : $this->session->userdata('id_user'),
+            'id_pengajuan' => null,
+            'id_proposal' => $this->input->post('id_proposal'),
+            'url' => null,
+        );
+        $result = $this->pengajuan->getPenomoran($param);
+
+        $data['data'] = array();
+
+        if ($result) {
+            foreach ($result as $items) {
+                $param['id_pengajuan'] = $items->id_pengajuan;
+
+                $docs = $this->pengajuan->getDokumenPenomoran($param);
+
+                $tgl_buat = $items->tgl_mapping;
+                $tanggal = tgl_indo($tgl_buat, false);
+
+                $temp = array(
+                    "url" => $items->url,
+                    "id_proposal" => $items->id_proposal,
+                    "nomor_surat" => $items->nomor_surat,
+                    "nama_provinsi" => $items->nama_provinsi,
+                    "nama_kabupaten" => $items->nama_kabupaten,
+                    "nama_kecamatan" => $items->nama_kecamatan,
+                    "nama_kelurahan" => $items->nama_kelurahan,
+                    "poktan" => array(
+                        "id_poktan" => $items->id_poktan,
+                        "nama_poktan" => $items->nama_poktan,
+                        "nama_ketua" => $items->nama_ketua,
+                        "nik_ketua" => $items->nik_ketua,
+                        "no_hp_ketua" => $items->no_hp_ketua,
+                        "nik_upkk" => $items->nik_upkk,
+                        "koordinator_upkk" => $items->koordinator_upkk,
+                    ),
+                    "pengajuan" => array(
+                        "id_jenis" => $items->id_jenis,
+                        "luas_layanan" => $items->luas_layanan,
+                        "unit" => $items->unit,
+                        "perkiraan_biaya" => $items->perkiraan_biaya,
+                        "jarak" => $items->jarak,
+                        "ukuran_pompa" => $items->ukuran_pompa,
+                        "bak_penampung" => $items->bak_penampung,
+                        "rumah_pompa" => $items->rumah_pompa,
+                        "provitas" => $items->provitas,
+                        "ip" => $items->ip,
+                        "lahan_sawah" => $items->lahan_sawah,
+                        "sumber_air" => $items->sumber_air,
+                        "komoditas" => $items->komoditas,
+                        "permasalahan" => $items->permasalahan,
+                        "rencana_solusi" => $items->rencana_solusi,
+                        "beda_elevasi" => $items->beda_elevasi,
+                        "user_input" => $items->user_input,
+                        "status_pengajuan" => $items->status_pengajuan,
+                        "kelayakan" => $items->kelayakan,
+                        "detail_kegiatan" => $items->detail_kegiatan,
+                        "nama_kegiatan" => $items->nama_kegiatan
+                    ),
+                    "rekening" => array(
+                        "no_rekening" => $items->no_rekening,
+                        "nama_rekening" => $items->nama_rekening,
+                        "nama_bank" => $items->nama_bank,
+                        "tgl_buat" => $items->tgl_buka
+                    ),
+                    "dokumen" => array(
+                        "ktp" => $docs[0]->nama_folder . '/' . $docs[0]->nama_dokumen,
+                        "buku_tabungan" => $docs[1]->nama_folder . '/' . $docs[1]->nama_dokumen,
+                        "surat_rekening_aktif" => $docs[2]->nama_folder . '/' . $docs[2]->nama_dokumen
+                    ),
+                    'nama_user' => $this->session->userdata('nama'),
+                    "tgl_buat" => $tanggal,
+                    "nama_verifikator" => $items->nama_verifikator,
+                    "alamat_dinas" => $items->alamat_dinas,
+                    "nama_kadin" => $items->nama_kadin,
+                    "jabatan" => $items->jabatan,
+                    "nip" => $items->nip,
+                    "tanda_tangan" => $items->tanda_tangan,
+                    "catatan" => $items->catatan
+                );
+                array_push($data['data'], $temp);
+            }
+        } else {
+            $data['data'] = null;
+        }
+
+        $data['title'] = 'DATA SYARAT PENOMORAN';
+        $html = $this->load->view('dokumen/data-syarat-penomoran', $data, TRUE);
+        $fileName = export_pdf($html, 'SYARAT PENOMORAN' . '_' . $result[0]->nama_kabupaten, 'A4', 'landscape', FALSE);
+
+        echo json_encode(substr($fileName, 9));
+    }
+
+    public function download_template()
+    {
+        force_download('assets/pengajuan/temp/Format Dokumen Pemberkasan Banpem.rar', NULL);
+    }
+
     public function ajukan_penomoran()
     {
         $url = $this->uri->segment(3);
@@ -548,19 +659,20 @@ class Pengajuan extends CI_Controller
         if ($rekening) {
             $scanKTP = '';
             if ($_FILES['doc-scan-ktp']['name']) {
-                $scanKTP = $this->uploadFile('doc-scan-ktp', 'PENOMORAN', $param['nama_kelurahan'], $param['url'], $idPengajuan);
+                $scanKTP = $this->uploadFile('doc-scan-ktp', 'SYARAT', 'KTP', $param['url'], $idPengajuan);
             }
             $scanBuktab = '';
             if ($_FILES['doc-scan-buktab']['name']) {
-                $scanBuktab = $this->uploadFile('doc-scan-buktab', 'PENOMORAN', $param['nama_kelurahan'], $param['url'], $idPengajuan);
+                $scanBuktab = $this->uploadFile('doc-scan-buktab', 'SYARAT', 'BUKU TABUNGAN', $param['url'], $idPengajuan);
             }
             $scanRekAtif = '';
             if ($_FILES['doc-scan-rekaktif']['name']) {
-                $scanRekAtif = $this->uploadFile('doc-scan-rekaktif', 'PENOMORAN', $param['nama_kelurahan'], $param['url'], $idPengajuan);
+                $scanRekAtif = $this->uploadFile('doc-scan-rekaktif', 'SYARAT', 'SURAT REKENING AKTIF', $param['url'], $idPengajuan);
             }
 
             $documents = array($scanKTP, $scanBuktab, $scanRekAtif);
 
+            $tgl_buat = date('Y-m-d H:i:s');
             for ($i = 0; $i < count($documents); $i++) {
                 $item = $documents[$i];
                 $data = array(
@@ -569,11 +681,155 @@ class Pengajuan extends CI_Controller
                     'nama_folder' => $item[0],
                     'nama_dokumen' => $item[1],
                     'user_input' => $this->session->userdata('id_user'),
-                    'tgl_buat' => date('Y-m-d H:i:s')
+                    'tgl_buat' => $tgl_buat
                 );
 
                 $this->pengajuan->insertData('dokumen', $data);
             }
+
+            //INSERT INTO TABLE PENOMORAN
+            $kegiatan = array(
+                'perpipaan' => 'III',
+                'perpompaan' => 'IV',
+                'embung' => 'II',
+                'air-tanah' => 'V'
+            );
+            $skTimTeknis = '';
+            $skPenerimaManfaat = '';
+            $exist = $this->pengajuan->getPenomoranById($param['id_proposal']);
+            if (!$exist) {
+                $penomoran = $this->pengajuan->getOne('penomoran', null, array('column' => 'id_penomoran', 'option' => 'desc'));
+                $lastId = $penomoran ? $penomoran->id_penomoran : 0;
+                $tgl = substr(date('d-m-Y'), 0, 2);
+                $bulan = substr(date('d-m-Y'), 3, 2);
+                $tahun = substr(date('d-m-Y'), 6, 4);
+                $kode = $kegiatan[$param['url']];
+
+                $lastId = strlen($lastId) == 1 ? '0' . ($lastId + 1) : ($lastId + 1);
+
+                $skTimTeknis = $tgl . '.' . $lastId . '.a.' . $kode . '/Kpts/PPK.7/' . $bulan . '/' . $tahun;
+                $skPenerimaManfaat = $tgl . '.' . $lastId . '.b.' . $kode . '/Kpts/PPK.7/' . $bulan . '/' . $tahun;
+
+                $newPenomoran = array(
+                    'id_proposal' => $param['id_proposal'],
+                    'sk_tim_teknis' => $skTimTeknis,
+                    'sk_penerima' => $skPenerimaManfaat,
+                    'tgl_buat' => date('Y-m-d H:i:s')
+                );
+
+                $insertedIdPenomoran = $this->pengajuan->insertData('penomoran', $newPenomoran);
+
+                //INSERT INTO TABLE SPKS
+                if ($insertedIdPenomoran) {
+                    $spks = $this->pengajuan->getOne('spks', array('column' => 'id_penomoran', 'value' => $insertedIdPenomoran), array('column' => 'id_spks', 'option' => 'desc'));
+                    $noUrutSpks = $spks ? $spks->id_spks : 0;
+                    $noUrutSpks = strlen($noUrutSpks) == 1 ? '0' . ($noUrutSpks + 1) : ($noUrutSpks + 1);
+
+                    $nomorSk = $tgl . '.' . $lastId . '.' . $noUrutSpks . '.' . $kode . '/PPK.PSP.7/SPK/' . $bulan . '/' . $tahun;
+
+                    $skema = $param['nominal'] > 100000000 ? '70:30' : '100';
+
+                    $newSpks = array(
+                        'id_penomoran' => $insertedIdPenomoran,
+                        'id_pengajuan' => $idPengajuan,
+                        'nomor_sk' => $nomorSk,
+                        'nominal' => $param['nominal'],
+                        'skema' => $skema
+                    );
+
+                    $insertedIdSpks = $this->pengajuan->insertData('spks', $newSpks);
+
+                    //INSERT INTO TABLE KWINTANSI
+                    if ($insertedIdSpks) {
+                        if ($skema == '70:30') {
+                            $tahap1 = array(
+                                'id_spks' => $insertedIdSpks,
+                                'nomor_kwitansi' => $tgl . '.' . $lastId . '.' . $noUrutSpks . '.a/KWT.' . $kode . '/' . 'PPK.7/' . $bulan . '/' . $tahun,
+                                'nominal_diterima' => 0.7 * $param['nominal'],
+                                'tahap' => 'KWITANSI TAHAP 1',
+                                'tgl_buat' => date('Y-m-d H:i:s')
+                            );
+                            $this->pengajuan->insertData('kwitansi', $tahap1);
+                            $tahap2 = array(
+                                'id_spks' => $insertedIdSpks,
+                                'nomor_kwitansi' => $tgl . '.' . $lastId . '.' . $noUrutSpks . '.b/KWT.' . $kode . '/' . 'PPK.7/' . $bulan . '/' . $tahun,
+                                'nominal_diterima' => 0.3 * $param['nominal'],
+                                'tahap' => 'KWITANSI TAHAP 2',
+                                'tgl_buat' => date('Y-m-d H:i:s')
+                            );
+                            $this->pengajuan->insertData('kwitansi', $tahap2);
+                        } else if ($skema == '100') {
+                            $kwitansi = array(
+                                'id_spks' => $insertedIdSpks,
+                                'nomor_kwitansi' => $tgl . '.' . $lastId . '.' . $noUrutSpks . '/KWT.' . $kode . '/' . 'PPK.7/' . $bulan . '/' . $tahun,
+                                'nominal_diterima' => $param['nominal'],
+                                'tahap' => 'KWITANSI',
+                                'tgl_buat' => date('Y-m-d H:i:s')
+                            );
+                            $this->pengajuan->insertData('kwitansi', $kwitansi);
+                        }
+                    }
+                }
+            } else {
+                $lastId = $exist->id_penomoran;
+                $tgl = substr(date('d-m-Y'), 0, 2);
+                $bulan = substr(date('d-m-Y'), 3, 2);
+                $tahun = substr(date('d-m-Y'), 6, 4);
+                $kode = $kegiatan[$param['url']];
+
+                $lastId = strlen($lastId) == 1 ? '0' . ($lastId) : ($lastId);
+
+                $spks = $this->pengajuan->getOne('spks', array('column' => 'id_penomoran', 'value' => $exist->id_penomoran), array('column' => 'id_spks', 'option' => 'desc'));
+                $noUrutSpks = $spks ? $spks->id_spks : 0;
+                $noUrutSpks = strlen($noUrutSpks) == 1 ? '0' . ($noUrutSpks + 1) : ($noUrutSpks + 1);
+
+                $nomorSk = $tgl . '.' . $lastId . '.' . $noUrutSpks . '.' . $kode . '/PPK.PSP.7/SPK/' . $bulan . '/' . $tahun;
+
+                $skema = $param['nominal'] > 100000000 ? '70:30' : '100';
+
+                $newSpks = array(
+                    'id_penomoran' => $exist->id_penomoran,
+                    'id_pengajuan' => $idPengajuan,
+                    'nomor_sk' => $nomorSk,
+                    'nominal' => $param['nominal'],
+                    'skema' => $skema
+                );
+
+                $insertedIdSpks = $this->pengajuan->insertData('spks', $newSpks);
+
+                //INSERT INTO TABLE KWINTANSI
+                if ($insertedIdSpks) {
+                    if ($skema == '70:30') {
+                        $tahap1 = array(
+                            'id_spks' => $insertedIdSpks,
+                            'nomor_kwitansi' => $tgl . '.' . $lastId . '.' . $noUrutSpks . '.a/KWT.' . $kode . '/' . 'PPK.7/' . $bulan . '/' . $tahun,
+                            'nominal_diterima' => 0.7 * $param['nominal'],
+                            'tahap' => 'KWITANSI TAHAP 1',
+                            'tgl_buat' => date('Y-m-d H:i:s')
+                        );
+                        $this->pengajuan->insertData('kwitansi', $tahap1);
+                        $tahap2 = array(
+                            'id_spks' => $insertedIdSpks,
+                            'nomor_kwitansi' => $tgl . '.' . $lastId . '.' . $noUrutSpks . '.b/KWT.' . $kode . '/' . 'PPK.7/' . $bulan . '/' . $tahun,
+                            'nominal_diterima' => 0.3 * $param['nominal'],
+                            'tahap' => 'KWITANSI TAHAP 2',
+                            'tgl_buat' => date('Y-m-d H:i:s')
+                        );
+                        $this->pengajuan->insertData('kwitansi', $tahap2);
+                    } else if ($skema == '100') {
+                        $kwitansi = array(
+                            'id_spks' => $insertedIdSpks,
+                            'nomor_kwitansi' => $tgl . '.' . $lastId . '.' . $noUrutSpks . '/KWT.' . $kode . '/' . 'PPK.7/' . $bulan . '/' . $tahun,
+                            'nominal_diterima' => $param['nominal'],
+                            'tahap' => 'KWITANSI',
+                            'tgl_buat' => date('Y-m-d H:i:s')
+                        );
+                        $this->pengajuan->insertData('kwitansi', $kwitansi);
+                    }
+                }
+            }
+
+
 
             $this->session->set_flashdata(
                 'message',
@@ -666,6 +922,8 @@ class Pengajuan extends CI_Controller
         $data = array(
             'url' => $this->input->post('url'),
             'nama_kelurahan' => $this->input->post('nama-kelurahan'),
+            'id_proposal' => $this->input->post('id-proposal'),
+            'nominal' => $this->input->post('nominal'),
             'pengajuan' => array(
                 'status_pengajuan' => $this->pengajuan->getIdStatusByCode('PPNMR'), //Pengajuan Penomoran
                 'detail_kegiatan' => $this->input->post('penggunaan'),
@@ -960,5 +1218,164 @@ class Pengajuan extends CI_Controller
             $mapping = $this->pengajuan->updateData('mapping', array('column' => 'id_pengajuan', 'value' => $idPengajuan), $param['mapping']);
             setResponse($mapping, 'update');
         }
+    }
+
+
+    /* TIM PENOMORAN SIDE */
+
+    public function petunjuk_penomoran()
+    {
+        if (!$this->session->userdata('id_user')) {
+            redirect('auth/login/');
+        }
+
+        if (strtolower($this->session->userdata('tipe_akses')) != 'tim penomoran pusat') {
+            redirect('auth/error401/');
+        }
+
+        $data['menu'] = ['petunjuk' => 'active', 'list' => ''];
+        $data['type'] = 'list';
+        // $data['kegiatan'] = $param;
+        $data['role'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
+        // $data['id_jenis'] = $this->pengajuan->getIdJenisByURL($param);
+
+        $tipe_akses = $this->session->userdata('tipe_akses');
+
+        load_page('penomoran/petunjuk-penomoran', 'PETUNJUK PENOMORAN', $data);
+    }
+
+    public function list_penomoran()
+    {
+        if (!$this->session->userdata('id_user')) {
+            redirect('auth/login/');
+        }
+
+        if (strtolower($this->session->userdata('tipe_akses')) != 'tim penomoran pusat') {
+            redirect('auth/error401/');
+        }
+
+        $data['menu'] = ['petunjuk' => '', 'list' => 'active'];
+        $data['type'] = 'list';
+        $data['role'] = $this->session->userdata('role');
+        $data['userLogin'] = $this->session->userdata('nama');
+        load_page('penomoran/list-data-penomoran', 'VERIFIKASI DAFTAR PENOMORAN', $data);
+    }
+
+    public function list_data_penomoran()
+    {
+        $data['result'] = array();
+
+        $penomoran = $this->pengajuan->getListPenomoran();
+
+        $tempIdProposal = null;
+        foreach ($penomoran as $objPenomoran) {
+            if ($objPenomoran->id_proposal != $tempIdProposal) {
+                $tempIdProposal = $objPenomoran->id_proposal;
+            } else {
+                continue;
+            }
+            $temp = array(
+                'id_pengajuan' => $objPenomoran->id_pengajuan,
+                'id_proposal' => $objPenomoran->id_proposal,
+                'id_penomoran' => $objPenomoran->id_penomoran,
+                'kegiatan' => $objPenomoran->url,
+                'status' => $objPenomoran->kode,
+                'nama_provinsi' => $objPenomoran->nama_provinsi,
+                'nama_kabupaten' => $objPenomoran->nama_kabupaten,
+                'nama_kecamatan' => $objPenomoran->nama_kecamatan,
+                'nama_kelurahan' => $objPenomoran->nama_kelurahan,
+                'nama_poktan' => $objPenomoran->nama_poktan,
+                'sk_tim_teknis' => stripslashes($objPenomoran->sk_tim_teknis),
+                'sk_penerima' => stripslashes($objPenomoran->sk_penerima),
+                'tgl_ppk' => tgl_indo($objPenomoran->tgl_ppk, false),
+                'spks' => array(),
+                'kwitansi' => array(),
+            );
+            $spks = $this->pengajuan->getSPKS_Poktan(array('table' => 'spks', 'column' => 'id_penomoran', 'value' => $objPenomoran->id_penomoran));
+            if ($spks) {
+                foreach ($spks as $objSpks) {
+                    $tempSpks = array(
+                        'nomor_sk' => stripslashes($objSpks->nomor_sk),
+                        'nominal' => $objSpks->nominal,
+                        'nama_poktan' => $objSpks->nama_poktan,
+                        'skema' => $objSpks->skema
+                    );
+                    array_push($temp['spks'], $tempSpks);
+                    $kwitansi = $this->pengajuan->getData(array('table' => 'kwitansi', 'column' => 'id_spks', 'value' => $objSpks->id_spks));
+                    if ($kwitansi) {
+                        foreach ($kwitansi as $objKwitansi) {
+                            $tempKwitansi = array(
+                                'nomor_kwitansi' => stripslashes($objKwitansi->nomor_kwitansi),
+                                'nominal_diterima' => $objKwitansi->nominal_diterima,
+                                'tahap' => $objKwitansi->tahap,
+                                'tgl_kwitansi' => $objKwitansi->tgl_buat
+                            );
+                            array_push($temp['kwitansi'], $tempKwitansi);
+                        }
+                    }
+                }
+            }
+            array_push($data['result'], $temp);
+        }
+        echo json_encode($data['result']);
+    }
+
+    public function verifikasi_penomoran()
+    {
+        $id_proposal = $this->input->post('id_proposal');
+        $pic = $this->input->post('pic');
+
+        $pengajuan = $this->pengajuan->getPengajuan($id_proposal);
+        if ($pengajuan) {
+            foreach ($pengajuan as $items) {
+                $updateItem = array(
+                    'status_pengajuan' => $this->pengajuan->getIdStatusByCode('TNMR'), //Pengajuan Penomoran
+                    'user_update' => $this->session->userdata('id_user')
+                );
+                $this->pengajuan->updateData('pengajuan', array('column' => 'id_pengajuan', 'value' => $items->id_pengajuan), $updateItem);
+            }
+
+            $updated = $this->pengajuan->updateData('penomoran', array('column' => 'id_proposal', 'value' => $id_proposal), array('pic' => $pic));
+
+            if ($updated) {
+                setResponse($updated, 'update');
+            }
+        }
+    }
+
+    public function generate_daftar_nominatif()
+    {
+        $param = array(
+            'id_kabupatenkota' => $this->input->post('id_kabupatenkota'),
+            'id_proposal' => $this->input->post('id_proposal'),
+            'url' => $this->input->post('url')
+        );
+
+        $result = $this->pengajuan->getListPenomoranForPrinting($param['id_proposal']);
+        // $profil = $this->profil->getDataProfil(array('id_user' => $this->session->userdata('id_user')));
+
+        $data['data'] = array();
+
+        foreach ($result as $items) {
+            $temp = array(
+                "nama_kabupaten" => $items->nama_kabupaten,
+                "nama_kecamatan" => $items->nama_kecamatan,
+                "nama_kelurahan" => $items->nama_kelurahan,
+                "nama_poktan" => $items->nama_poktan,
+                'nama_bank' => $items->nama_bank,
+                'no_rekening' => $items->no_rekening,
+                'sk_penerima' => stripslashes($items->sk_penerima),
+                'nominal' => $items->nominal
+            );
+            array_push($data['data'], $temp);
+        }
+
+        $data['title'] = 'DAFTAR NOMINATIF';
+        $html = $this->load->view('penomoran/data-daftar-nominatif', $data, TRUE);
+        $fileName = export_pdf($html, 'DAFTAR NOMINATIF' . '_' . $result[0]->nama_kabupaten, 'A4', 'landscape', FALSE);
+        // $fileName = export_pdf($html, strtoupper($param['url']) . '_' . $this->input->post('id_proposal'), 'A4', 'landscape', FALSE);
+
+        echo json_encode(substr($fileName, 9));
     }
 }

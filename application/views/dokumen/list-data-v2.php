@@ -317,30 +317,78 @@
             });
         });
 
+        // //CETAK DOKUMEN VERIFIKASI
+        // $('#showDataPengajuan').on('click', '.cetak-dokumen-verifikasi', function() {
+        //     let id_proposal = $('#nomor-surat').val();
+        //     $('#modal-preview-document').modal('show');
+        //     $('#modal-preview-document').find('.modal-title').text('PRATINJAU DOKUMEN VERIFIKASI');
+        //     $('#btnDownload').hide();
+        //     $.ajax({
+        //         type: 'ajax',
+        //         method: 'post',
+        //         url: '<?= BASE_URL . 'pengajuan/lihat-proposal'; ?>',
+        //         data: {
+        //             id_proposal: id_proposal
+        //         },
+        //         async: false,
+        //         dataType: 'json',
+        //         success: function(response) {
+        //             $('#doc-frame').attr('src', base_theme + response);
+        //         },
+        //         error: function() {
+        //             swal("Internal Server error 500!", "Error!", "error");
+        //         }
+        //     });
+        // });
 
-        //INPUT SYARAT PENOMORAN
-        $('#showDataProposal').on('click', '.ajukan-penomoran', function() {
-            let id_pengajuan = $(this).attr('data');
-
-            $('#modal-ajukan-penomoran').modal('show');
-            $('#modal-ajukan-penomoran').find('.modal-title').text('SYARAT PENOMORAN');
-            // $.ajax({
-            //     type: 'ajax',
-            //     method: 'post',
-            //     url: '<?= BASE_URL . 'pengajuan/lihat-proposal'; ?>',
-            //     data: {
-            //         id_pengajuan: id_pengajuan
-            //     },
-            //     async: false,
-            //     dataType: 'json',
-            //     success: function(response) {
-            //         $('#doc-frame').attr('src', base_theme + response);
-            //     },
-            //     error: function() {
-            //         swal("Internal Server error 500!", "Error!", "error");
-            //     }
-            // });
+        //CETAK DOKUMEN VERIFIKASI
+        $('#showDataProposal').on('click', '.pratinjau-syarat', function() {
+            let id_proposal = $(this).attr('data');
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU SYARAT PENOMORAN');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/lihat-syarat-penomoran'; ?>',
+                data: {
+                    id_proposal: id_proposal
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response);
+                },
+                error: function() {
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
         });
+
+
+        // //INPUT SYARAT PENOMORAN
+        // $('#showDataProposal').on('click', '.ajukan-penomoran', function() {
+        //     let id_pengajuan = $(this).attr('data');
+
+        //     $('#modal-ajukan-penomoran').modal('show');
+        //     $('#modal-ajukan-penomoran').find('.modal-title').text('SYARAT PENOMORAN');
+        //     // $.ajax({
+        //     //     type: 'ajax',
+        //     //     method: 'post',
+        //     //     url: '<?= BASE_URL . 'pengajuan/lihat-proposal'; ?>',
+        //     //     data: {
+        //     //         id_pengajuan: id_pengajuan
+        //     //     },
+        //     //     async: false,
+        //     //     dataType: 'json',
+        //     //     success: function(response) {
+        //     //         $('#doc-frame').attr('src', base_theme + response);
+        //     //     },
+        //     //     error: function() {
+        //     //         swal("Internal Server error 500!", "Error!", "error");
+        //     //     }
+        //     // });
+        // });
 
         $("#modal-preview-document").on('hide.bs.modal', function() {
             $.ajax({
@@ -418,6 +466,8 @@
 
                     let repeated = false;
                     let jmlTerverif = 0
+                    let jmlInputPenomoran = 0
+                    let temp = 0;
                     for (i = 0; i < response.length; i++) {
                         let disabled = '';
                         let ajukan = '';
@@ -426,6 +476,10 @@
                         let totalSpan = 0;
                         if (nomorSurat.hasOwnProperty(response[i].nomor_surat)) {
                             totalSpan = nomorSurat[response[i].nomor_surat];
+                            if (temp != response[i].nomor_surat) {
+                                temp = response[i].nomor_surat;
+                                repeated = false;
+                            }
                         }
 
                         if (totalSpan > 1) {
@@ -433,6 +487,9 @@
                                 for (let j = 0, idx = i; j < totalSpan; j++) {
                                     if ((response[idx].kode).toLowerCase() == 'dvr' || (response[idx].kode).toLowerCase() == 'ppnmr') {
                                         jmlTerverif++;
+                                    }
+                                    if ((response[idx].kode).toLowerCase() == 'ppnmr') {
+                                        jmlInputPenomoran++;
                                     }
                                     idx++;
                                 }
@@ -443,6 +500,10 @@
                             console.log(jmlTerverif)
                             repeated = true;
                         } else {
+                            jmlInputPenomoran = 0;
+                            if ((response[i].kode).toLowerCase() == 'ppnmr') {
+                                jmlInputPenomoran++;
+                            }
                             if ((response[i].kode).toLowerCase() == 'dvr') {
                                 style = 'background-color: #18D26E; color: #fff !important;';
                             } else {
@@ -467,6 +528,33 @@
                                     </td>
                         */
 
+                        let href = `<a href="${ base_url }pengajuan/ajukan-penomoran/${ response[i].url }/${ response[i].id_pengajuan }" 
+                                    class="btn btn-sm btn-icon btn-${ ajukan } ${ disabled }" style="margin-left:0px; ${ style }" data-toggle="tooltip" data-placement="right" title="Input Syarat Penomoran" data="${response[i].id_pengajuan}"><i class="ft-edit-3"></i></a>`;
+                        // if ((response[i].kode).toLowerCase() == 'ppnmr') {
+                        //     href = `<a href="javascript:;" 
+                        //             class="btn btn-sm btn-icon btn-info pratinjau-syarat" style="margin-left:0px; ${ style }" data-toggle="tooltip" data-placement="right" title="Pratinjau Syarat Penomoran" data="${response[i].id_proposal}"><i class="ft-eye"></i></a>`;
+                        // }
+
+                        /*
+                        <a href="javascript:;" class="dropdown-item ${ (response[i].kode).toLowerCase() == 'vr' ? 'disabled' : '' } pratinjau-syarat" data="${response[i].id_proposal}">
+                                                    <i class="ft-search"></i> Pratinjau Syarat Penomoran</a>
+                        */
+                        let hrefPreviewPenomoran = '';
+                        if (jmlInputPenomoran == totalSpan) {
+                            hrefPreviewPenomoran = `<a href="javascript:;" class="dropdown-item pratinjau-syarat" data="${response[i].id_proposal}">
+                                                        <i class="ft-search"></i> Pratinjau Syarat Penomoran
+                                                    </a>`;
+                        }
+
+                        if ((response[i].kode).toLowerCase() == 'tnmr') {
+                            hrefPreviewPenomoran = `<a href="javascript:;" class="dropdown-item pratinjau-syarat" data="${response[i].id_proposal}">
+                                                        <i class="ft-search"></i> Pratinjau Syarat Penomoran
+                                                    </a>
+                                                    <a href="${ base_url }pengajuan/download-template" class="dropdown-item">
+                                                        <i class="ft-download"></i> Unduh Format Kelengkapan Berkas
+                                                    </a>`;
+                        }
+
                         html += `<tr>
                                     <td scope="col" style="width: 3%;" >
                                         <span class="dropdown">
@@ -479,17 +567,14 @@
                                             <span aria-labelledby="btnSearchDrop12" class="dropdown-menu mt-1 dropdown-menu-right">
                                                 <a href="javascript:;" class="dropdown-item viewProposal" data="${response[i].id_proposal}">
                                                     <i class="ft-download"></i> Unduh Dokumen Verifikasi</a>
-                                                <a href="#" class="dropdown-item ${ (response[i].kode).toLowerCase() == 'vr' ? 'disabled' : '' }">
-                                                    <i class="ft-search"></i> Pratinjau Syarat Penomoran</a>
-                                                <a href="#" class="dropdown-item">
-                                                    <i class="ft-download"></i> Unduh Format Kelengkapan Berkas</a>
+                                                ${ hrefPreviewPenomoran }
                                             </span>
                                         </span>
                                     </td>
                                     
                                     <td scope="col" style="width: 15%;" >${ response[i].nomor_surat }</td>
                                     <td scope="col" style="width: 3%;" >
-                                        <a href="${ base_url }pengajuan/ajukan-penomoran/${ response[i].url }/${ response[i].id_pengajuan }" class="btn btn-sm btn-icon btn-${ ajukan } ${ disabled }" style="margin-left:0px; ${ style }" data-toggle="tooltip" data-placement="bottom" title="Input Syarat Penomoran" data="${response[i].id_pengajuan}"><i class="ft-edit-3"></i></a>
+                                        ${ href }
                                     </td>
                                     <td scope="col" style="width: 26%;" >${ response[i].nama_poktan }</td>
                                     <td scope="col" style="width: 26%;" >KECAMATAN ${ response[i].nama_kecamatan }</td>

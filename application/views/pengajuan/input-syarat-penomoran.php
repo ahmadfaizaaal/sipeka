@@ -78,6 +78,7 @@
                                     <input type="hidden" id="nama-kabupaten" name="nama-kabupaten" value="">
                                     <input type="hidden" id="nama-kecamatan" name="nama-kecamatan" value="">
                                     <input type="hidden" id="nama-kelurahan" name="nama-kelurahan" value="<?= $data['nama_kelurahan'] ?>">
+                                    <input type="hidden" id="id-proposal" name="id-proposal" value="<?= $data['id_proposal'] ?>">
 
 
                                     <!-- LOKASI KEGIATAN -->
@@ -120,6 +121,7 @@
                                         <div class="form-group row">
                                             <label class="col-md-3 label-control" for="perkiraan-biaya">Nominal Anggaran (Rp) <span class="danger">*</span></label>
                                             <div class="col-md-9">
+                                                <input type="hidden" name="nominal" id="nominal" value="<?= $data['pengajuan']['perkiraan_biaya'] ?>">
                                                 <input type="text" id="perkiraan-biaya" class="form-control required price " placeholder="" name="perkiraan-biaya" value="<?= 'Rp. ' . number_format($data['pengajuan']['perkiraan_biaya'], 0, ',', '.') ?>">
                                             </div>
                                         </div>
@@ -367,7 +369,7 @@
             // $('#nextToDetail').on('click', function() {
             let surat = $('#nomor-surat').select2('data');
             if (surat != '') {
-                $('#id-proposal').val(surat[0].text);
+                // $('#id-proposal').val(surat[0].text);
                 $('#detailSection').show();
                 $('#nextToDetail').attr('disabled', true);
                 $('#nomor-surat').attr('disabled', true);

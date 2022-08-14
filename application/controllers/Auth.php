@@ -99,6 +99,10 @@ class Auth extends CI_Controller
                     'last_time_login' => time()
                 ];
                 $this->session->set_userdata($data);
+
+                if (strtolower($userLogin->tipe_akses) == 'tim penomoran pusat') {
+                    redirect('pengajuan/petunjuk-penomoran/');
+                }
                 redirect('pengajuan/list/' . strtolower($userLogin->bagian));
                 // if ('1' == $userLogin->ROLE_ID) {
                 //     redirect('staff');
@@ -265,5 +269,10 @@ class Auth extends CI_Controller
     public function error404()
     {
         $this->load->view("errors/error-404");
+    }
+
+    public function error401()
+    {
+        $this->load->view("errors/error-401");
     }
 }

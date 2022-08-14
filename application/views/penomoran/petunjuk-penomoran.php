@@ -21,16 +21,12 @@
                 </div> -->
         </div>
         <div class="content-body">
-            <input type="hidden" id="id-jenis" name="id-jenis" value="<?= $id_jenis; ?>">
             <section id="drag-area">
                 <?= $this->session->flashdata('message'); ?>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <div class="text-left" style="font-family: Calibri !important; font-size: 1.2rem;">
-                                    <a href="<?= BASE_URL ?>pengajuan/add/<?= $kegiatan ?>" id="btnAdd" class="btn btn-icon btn-success mb-0" style="background-color: #18D26E; color: #fff;"><i class="ft-file-plus"></i> &nbsp;Buat Pengajuan Baru</a>
-                                </div>
                                 <div class="heading-elements">
                                     <ul class="list-inline mb-0">
                                         <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
@@ -38,25 +34,132 @@
                                 </div>
                             </div>
                             <div class="card-content collapse show">
-                                <div class="card-body">
-                                    <!-- <div class="alert alert-success" style="display: none;" role="alert"></div> -->
-
-                                    <table class="table table-striped" id="dataTablePengajuan" style="font-family: Arial !important;">
+                                <div class="card-body" style="padding: 50px;">
+                                    <table class="table" id="dataTablePengajuan" style="font-family: Arial !important;">
                                         <thead>
                                             <tr class="text-center">
-                                                <th scope="col" style="width: 2%;">No.</th>
-                                                <th scope="col" style="width: 18%">Aksi</th>
-                                                <th scope="col" style="width: 27%;">Lokasi Kegiatan</th>
-                                                <th scope="col" style="width: 6%;">Nomor Surat</th>
-                                                <th scope="col" style="width: 18%;">Nama Gapoktan / Poktan</th>
-                                                <th scope="col" style="width: 18%;">Nama Ketua</th>
-                                                <th scope="col" style="width: 8%;">Tanggal Pengajuan</th>
-                                                <th scope="col" style="width: 5%;">Status Pengajuan</th>
+                                                <th scope="col" style="width: 1%;">No.</th>
+                                                <th scope="col" style="width: 10%">Provinsi/Kabupaten/Kota</th>
+                                                <th scope="col" style="width: 13%;">Surat</th>
+                                                <th scope="col" style="width: 40%;">Nomor Surat</th>
+                                                <th scope="col" style="width: 15%;">Tanggal</th>
+                                                <th scope="col" style="width: 8%;">Nama Penerima Banpem</th>
+                                                <th scope="col" style="width: 13%;">Jumlah Dana Banpem</th>
                                             </tr>
                                         </thead>
                                         <tbody id="showDataPengajuan">
-
+                                            <tr>
+                                                <td class="text-center" rowspan="6">1</td>
+                                                <td class="font-weight-bold" colspan="6" style="color: #18D26E;">
+                                                    NAMA KEGIATAN
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    Prov. AAA
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="4">
+                                                    Kab. BBB
+                                                </td>
+                                                <td>SK TIM TEKNIS</td>
+                                                <td>Tgl.No Urut.<span style="color: #18D26E;"><strong>a</strong></span>.Keg/Kpts/PPK.Urut PPK/Bln/Tahun</td>
+                                                <td colspan="3">Tanggal PPK ACC</td>
+                                            </tr>
+                                            <tr>
+                                                <td>SK PENERIMA MANFAAT</td>
+                                                <td>Tgl.No Urut.<span style="color: #18D26E;"><strong>b</strong></span>.Keg/Kpts/PPK.Urut PPK/Bln/Tahun</td>
+                                                <td colspan="3">Tanggal PPK ACC</td>
+                                            </tr>
+                                            <tr>
+                                                <td rowspan="2">SPKS</td>
+                                                <td>Tgl.No Urut.01.Keg/PPK.PSP.Urut PPK/SPK/Bln/2021</td>
+                                                <td rowspan="2">Tanggal PPK ACC</td>
+                                                <td>UPKK. AAAA</td>
+                                                <td>Rp. -</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tgl.No Urut.02.Keg/PPK.PSP.Urut PPK/SPK/Bln/2021</td>
+                                                <td>UPKK. BBBB</td>
+                                                <td>Rp. -</td>
+                                            </tr>
+                                            <tr style="background-color: #F3F4FA; color: #6B6F80;">
+                                                <td class="text-center" colspan="6"><strong>JUMLAH</strong></td>
+                                                <td style="border-top: 2px solid black;"><strong>Rp. -</strong></td>
+                                            </tr>
                                         </tbody>
+                                    </table>
+                                    <h5 style="font-family: Calibri !important; font-size: 1.5em; font-weight: bold; margin-top: 20px; margin-bottom: 20px; color: #18D26E;">Keterangan:</h5>
+                                    <table class="table table-sm" style="font-family: Arial !important; width: 100%; padding-bottom: -20px; ">
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">PJI / NORMALISASI</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">I</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">DAM PARIT/EMBUNG PERTANIAN</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">II</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">IRIGASI PERPIPAAN</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">III</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">IRIGASI PERPOMPAAN</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">IV</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">IRIGASI AIR TANAH</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">V</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">DIPA</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">018.08.1.633656/2021</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">
+                                                </td>
+                                            <td style="width: 1%; padding-right: 0;"></td>
+                                            <td style="width: 75%;">14 Desember 2021</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">Kode Akun</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">526321 (EMBUNG,DAMPARIT,POMPA,PIPA)</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">
+                                                </td>
+                                            <td style="width: 1%; padding-right: 0;"></td>
+                                            <td style="width: 75%;">526124 (RJI)</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">Kode Output</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">1794RBK</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">
+                                                </td>
+                                            <td style="width: 1%; padding-right: 0;"></td>
+                                            <td style="width: 75%;">1794AEA</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <th class="text-right" style="width: 24%; background-color: #F3F4FA;">Kode Kegiatan / MAK</th>
+                                            <td style="width: 1%; padding-right: 0;">:</td>
+                                            <td style="width: 75%;">- Kode MAK 1794.RBK.003.051.A.526321 (EMBUNG/DAMPARIT/POMPA/PIPA/AIR TANAH)</td>
+                                        </tr>
+                                        <tr style="margin-bottom: -10px;">
+                                            <td class="text-right" style="width: 24%; background-color: #F3F4FA;"></td>
+                                            <td style="width: 1%; padding-right: 0;"></td>
+                                            <td style="width: 75%;">- Kode MAK 1794.AEA.001.054.A.526124 (RJIT/NORMALISASI)</td>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
@@ -97,17 +200,17 @@
     $(function() {
         const base_theme = '<?= BASE_THEME; ?>';
         const base_url = '<?= BASE_URL; ?>';
-        showDataPengajuan();
+        // showDataPengajuan();
 
-        $(document).ready(function() {
-            $('#dataTablePengajuan').DataTable({
-                "lengthMenu": [
-                    [5, 10, 25, 50, -1],
-                    [5, 10, 25, 50, "All"]
-                ],
-                scrollY: "410px"
-            });
-        });
+        // $(document).ready(function() {
+        //     $('#dataTablePengajuan').DataTable({
+        //         "lengthMenu": [
+        //             [5, 10, 25, 50, -1],
+        //             [5, 10, 25, 50, "All"]
+        //         ],
+        //         scrollY: "410px"
+        //     });
+        // });
 
         // $('#btnDownload').click(function() {
         //     var url = $('#formAddEditPenghulu').attr('action');
@@ -314,7 +417,7 @@
                         let hapus = 'danger';
                         let color = ''
 
-                        if ((data[i].nama_status).toLowerCase() == 'sudah diverifikasi' || (data[i].nama_status).toLowerCase() == 'penomoran' || (data[i].nama_status).toLowerCase() == 'terbit nomor') {
+                        if ((data[i].nama_status).toLowerCase() == 'sudah diverifikasi') {
                             disabled = 'disabled';
                             edit = 'light';
                             hapus = 'light';

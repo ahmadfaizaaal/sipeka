@@ -39,6 +39,16 @@ class M_Pengajuan extends CI_Model
         return $sql->result();
     }
 
+    public function getPenomoranById($idProposal)
+    {
+        $sql = $this->db->get_where('penomoran', ['id_proposal' => $idProposal]);
+        if ($sql->num_rows() > 0) {
+            return $sql->row();
+        } else {
+            return false;
+        }
+    }
+
     public function getProposalByNomorSurat($nomorSurat)
     {
         $sql = $this->db->get_where('proposal', ['nomor_surat' => $nomorSurat]);
@@ -133,6 +143,137 @@ class M_Pengajuan extends CI_Model
         return $sql->result();
     }
 
+    public function getPenomoran($param)
+    {
+        $query = "select pj.*, prv.nama as nama_provinsi, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, kl.nama as nama_kelurahan, pr.id_proposal, pr.nomor_surat, pk.*, 
+                    l.koordinat_a, l.koordinat_b, st.*, DATE_FORMAT(mp.tgl_buat, '%d-%m-%Y') as tgl_mapping, j.url, p.*, mp.catatan, rk.*, DATE_FORMAT(rk.tgl_buat, '%d-%m-%Y') as tgl_buka
+                from mapping mp
+                join proposal pr on mp.id_proposal = pr.id_proposal
+                join pengajuan pj on mp.id_pengajuan = pj.id_pengajuan
+                join jenis j on pj.id_jenis = j.id_jenis
+                join poktan pk on pj.id_poktan = pk.id_poktan
+                join rekening rk on pk.id_poktan = rk.id_poktan
+                join status st on pj.status_pengajuan = st.id_status
+                join lokasi l on pj.id_lokasi = l.id_lokasi
+                join kelurahan kl on l.id_kelurahan = kl.id_kelurahan
+                join kecamatan kc on kl.id_kecamatan = kc.id_kecamatan
+                join kabupatenkota kb on kc.id_kabupatenkota = kb.id_kabupatenkota
+                join provinsi prv on kb.id_provinsi = prv.id_provinsi
+                join user u on pj.user_input = u.id_user
+				join profil p on u.id_user = p.id_user";
+        if ($param['id_proposal'] != null) {
+            $query .= " where pr.id_proposal = " . $param['id_proposal'];
+        } else {
+            //$query .= " where mp.tgl_buat = (select max(mp2.tgl_buat) from mapping mp2 where mp2.id_proposal = mp.id_proposal)";
+        }
+        if ($param['id_user'] != null) {
+            $query .= " and pj.user_input = '" . $param['id_user'] . "'";
+        }
+        $query .= " order by pr.nomor_surat asc, mp.tgl_buat desc";
+        $sql = $this->db->query($query);
+        if ($sql->num_rows() > 0) {
+            return $sql->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getListPenomoran()
+    {
+        $query = "select mp.id_mapping, pj.id_pengajuan, pr.id_proposal, pn.id_penomoran, prv.nama as nama_provinsi, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, 
+                    kl.nama as nama_kelurahan, pk.nama_poktan, rk.nama_bank, rk.tgl_buat, rk.no_rekening, pj.detail_kegiatan, pn.sk_tim_teknis, pn.sk_penerima, DATE_FORMAT(pn.tgl_buat, '%d-%m-%Y') as tgl_ppk, pn.pic, j.url, st.kode
+                from mapping mp
+                join proposal pr on mp.id_proposal = pr.id_proposal
+                join pengajuan pj on mp.id_pengajuan = pj.id_pengajuan
+                join jenis j on pj.id_jenis = j.id_jenis
+                join poktan pk on pj.id_poktan = pk.id_poktan
+                join rekening rk on pk.id_poktan = rk.id_poktan
+                join status st on pj.status_pengajuan = st.id_status
+                join lokasi l on pj.id_lokasi = l.id_lokasi
+                join kelurahan kl on l.id_kelurahan = kl.id_kelurahan
+                join kecamatan kc on kl.id_kecamatan = kc.id_kecamatan
+                join kabupatenkota kb on kc.id_kabupatenkota = kb.id_kabupatenkota
+                join provinsi prv on kb.id_provinsi = prv.id_provinsi
+                join user u on pj.user_input = u.id_user
+				join profil p on u.id_user = p.id_user
+                join penomoran pn on pr.id_proposal = pn.id_proposal
+                where st.kode in ('PPNMR', 'TNMR')
+                order by pn.id_penomoran, pr.nomor_surat asc, mp.tgl_buat desc";
+        $sql = $this->db->query($query);
+        if ($sql->num_rows() > 0) {
+            return $sql->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getListPenomoranForPrinting($idProposal)
+    {
+        $query = "select pk.nama_poktan, kb.nama as nama_kabupaten, kc.nama as nama_kecamatan, 
+                            kl.nama as nama_kelurahan, rk.nama_bank, rk.no_rekening, pn.sk_penerima, sp.nominal
+                    from mapping mp
+                    join proposal pr on mp.id_proposal = pr.id_proposal
+                    join pengajuan pj on mp.id_pengajuan = pj.id_pengajuan
+                    join jenis j on pj.id_jenis = j.id_jenis
+                    join poktan pk on pj.id_poktan = pk.id_poktan
+                    join rekening rk on pk.id_poktan = rk.id_poktan
+                    join status st on pj.status_pengajuan = st.id_status
+                    join lokasi l on pj.id_lokasi = l.id_lokasi
+                    join kelurahan kl on l.id_kelurahan = kl.id_kelurahan
+                    join kecamatan kc on kl.id_kecamatan = kc.id_kecamatan
+                    join kabupatenkota kb on kc.id_kabupatenkota = kb.id_kabupatenkota
+                    join penomoran pn on pr.id_proposal = pn.id_proposal
+                    join spks sp on pn.id_penomoran = sp.id_penomoran
+                    where pr.id_proposal = " . $idProposal;
+        $sql = $this->db->query($query);
+        if ($sql->num_rows() > 0) {
+            return $sql->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getSPKS_Poktan($param)
+    {
+        $query = "select sp.*, pk.nama_poktan
+                from " . $param['table'] . " sp
+                join pengajuan pj on sp.id_pengajuan = pj.id_pengajuan
+                join poktan pk on pj.id_poktan = pk.id_poktan
+                where " . $param['column'] . ' = ' . $param['value'];
+        $sql = $this->db->query($query);
+        if ($sql->num_rows() > 0) {
+            return $sql->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getData($param)
+    {
+        $this->db->where($param['column'], $param['value']);
+        $sql = $this->db->get($param['table']);
+        if ($sql->num_rows() > 0) {
+            return $sql->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getPengajuan($idProposal)
+    {
+        $query = "select pj.id_pengajuan
+                from mapping mp
+                join proposal pr on mp.id_proposal = pr.id_proposal
+                join pengajuan pj on mp.id_pengajuan = pj.id_pengajuan
+                where pr.id_proposal = " . $idProposal;
+        $sql = $this->db->query($query);
+        if ($sql->num_rows() > 0) {
+            return $sql->result();
+        } else {
+            return false;
+        }
+    }
+
     public function getListPengajuan($user, $jenis)
     {
         $this->db->select("pj.*, kb.nama as kabupaten, kc.nama as kecamatan, kl.nama as kelurahan, pr.nomor_surat, pk.nama_poktan, pk.nama_ketua, st.*, j.url, DATE_FORMAT(pj.tgl_buat, '%d-%m-%Y') as tanggal_buat");
@@ -220,10 +361,36 @@ class M_Pengajuan extends CI_Model
         return $sql->result();
     }
 
+    public function getDokumenPenomoran($param)
+    {
+        $this->db->where('id_pengajuan', $param['id_pengajuan']);
+        $this->db->where('identifier', 'syarat');
+        $sql = $this->db->get('dokumen');
+        return $sql->result();
+    }
+
     public function getPengajuanById($param)
     {
         $sql = $this->db->get_where('pengajuan', ['id_pengajuan' => $param]);
         return $sql->result()[0];
+    }
+
+    //GET ONE PROCESS
+    public function getOne($table, $param, $ordering)
+    {
+        $this->db->select('*');
+        $this->db->from($table);
+        if ($param != null) {
+            $this->db->where($param['column'], $param['value']);
+        }
+        $this->db->order_by($ordering['column'], $ordering['option']);
+        $this->db->limit(1);
+        $sql = $this->db->get();
+        if ($sql->num_rows() > 0) {
+            return $sql->result()[0];
+        } else {
+            return false;
+        }
     }
 
     //INSERT PROCESS

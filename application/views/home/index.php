@@ -52,7 +52,7 @@
                         <!-- <li><a href="#about">Profil</a></li> -->
                         <li><a href="#contact">Hubungi Kami</a></li>
                         <?php
-                        if ($this->session->userdata('email') != '') {
+                        if ($this->session->userdata('id_user') != '') {
                         ?>
                             <li>
                                 <a href="<?= BASE_URL . 'auth/logout' ?>">

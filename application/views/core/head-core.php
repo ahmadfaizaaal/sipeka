@@ -78,6 +78,10 @@
             font-size: 10px;
         }
 
+        .custom-padding {
+            margin-bottom: -1px;
+        }
+
         /* html * {
             font-family: Arial !important;
         } */

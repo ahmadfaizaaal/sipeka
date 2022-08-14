@@ -577,6 +577,34 @@
             });
         });
 
+        //GENERATE DAFTAR NOMINATIF
+        $('#showDataPengajuan').on('click', '.btn-nominatif', function() {
+            let id_kabupatenkota = $('#kabupaten').val();
+            let id_proposal = $('#nomor-surat').val();
+            $('#modal-preview-document').modal('show');
+            $('#modal-preview-document').find('.modal-title').text('PRATINJAU DAFTAR NOMINATIF');
+            $('#btnDownload').hide();
+            $.ajax({
+                type: 'ajax',
+                method: 'post',
+                url: '<?= BASE_URL . 'pengajuan/generate-daftar-nominatif'; ?>',
+                data: {
+                    id_kabupatenkota: id_kabupatenkota,
+                    id_proposal: id_proposal,
+                    url: kegiatan
+                },
+                async: false,
+                dataType: 'json',
+                success: function(response) {
+                    $('#doc-frame').attr('src', base_theme + response + '#zoom=100%');
+                },
+                error: function(e) {
+                    console.log(e.responseText);
+                    swal("Internal Server error 500!", "Error!", "error");
+                }
+            });
+        });
+
         // CLEAR TEMP FILES
         $("#modal-preview-document").on('hide.bs.modal', function() {
             $.ajax({
@@ -617,29 +645,34 @@
                     let generated = false;
 
                     for (i = 0; i < data.length; i++) {
-                        if ((data[i].kode).toLowerCase() == 'dvr' || (data[i].kode).toLowerCase() == 'ppnmr') {
+                        if ((data[i].kode).toLowerCase() == 'dvr' || (data[i].kode).toLowerCase() == 'ppnmr' || (data[i].kode).toLowerCase() == 'tnmr') {
                             jmlTerverif++;
                         }
                     }
                     console.log(jmlTerverif)
                     for (i = 0; i < data.length; i++) {
                         let disabled = ['', 'disabled'];
-                        let btnColor = ['light', 'info', 'success', 'warning'];
-                        let classId = ['layak', 'btn-export', 'btn-nota-dinas', 'btn-surat-penerbitan']
-                        let title = ['Tandai sudah ditelaah', 'Ekspor Data Telaah', 'Cetak Nota Dinas', 'Cetak Surat Penerbitan', 'Cetak Dokumen Verifikasi']
+                        let btnColor = ['light', 'info', 'success', 'warning', 'primary'];
+                        let classId = ['layak', 'btn-export', 'btn-nota-dinas', 'btn-surat-penerbitan', 'btn-nominatif']
+                        let title = ['Tandai sudah ditelaah', 'Ekspor Data Telaah', 'Cetak Nota Dinas', 'Cetak Surat Penerbitan', 'Cetak Daftar Nominatif', 'Cetak Dokumen Verifikasi']
                         let style = 'color: #fff;';
                         let actionTd = '';
+                        let actionTdAdditional = '';
 
                         if (data.length == jmlTerverif) {
+                            icon = 'ft-printer';
+                            if ((data[i].kode).toLowerCase() == 'tnmr') {
+                                actionTdAdditional = `<a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[4] } ${ classId[4] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[4] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>`;
+                            }
                             if (!generated) {
                                 styleTd = 'vertical-align: top;';
-                                icon = 'ft-printer';
                                 rowspan = `rowspan="${ jmlTerverif }"`;
                                 actionTd = `<td scope="col" ${ rowspan } style="width: 5%; ${ styleTd }">
                                         <a href="javascript:;" class="btn btn-md btn-icon btn-danger cetak-dokumen-verifikasi ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[4] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
                                         <a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[1] } ${ classId[1] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[1] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
                                         <a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[2] } ${ classId[2] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[2] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
                                         <a href="javascript:;" class="btn btn-md btn-icon btn-${ btnColor[3] } ${ classId[3] } ${ disabled[0] }" style="margin-left:0px; margin-bottom: 10px; ${ style }" data-toggle="tooltip" data-placement="right" title="${ title[3] }" data="${data[i].id_pengajuan}"><i class="${ icon }"></i></a>
+                                        ${ actionTdAdditional }
                                     </td>`;
                                 generated = true;
                             }
